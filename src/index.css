@@ -1,0 +1,48 @@
+@import 'tailwindcss';
+@import './styles/tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--color-page);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100svh;
+  margin: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+::selection {
+  background: var(--color-brand-soft);
+  color: var(--color-brand-strong);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
