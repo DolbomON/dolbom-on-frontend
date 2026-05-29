@@ -1,19 +1,20 @@
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { ElderCheckHeader } from '../../components/elder-check/ElderCheckHeader'
-import {
-  DiscomfortQuestionCard,
-  type DiscomfortAnswer,
-} from '../../components/elder-check/DiscomfortQuestionCard'
 import { ElderProgress } from '../../components/elder-check/ElderProgress'
+import {
+  MoodQuestionCard,
+  type MoodAnswer,
+} from '../../components/elder-check/MoodQuestionCard'
 
 const voiceGuideText =
-  '오늘 몸이 불편한 곳이 있나요? 없어요 또는 있어요 중에서 선택해주세요.'
+  '오늘 기분은 어떠세요? 좋아요 또는 조금 울적해요 중에서 선택해주세요.'
 
 type DailyCheckRouteState = {
-  discomfortAnswer?: Exclude<DiscomfortAnswer, null>
+  discomfortAnswer?: unknown
   mealAnswer?: unknown
   medicationTaken?: unknown
+  moodAnswer?: Exclude<MoodAnswer, null>
 }
 
 function getDailyCheckRouteState(state: unknown): DailyCheckRouteState {
@@ -24,25 +25,21 @@ function getDailyCheckRouteState(state: unknown): DailyCheckRouteState {
   return {}
 }
 
-export function ElderDiscomfortCheckPage() {
-  const navigate = useNavigate()
+export function ElderMoodCheckPage() {
   const location = useLocation()
   const routeState = getDailyCheckRouteState(location.state)
-  const [discomfortAnswer, setDiscomfortAnswer] = useState<DiscomfortAnswer>(
-    routeState.discomfortAnswer ?? null,
+  const [moodAnswer, setMoodAnswer] = useState<MoodAnswer>(
+    routeState.moodAnswer ?? null,
   )
 
-  function handleDiscomfortAnswer(answer: Exclude<DiscomfortAnswer, null>) {
-    setDiscomfortAnswer(answer)
+  function handleMoodAnswer(answer: Exclude<MoodAnswer, null>) {
+    setMoodAnswer(answer)
 
-    if (answer === 'has_discomfort') {
-      // TODO: Continue to a future discomfort location or pain detail step.
+    if (answer === 'sad') {
+      // TODO: Collect loneliness or emotional-detail follow-up when that flow is designed.
     }
 
-    // TODO: Replace route state with durable daily check draft persistence.
-    navigate('/elder/check/mood', {
-      state: { ...routeState, discomfortAnswer: answer },
-    })
+    // TODO: Save this mood answer to the daily check draft and continue to step 5.
   }
 
   function handleNotificationClick() {
@@ -59,7 +56,7 @@ export function ElderDiscomfortCheckPage() {
     <main className="min-h-svh bg-[#edf5ff] text-[#102b53]">
       <section
         className="mx-auto min-h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_80%_22%,rgba(235,247,255,0.95)_0_15%,transparent_34%),linear-gradient(180deg,#ffffff_0%,#fbfdff_55%,#ffffff_100%)] px-5 pb-[calc(28px+env(safe-area-inset-bottom))] pt-7 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
-        aria-label="몸 불편 상태 입력 화면"
+        aria-label="기분 상태 입력 화면"
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
 
@@ -75,11 +72,11 @@ export function ElderDiscomfortCheckPage() {
           </p>
         </section>
 
-        <ElderProgress currentStep={3} totalSteps={5} />
+        <ElderProgress currentStep={4} totalSteps={5} variant="stacked" />
 
-        <DiscomfortQuestionCard
-          answer={discomfortAnswer}
-          onAnswer={handleDiscomfortAnswer}
+        <MoodQuestionCard
+          answer={moodAnswer}
+          onAnswer={handleMoodAnswer}
           onVoiceGuide={handleVoiceGuide}
         />
       </section>

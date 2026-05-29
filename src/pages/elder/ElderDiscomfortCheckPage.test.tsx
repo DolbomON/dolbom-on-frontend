@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { ElderDiscomfortCheckPage } from './ElderDiscomfortCheckPage'
 
@@ -51,5 +51,28 @@ describe('ElderDiscomfortCheckPage', () => {
     await user.click(hasDiscomfortButton)
 
     expect(hasDiscomfortButton).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('navigates to the mood check step after a discomfort answer', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/elder/check/discomfort']}>
+        <Routes>
+          <Route
+            path="/elder/check/discomfort"
+            element={<ElderDiscomfortCheckPage />}
+          />
+          <Route
+            path="/elder/check/mood"
+            element={<p>기분 상태 입력 화면</p>}
+          />
+        </Routes>
+      </MemoryRouter>,
+    )
+
+    await user.click(screen.getByRole('button', { name: '없어요' }))
+
+    expect(await screen.findByText('기분 상태 입력 화면')).toBeTruthy()
   })
 })
