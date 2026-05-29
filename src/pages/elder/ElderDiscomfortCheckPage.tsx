@@ -1,24 +1,28 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { ElderCheckHeader } from '../../components/elder-check/ElderCheckHeader'
-import { ElderProgress } from '../../components/elder-check/ElderProgress'
 import {
-  MedicationQuestionCard,
-  type MedicationAnswer,
-} from '../../components/elder-check/MedicationQuestionCard'
-import { VoiceGuideButton } from '../../components/elder-check/VoiceGuideButton'
+  DiscomfortQuestionCard,
+  type DiscomfortAnswer,
+} from '../../components/elder-check/DiscomfortQuestionCard'
+import { ElderProgress } from '../../components/elder-check/ElderProgress'
 
 const voiceGuideText =
-  '오늘 약을 드셨나요? 네, 먹었어요 또는 아직 못 먹었어요 중에서 선택해주세요.'
+  '오늘 몸이 불편한 곳이 있나요? 없어요 또는 있어요 중에서 선택해주세요.'
 
-export function ElderCheckPage() {
-  const navigate = useNavigate()
-  const [medicationTaken, setMedicationTaken] = useState<MedicationAnswer>(null)
+export function ElderDiscomfortCheckPage() {
+  const [discomfortAnswer, setDiscomfortAnswer] =
+    useState<DiscomfortAnswer>(null)
 
-  function handleMedicationAnswer(answer: Exclude<MedicationAnswer, null>) {
-    setMedicationTaken(answer)
-    // TODO: Replace route state with durable daily check draft persistence.
-    navigate('/elder/check/meal', { state: { medicationTaken: answer } })
+  function handleDiscomfortAnswer(
+    answer: Exclude<DiscomfortAnswer, null>,
+  ) {
+    setDiscomfortAnswer(answer)
+
+    if (answer === 'has_discomfort') {
+      // TODO: Continue to a future discomfort location or pain detail step.
+    }
+
+    // TODO: Save this answer to a durable daily check draft before step 4.
   }
 
   function handleNotificationClick() {
@@ -32,17 +36,17 @@ export function ElderCheckPage() {
   }
 
   return (
-    <main className="min-h-svh bg-[#edf5ff] text-[#080808]">
+    <main className="min-h-svh bg-[#edf5ff] text-[#102b53]">
       <section
         className="mx-auto min-h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_80%_22%,rgba(235,247,255,0.95)_0_15%,transparent_34%),linear-gradient(180deg,#ffffff_0%,#fbfdff_55%,#ffffff_100%)] px-5 pb-[calc(28px+env(safe-area-inset-bottom))] pt-7 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
-        aria-label="복약 상태 입력 화면"
+        aria-label="몸 불편 상태 입력 화면"
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
 
         <section className="mt-10 min-[390px]:mt-12" aria-labelledby="greeting">
           <h1
             id="greeting"
-            className="text-[37px] font-black leading-[1.13] tracking-[-0.075em] text-[#080808] min-[390px]:text-[48px]"
+            className="text-[37px] font-black leading-[1.13] tracking-[-0.075em] text-[#102b53] min-[390px]:text-[48px]"
           >
             안녕하세요, 김영자님
           </h1>
@@ -51,14 +55,13 @@ export function ElderCheckPage() {
           </p>
         </section>
 
-        <ElderProgress currentStep={1} totalSteps={5} />
+        <ElderProgress currentStep={3} totalSteps={5} />
 
-        <MedicationQuestionCard
-          answer={medicationTaken}
-          onAnswer={handleMedicationAnswer}
+        <DiscomfortQuestionCard
+          answer={discomfortAnswer}
+          onAnswer={handleDiscomfortAnswer}
+          onVoiceGuide={handleVoiceGuide}
         />
-
-        <VoiceGuideButton onClick={handleVoiceGuide} />
       </section>
     </main>
   )

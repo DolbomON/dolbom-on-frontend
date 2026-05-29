@@ -4,7 +4,9 @@ import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
 import { ElderChatPage } from '../pages/elder/ElderChatPage'
 import { ElderCheckPage } from '../pages/elder/ElderCheckPage'
+import { ElderDiscomfortCheckPage } from '../pages/elder/ElderDiscomfortCheckPage'
 import { ElderHomePage } from '../pages/elder/ElderHomePage'
+import { ElderMealCheckPage } from '../pages/elder/ElderMealCheckPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
 import { ElderDetailPage } from '../pages/worker/ElderDetailPage'
 import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
@@ -29,6 +31,14 @@ export const router = createBrowserRouter([
   {
     path: '/elder/check',
     element: <ElderCheckPage />,
+  },
+  {
+    path: '/elder/check/meal',
+    element: <ElderMealCheckPage />,
+  },
+  {
+    path: '/elder/check/discomfort',
+    element: <ElderDiscomfortCheckPage />,
   },
   {
     path: '/elder/chat',
