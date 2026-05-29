@@ -38,20 +38,24 @@ export function SleepQuestionCard({
   onVoiceGuide,
 }: SleepQuestionCardProps) {
   return (
-    <section className="mt-8 rounded-[32px] border border-[#e7f1ff] bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.97)_0_24%,transparent_56%),linear-gradient(180deg,#f5faff_0%,#edf6ff_100%)] px-5 pb-7 pt-6 text-center shadow-[0_22px_48px_rgba(46,83,135,0.13),inset_0_1px_0_rgba(255,255,255,0.88)] min-[390px]:px-7 min-[390px]:pb-8 min-[390px]:pt-8">
-      <div className="-mx-4 min-[390px]:-mx-6">
+    <section className="mt-8 overflow-hidden rounded-[32px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_50%,#edf6ff_100%)] px-5 pb-7 text-center shadow-[0_22px_48px_rgba(46,83,135,0.13),inset_0_1px_0_rgba(255,255,255,0.88)] min-[390px]:px-7 min-[390px]:pb-8">
+      <div className="relative -mx-5 bg-[#edf6ff] min-[390px]:-mx-7">
         <img
           src={sleepIllustrationSrc}
           alt="수면 확인 이미지"
           width="1448"
           height="1086"
-          className="mx-auto h-auto w-full max-w-[400px] object-contain drop-shadow-[0_18px_28px_rgba(66,105,168,0.16)]"
+          className="mx-auto h-auto w-full object-contain"
           draggable="false"
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#f8fbff]"
+          aria-hidden="true"
         />
       </div>
 
       <h2
-        className="mt-7 text-[39px] font-black leading-[1.18] tracking-[-0.075em] text-[#102b53] min-[390px]:mt-8 min-[390px]:text-[46px]"
+        className="mt-8 text-[39px] font-black leading-[1.18] tracking-[-0.075em] text-[#102b53] min-[390px]:mt-9 min-[390px]:text-[46px]"
         aria-label="어젯밤 잠은 잘 주무셨나요?"
       >
         어젯밤 잠은

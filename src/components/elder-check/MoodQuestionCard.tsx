@@ -35,10 +35,10 @@ export function MoodQuestionCard({
   onVoiceGuide,
 }: MoodQuestionCardProps) {
   return (
-    <section className="mt-8 rounded-[32px] border border-[#e7f1ff] bg-[radial-gradient(circle_at_50%_26%,rgba(255,255,255,0.96)_0_22%,transparent_52%),linear-gradient(180deg,#f4f9ff_0%,#edf6ff_100%)] px-5 pb-7 pt-6 text-center shadow-[0_22px_48px_rgba(46,83,135,0.13),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-7 min-[390px]:pb-8 min-[390px]:pt-8">
+    <section className="mt-8 overflow-hidden rounded-[32px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#eef7ff_0%,#f8fbff_52%,#edf6ff_100%)] px-5 pb-7 text-center shadow-[0_22px_48px_rgba(46,83,135,0.13),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-7 min-[390px]:pb-8">
       <MoodIllustrationPlaceholder />
 
-      <h2 className="mt-7 break-keep text-[31px] font-black leading-[1.14] tracking-[-0.055em] text-[#102b53] min-[360px]:text-[35px] min-[430px]:text-[43px]">
+      <h2 className="mt-8 break-keep text-[31px] font-black leading-[1.14] tracking-[-0.055em] text-[#102b53] min-[360px]:text-[35px] min-[430px]:text-[43px]">
         오늘 기분은 어떠세요?
       </h2>
 
@@ -82,7 +82,7 @@ export function MoodQuestionCard({
 function MoodIllustrationPlaceholder() {
   return (
     <div
-      className="-mx-4 flex h-[290px] items-center justify-center overflow-hidden rounded-[28px] bg-[radial-gradient(circle_at_50%_34%,rgba(255,255,255,0.94)_0_18%,transparent_46%),linear-gradient(180deg,#eef7ff_0%,#dcecff_100%)] min-[360px]:h-[330px] min-[390px]:-mx-6 min-[430px]:h-[372px]"
+      className="relative -mx-5 flex h-[290px] items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#eef7ff_0%,#dcecff_100%)] min-[360px]:h-[330px] min-[390px]:-mx-7 min-[430px]:h-[372px]"
       role="img"
       aria-label="기분 확인 이미지"
     >
@@ -186,6 +186,10 @@ function MoodIllustrationPlaceholder() {
           fill="#abd0ff"
         />
       </svg>
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#f8fbff]"
+        aria-hidden="true"
+      />
     </div>
   )
 }

@@ -38,20 +38,24 @@ export function DiscomfortQuestionCard({
   onVoiceGuide,
 }: DiscomfortQuestionCardProps) {
   return (
-    <section className="mt-8 rounded-[32px] border border-[#e7f1ff] bg-[radial-gradient(circle_at_52%_28%,rgba(255,255,255,0.96)_0_22%,transparent_52%),linear-gradient(180deg,#f4f9ff_0%,#edf6ff_100%)] px-5 pb-7 pt-6 text-center shadow-[0_22px_48px_rgba(46,83,135,0.13),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-7 min-[390px]:pb-8 min-[390px]:pt-8">
-      <div className="-mx-4 min-[390px]:-mx-6">
+    <section className="mt-8 overflow-hidden rounded-[32px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_50%,#edf6ff_100%)] px-5 pb-7 text-center shadow-[0_22px_48px_rgba(46,83,135,0.13),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-7 min-[390px]:pb-8">
+      <div className="relative -mx-5 bg-[#edf6ff] min-[390px]:-mx-7">
         <img
           src={discomfortIllustrationSrc}
           alt="몸 불편 여부 확인 이미지"
           width="1448"
           height="1086"
-          className="mx-auto h-auto w-full max-w-[390px] object-contain drop-shadow-[0_18px_28px_rgba(66,105,168,0.16)]"
+          className="mx-auto h-auto w-full object-contain"
           draggable="false"
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#f8fbff]"
+          aria-hidden="true"
         />
       </div>
 
       <h2
-        className="mt-6 text-[38px] font-black leading-[1.17] tracking-[-0.075em] text-[#102b53] min-[390px]:mt-7 min-[390px]:text-[46px]"
+        className="mt-7 text-[38px] font-black leading-[1.17] tracking-[-0.075em] text-[#102b53] min-[390px]:mt-8 min-[390px]:text-[46px]"
         aria-label="오늘 몸이 불편한 곳이 있나요?"
       >
         오늘 몸이

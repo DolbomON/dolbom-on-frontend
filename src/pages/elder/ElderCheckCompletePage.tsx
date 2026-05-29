@@ -183,19 +183,23 @@ export function ElderCheckCompletePage() {
 
         <CompletionProgress />
 
-        <section className="mt-8 rounded-[32px] border border-[#d7e8ff] bg-[radial-gradient(circle_at_50%_16%,rgba(255,255,255,0.98)_0_18%,rgba(239,248,255,0.9)_34%,transparent_64%),linear-gradient(180deg,#f6fbff_0%,#edf7ff_100%)] px-4 pb-5 pt-6 text-center shadow-[0_18px_40px_rgba(36,92,174,0.13),inset_0_1px_0_rgba(255,255,255,0.92)] min-[390px]:px-5 min-[390px]:pb-6">
-          <div className="mx-auto grid min-h-[150px] place-items-center min-[390px]:min-h-[172px]">
+        <section className="mt-8 overflow-hidden rounded-[32px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_42%,#edf7ff_100%)] px-4 pb-5 text-center shadow-[0_18px_40px_rgba(36,92,174,0.13),inset_0_1px_0_rgba(255,255,255,0.92)] min-[390px]:px-5 min-[390px]:pb-6">
+          <div className="relative -mx-4 grid min-h-[168px] place-items-center bg-[#edf6ff] px-7 py-7 min-[390px]:-mx-5 min-[390px]:min-h-[190px] min-[390px]:px-9">
             <img
               src={completionIllustrationSrc}
               alt="오늘 상태 입력 완료 이미지"
               width="305"
               height="160"
-              className="h-auto w-full max-w-[322px] object-contain drop-shadow-[0_18px_26px_rgba(66,105,168,0.18)] min-[390px]:max-w-[352px]"
+              className="h-auto w-full max-w-[352px] object-contain"
               draggable="false"
+            />
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#f8fbff]"
+              aria-hidden="true"
             />
           </div>
 
-          <div className="mt-3">
+          <div className="mt-6">
             <h2
               className="text-[35px] font-black leading-[1.16] tracking-[-0.075em] text-[#061844] min-[390px]:text-[42px]"
               aria-label="오늘 상태 입력이 완료되었어요"
