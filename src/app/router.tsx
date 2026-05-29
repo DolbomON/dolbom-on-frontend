@@ -3,6 +3,7 @@ import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
 import { ElderChatPage } from '../pages/elder/ElderChatPage'
+import { ElderCheckCompletePage } from '../pages/elder/ElderCheckCompletePage'
 import { ElderCheckPage } from '../pages/elder/ElderCheckPage'
 import { ElderDiscomfortCheckPage } from '../pages/elder/ElderDiscomfortCheckPage'
 import { ElderHomePage } from '../pages/elder/ElderHomePage'
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
   {
     path: '/elder/check/sleep',
     element: <ElderSleepCheckPage />,
+  },
+  {
+    path: '/elder/check/complete',
+    element: <ElderCheckCompletePage />,
   },
   {
     path: '/elder/chat',

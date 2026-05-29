@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { ElderCheckHeader } from '../../components/elder-check/ElderCheckHeader'
 import { ElderProgress } from '../../components/elder-check/ElderProgress'
 import {
@@ -27,6 +27,7 @@ function getDailyCheckRouteState(state: unknown): DailyCheckRouteState {
 }
 
 export function ElderSleepCheckPage() {
+  const navigate = useNavigate()
   const location = useLocation()
   const routeState = getDailyCheckRouteState(location.state)
   const [sleepAnswer, setSleepAnswer] = useState<SleepAnswer>(
@@ -35,7 +36,10 @@ export function ElderSleepCheckPage() {
 
   function handleSleepAnswer(answer: Exclude<SleepAnswer, null>) {
     setSleepAnswer(answer)
-    // TODO: Save this sleep answer to the daily check draft and continue to the final review/submit flow.
+    // TODO: Replace route state with durable daily check draft persistence.
+    navigate('/elder/check/complete', {
+      state: { ...routeState, sleepAnswer: answer },
+    })
   }
 
   function handleNotificationClick() {

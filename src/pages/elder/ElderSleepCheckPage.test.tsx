@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { ElderSleepCheckPage } from './ElderSleepCheckPage'
 
@@ -52,5 +52,25 @@ describe('ElderSleepCheckPage', () => {
     await user.click(uncomfortableButton)
 
     expect(uncomfortableButton).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('navigates to the completion screen after a sleep answer', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/elder/check/sleep']}>
+        <Routes>
+          <Route path="/elder/check/sleep" element={<ElderSleepCheckPage />} />
+          <Route
+            path="/elder/check/complete"
+            element={<p>오늘 상태 입력 완료 화면</p>}
+          />
+        </Routes>
+      </MemoryRouter>,
+    )
+
+    await user.click(screen.getByRole('button', { name: '네, 잘 잤어요' }))
+
+    expect(await screen.findByText('오늘 상태 입력 완료 화면')).toBeTruthy()
   })
 })
