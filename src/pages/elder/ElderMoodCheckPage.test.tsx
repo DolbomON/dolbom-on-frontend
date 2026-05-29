@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { ElderMoodCheckPage } from './ElderMoodCheckPage'
 
@@ -44,5 +44,25 @@ describe('ElderMoodCheckPage', () => {
     await user.click(sadButton)
 
     expect(sadButton).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('navigates to the sleep check step after a mood answer', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/elder/check/mood']}>
+        <Routes>
+          <Route path="/elder/check/mood" element={<ElderMoodCheckPage />} />
+          <Route
+            path="/elder/check/sleep"
+            element={<p>수면 상태 입력 화면</p>}
+          />
+        </Routes>
+      </MemoryRouter>,
+    )
+
+    await user.click(screen.getByRole('button', { name: '좋아요' }))
+
+    expect(await screen.findByText('수면 상태 입력 화면')).toBeTruthy()
   })
 })
