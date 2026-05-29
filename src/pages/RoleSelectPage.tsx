@@ -1,36 +1,152 @@
-import { BriefcaseMedical, HeartHandshake, UsersRound } from 'lucide-react'
-import { PageShell } from '../components/layout/PageShell'
-import { SeniorActionCard } from '../components/senior/SeniorActionCard'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { RoleCard, type RoleOption } from '../components/role-select/RoleCard'
+import { RoleSelectHeader } from '../components/role-select/RoleSelectHeader'
+
+type UserRole = 'elder' | 'family' | 'worker' | 'government'
+
+const heroImage = '/assets/dolbomon/role-select/hero-role-select.png'
+
+const roleOptions: Array<RoleOption<UserRole>> = [
+  {
+    description: '건강과 안부를 쉽게 기록해요',
+    id: 'elder',
+    imageSrc: '/assets/dolbomon/role-select/role-elder.png',
+    title: '어르신',
+  },
+  {
+    description: '가족의 상태를 함께 살펴봐요',
+    id: 'family',
+    imageSrc: '/assets/dolbomon/role-select/role-family.png',
+    title: '가족',
+  },
+  {
+    description: '대상자의 안부를 체계적으로 확인해요',
+    id: 'worker',
+    imageSrc: '/assets/dolbomon/role-select/role-worker.png',
+    title: '복지사',
+  },
+  {
+    description: '지역 돌봄 현황을 효율적으로 관리해요',
+    id: 'government',
+    imageSrc: '/assets/dolbomon/role-select/role-government.png',
+    title: '지자체',
+  },
+]
+
+const nextRouteByRole: Record<UserRole, string | null> = {
+  elder: '/elder',
+  family: '/family',
+  worker: '/worker',
+  government: null,
+}
 
 export function RoleSelectPage() {
+  const [selectedRole, setSelectedRole] = useState<UserRole | null>(null)
+  const navigate = useNavigate()
+
+  function handleBack() {
+    if (window.history.length > 1) {
+      navigate(-1)
+      return
+    }
+
+    navigate('/')
+  }
+
+  function handleNext() {
+    if (!selectedRole) {
+      return
+    }
+
+    const nextRoute = nextRouteByRole[selectedRole]
+
+    if (!nextRoute) {
+      // TODO: Navigate to /government when the local government route exists.
+      console.info('Government role flow is not implemented yet.')
+      return
+    }
+
+    navigate(nextRoute)
+  }
+
   return (
-    <PageShell
-      title="역할을 선택해 주세요"
-      description="처음 화면은 역할별 흐름을 빠르게 확인할 수 있게 나누었습니다."
-      backTo="/"
-    >
-      <section className="grid gap-4 md:grid-cols-3">
-        <SeniorActionCard
-          to="/elder"
-          title="어르신"
-          description="건강 확인과 마음 대화를 시작합니다."
-          icon={<HeartHandshake aria-hidden="true" size={30} />}
-          tone="calm"
-        />
-        <SeniorActionCard
-          to="/family"
-          title="가족"
-          description="가족의 돌봄 상태를 확인합니다."
-          icon={<UsersRound aria-hidden="true" size={30} />}
-          tone="warm"
-        />
-        <SeniorActionCard
-          to="/worker"
-          title="복지사"
-          description="담당 어르신의 위험 신호를 봅니다."
-          icon={<BriefcaseMedical aria-hidden="true" size={30} />}
-        />
+    <main className="min-h-svh bg-[#eef6ff] text-[#050505]">
+      <section
+        className="mx-auto min-h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_87%_25%,rgba(228,242,255,0.95)_0_17%,transparent_36%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-5 pb-[max(28px,env(safe-area-inset-bottom))] pt-7 shadow-[0_20px_80px_rgba(55,104,184,0.08)] sm:px-6"
+        aria-label="이용 유형 선택 화면"
+      >
+        <RoleSelectHeader onBack={handleBack} />
+
+        <section
+          className="relative min-h-[344px] pt-16"
+          aria-labelledby="role-title"
+        >
+          <div className="relative z-10 flex items-center gap-4">
+            <span
+              className="inline-flex min-h-[31px] min-w-[59px] items-center justify-center gap-1 rounded-full border border-[#b8d3ff] bg-white/75 px-4 text-[19px] tracking-[-0.04em] shadow-[0_8px_18px_rgba(36,95,190,0.05)]"
+              aria-label="1단계, 총 3단계"
+            >
+              <strong className="font-black text-[#0867f2]">1</strong>
+              <span className="font-bold text-[#8ea7cf]">/ 3</span>
+            </span>
+            <span className="text-[18px] font-bold tracking-[-0.045em] text-[#0867f2]">
+              이용 유형 선택
+            </span>
+          </div>
+
+          <div className="relative z-10 mt-7">
+            <h1
+              id="role-title"
+              className="text-[42px] font-black leading-[1.12] tracking-[-0.075em] min-[390px]:text-[50px]"
+              aria-label="이용 유형을 선택해주세요"
+            >
+              이용 유형을
+              <br />
+              <span className="text-[#005ee6]">선택해주세요</span>
+            </h1>
+
+            <p className="mt-6 text-[16px] font-medium leading-[1.55] tracking-[-0.045em] text-[#596170] min-[390px]:text-[18px]">
+              사용할 대상에 맞는 메뉴와
+              <br />
+              기능을 안내해드릴게요.
+            </p>
+          </div>
+
+          <img
+            src={heroImage}
+            alt=""
+            width="1448"
+            height="1086"
+            className="pointer-events-none absolute right-[-112px] top-8 z-0 w-[345px] max-w-none select-none min-[390px]:right-[-112px] min-[390px]:top-5 min-[390px]:w-[390px]"
+            aria-hidden="true"
+            draggable="false"
+          />
+        </section>
+
+        <section
+          className="relative z-10 grid grid-cols-2 gap-x-3 gap-y-3 min-[390px]:gap-x-4"
+          aria-label="이용 유형 목록"
+        >
+          {roleOptions.map((role) => (
+            <RoleCard
+              key={role.id}
+              role={role}
+              selected={selectedRole === role.id}
+              onSelect={() => setSelectedRole(role.id)}
+            />
+          ))}
+        </section>
+
+        <button
+          className="relative z-10 mt-6 flex min-h-[68px] w-full items-center justify-center rounded-[26px] bg-gradient-to-br from-[#0876ff] to-[#005ee6] px-6 text-[25px] font-black tracking-[-0.045em] text-white shadow-[0_22px_38px_rgba(2,92,221,0.24)] transition enabled:active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-none disabled:bg-[#d8e4f4] disabled:text-[#8190a6] disabled:shadow-none focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[73px] min-[390px]:text-[28px]"
+          type="button"
+          disabled={!selectedRole}
+          onClick={handleNext}
+        >
+          다음
+        </button>
       </section>
-    </PageShell>
+    </main>
   )
 }

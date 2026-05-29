@@ -4,13 +4,21 @@ import { describe, expect, it } from 'vitest'
 import { LandingPage } from '../pages/LandingPage'
 
 describe('LandingPage', () => {
-  it('renders DolbomON branding', () => {
+  it('renders the mobile landing screen', () => {
     render(
       <MemoryRouter>
         <LandingPage />
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole('heading', { name: 'DolbomON' })).toBeTruthy()
+    expect(
+      screen.getByRole('heading', {
+        name: '오늘의 안부를 쉽고 안전하게 기록하세요',
+      }),
+    ).toBeTruthy()
+    expect(
+      screen.getByRole('link', { name: /오늘 상태 입력하기/ }),
+    ).toBeTruthy()
+    expect(screen.getByRole('button', { name: '메뉴 열기' })).toBeTruthy()
   })
 })
