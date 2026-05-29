@@ -76,7 +76,7 @@ export function ElderMoodCheckPage() {
           </p>
         </section>
 
-        <ElderProgress currentStep={4} totalSteps={5} variant="stacked" />
+        <ElderProgress currentStep={4} totalSteps={5} />
 
         <MoodQuestionCard
           answer={moodAnswer}

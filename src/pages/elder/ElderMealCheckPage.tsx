@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ElderCheckHeader } from '../../components/elder-check/ElderCheckHeader'
+import { ElderProgress } from '../../components/elder-check/ElderProgress'
 import {
   MealQuestionCard,
   type MealAnswer,
@@ -67,6 +68,8 @@ export function ElderMealCheckPage() {
             2024년 5월 16일 (목)
           </p>
         </section>
+
+        <ElderProgress currentStep={2} totalSteps={5} />
 
         <MealQuestionCard
           answer={mealAnswer}
