@@ -36,8 +36,7 @@ const defaultMessages: ChatMessage[] = [
 
 const quickReplies: string[] = ['좋아요', '조금 피곤해요', '도움이 필요해요']
 
-// TODO: Replace this fallback with /assets/dolbomon/elder-chat/ai-chat-robot.png once that file exists.
-const aiRobotImageSrc = '/assets/dolbomon/home/icon-ai-chat.png'
+const aiRobotImageSrc = '/assets/dolbomon/elder-chat/ai-chat-robot.png'
 
 function ChatAvatar() {
   return (

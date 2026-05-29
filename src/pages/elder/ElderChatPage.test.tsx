@@ -27,7 +27,7 @@ describe('ElderChatPage', () => {
     ).toBeTruthy()
     expect(
       container.querySelector(
-        'img[src="/assets/dolbomon/home/icon-ai-chat.png"]',
+        'img[src="/assets/dolbomon/elder-chat/ai-chat-robot.png"]',
       ),
     ).toBeTruthy()
 
