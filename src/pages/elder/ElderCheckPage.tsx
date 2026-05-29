@@ -1,133 +1,70 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckCircle2 } from 'lucide-react'
 import { useState } from 'react'
-import { useForm, useWatch } from 'react-hook-form'
-import { z } from 'zod'
-import { PageShell } from '../../components/layout/PageShell'
-import { Button } from '../../components/ui/Button'
+import { ElderCheckHeader } from '../../components/elder-check/ElderCheckHeader'
+import { ElderProgress } from '../../components/elder-check/ElderProgress'
 import {
-  mealOptions,
-  moodOptions,
-  painOptions,
-} from '../../features/elder-check/checkOptions'
-import { cn } from '../../lib/utils'
+  MedicationQuestionCard,
+  type MedicationAnswer,
+} from '../../components/elder-check/MedicationQuestionCard'
+import { VoiceGuideButton } from '../../components/elder-check/VoiceGuideButton'
+import { ElderBottomNav } from '../../components/layout/ElderBottomNav'
 
-const healthCheckSchema = z.object({
-  meal: z.enum(['yes', 'no']),
-  mood: z.enum(['good', 'okay', 'bad']),
-  pain: z.enum(['none', 'mild', 'strong']),
-})
-
-type HealthCheckForm = z.infer<typeof healthCheckSchema>
-type FieldName = keyof HealthCheckForm
-
-const groups: Array<{
-  field: FieldName
-  legend: string
-  options: ReadonlyArray<{ label: string; value: HealthCheckForm[FieldName] }>
-}> = [
-  {
-    field: 'mood',
-    legend: '오늘 기분은 어떠세요?',
-    options: moodOptions,
-  },
-  {
-    field: 'pain',
-    legend: '몸이 아픈 곳이 있나요?',
-    options: painOptions,
-  },
-  {
-    field: 'meal',
-    legend: '오늘 식사는 하셨나요?',
-    options: mealOptions,
-  },
-]
+const voiceGuideText =
+  '오늘 약을 드셨나요? 네, 먹었어요 또는 아직 못 먹었어요 중에서 선택해주세요.'
 
 export function ElderCheckPage() {
-  const [submittedValues, setSubmittedValues] =
-    useState<HealthCheckForm | null>(null)
-  const { control, handleSubmit, setValue } = useForm<HealthCheckForm>({
-    defaultValues: {
-      meal: 'yes',
-      mood: 'good',
-      pain: 'none',
-    },
-    resolver: zodResolver(healthCheckSchema),
-  })
+  const [medicationTaken, setMedicationTaken] = useState<MedicationAnswer>(null)
 
-  const values = useWatch({ control })
+  function handleMedicationAnswer(answer: Exclude<MedicationAnswer, null>) {
+    setMedicationTaken(answer)
+    // TODO: Save this answer and move to the next daily check step.
+  }
 
-  function onSubmit(data: HealthCheckForm) {
-    setSubmittedValues(data)
+  function handleNotificationClick() {
+    // TODO: Open the notification center when notifications are implemented.
+    console.info('Notifications are not implemented yet.')
+  }
+
+  function handleVoiceGuide() {
+    // TODO: Connect this to the voice/TTS feature when it is ready.
+    console.info(voiceGuideText)
+  }
+
+  function handleHelpClick() {
+    // TODO: Navigate to /help when the help route is implemented.
+    console.info('Help flow is not implemented yet.')
   }
 
   return (
-    <PageShell
-      title="오늘 건강 확인"
-      description="큰 버튼을 눌러 현재 상태를 남겨 주세요."
-      backTo="/elder"
-    >
-      <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
-        {groups.map((group) => (
-          <fieldset
-            key={group.field}
-            className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5"
+    <main className="min-h-svh bg-[#edf5ff] text-[#080808]">
+      <section
+        className="mx-auto min-h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_80%_22%,rgba(235,247,255,0.95)_0_15%,transparent_34%),linear-gradient(180deg,#ffffff_0%,#fbfdff_55%,#ffffff_100%)] px-5 pb-[calc(104px+env(safe-area-inset-bottom))] pt-7 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
+        aria-label="복약 상태 입력 화면"
+      >
+        <ElderCheckHeader onNotificationClick={handleNotificationClick} />
+
+        <section className="mt-10 min-[390px]:mt-12" aria-labelledby="greeting">
+          <h1
+            id="greeting"
+            className="text-[37px] font-black leading-[1.13] tracking-[-0.075em] text-[#080808] min-[390px]:text-[48px]"
           >
-            <legend className="px-1 text-2xl font-black text-[var(--color-text-strong)]">
-              {group.legend}
-            </legend>
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
-              {group.options.map((option) => {
-                const selected = values[group.field] === option.value
-
-                return (
-                  <button
-                    key={option.value}
-                    type="button"
-                    aria-pressed={selected}
-                    onClick={() =>
-                      setValue(group.field, option.value, {
-                        shouldValidate: true,
-                      })
-                    }
-                    className={cn(
-                      'min-h-20 rounded-lg border-2 px-4 py-5 text-xl font-black transition',
-                      selected
-                        ? 'border-[var(--color-brand)] bg-[var(--color-brand-soft)] text-[var(--color-brand-strong)]'
-                        : 'border-[var(--color-border)] bg-white text-[var(--color-text-strong)]',
-                    )}
-                  >
-                    {option.label}
-                  </button>
-                )
-              })}
-            </div>
-          </fieldset>
-        ))}
-
-        <Button
-          type="submit"
-          size="lg"
-          icon={<CheckCircle2 aria-hidden="true" size={28} />}
-          className="w-full sm:w-auto"
-        >
-          확인 완료
-        </Button>
-      </form>
-
-      {submittedValues ? (
-        <section
-          className="rounded-lg border border-emerald-200 bg-emerald-50 p-5"
-          aria-live="polite"
-        >
-          <h2 className="text-2xl font-black text-emerald-900">
-            건강 확인이 저장되었습니다.
-          </h2>
-          <p className="mt-2 text-lg text-emerald-800">
-            이후 Supabase 연동 시 가족과 복지사에게 공유됩니다.
+            안녕하세요, 김영자님
+          </h1>
+          <p className="mt-2.5 text-[21px] font-semibold leading-[1.3] tracking-[-0.045em] text-[#6d7280] min-[390px]:text-[24px]">
+            2024년 5월 16일 (목)
           </p>
         </section>
-      ) : null}
-    </PageShell>
+
+        <ElderProgress currentStep={1} totalSteps={5} />
+
+        <MedicationQuestionCard
+          answer={medicationTaken}
+          onAnswer={handleMedicationAnswer}
+        />
+
+        <VoiceGuideButton onClick={handleVoiceGuide} />
+
+        <ElderBottomNav activeItem="status" onHelpClick={handleHelpClick} />
+      </section>
+    </main>
   )
 }

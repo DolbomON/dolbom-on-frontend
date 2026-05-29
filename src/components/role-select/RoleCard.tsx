@@ -20,7 +20,7 @@ export function RoleCard<TRole extends string>({
 }: RoleCardProps<TRole>) {
   return (
     <button
-      className="relative flex min-h-[181px] flex-col items-center rounded-[22px] border border-[#e7edf5] bg-white/95 px-2.5 pb-4 pt-4 text-center shadow-[0_18px_42px_rgba(47,82,133,0.12)] transition active:scale-[0.99] aria-pressed:border-[#0867f2] aria-pressed:bg-[#f4f9ff] aria-pressed:shadow-[0_20px_48px_rgba(5,101,242,0.17)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[197px] min-[390px]:px-3 min-[390px]:pb-5 min-[390px]:pt-[18px]"
+      className="relative flex min-h-[190px] flex-col items-center rounded-[22px] border border-[#e7edf5] bg-white/95 px-2.5 pb-5 pt-4 text-center shadow-[0_18px_42px_rgba(47,82,133,0.12)] transition active:scale-[0.99] aria-pressed:border-[#0867f2] aria-pressed:bg-[#f4f9ff] aria-pressed:shadow-[0_20px_48px_rgba(5,101,242,0.17)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[206px] min-[390px]:px-3 min-[390px]:pb-5 min-[390px]:pt-[18px]"
       type="button"
       aria-pressed={selected}
       onClick={onSelect}
@@ -51,7 +51,7 @@ export function RoleCard<TRole extends string>({
       </span>
 
       <strong
-        className="mt-1 text-[24px] font-black leading-[1.1] tracking-[-0.06em] text-[#050505] min-[390px]:text-[27px]"
+        className="mt-3 text-[24px] font-black leading-[1.1] tracking-[-0.06em] text-[#050505] min-[390px]:mt-4 min-[390px]:text-[27px]"
         aria-hidden="true"
       >
         {role.title}

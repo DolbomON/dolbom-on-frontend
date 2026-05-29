@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { RoleSelectPage } from './RoleSelectPage'
 
@@ -29,5 +29,23 @@ describe('RoleSelectPage', () => {
 
     expect(elderCard).toHaveAttribute('aria-pressed', 'true')
     expect(nextButton).toBeEnabled()
+  })
+
+  it('navigates elder users to the daily check screen', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/select-role']}>
+        <Routes>
+          <Route path="/select-role" element={<RoleSelectPage />} />
+          <Route path="/elder/check" element={<p>복약 상태 입력 화면</p>} />
+        </Routes>
+      </MemoryRouter>,
+    )
+
+    await user.click(screen.getByRole('button', { name: elderRoleName }))
+    await user.click(screen.getByRole('button', { name: nextButtonName }))
+
+    expect(screen.getByText('복약 상태 입력 화면')).toBeTruthy()
   })
 })
