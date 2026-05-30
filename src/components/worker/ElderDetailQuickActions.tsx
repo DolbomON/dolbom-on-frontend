@@ -1,12 +1,19 @@
-import { Brain, ChevronRight, TriangleAlert } from 'lucide-react'
+import {
+  Brain,
+  ChevronRight,
+  ClipboardPenLine,
+  TriangleAlert,
+} from 'lucide-react'
 
 type ElderDetailQuickActionsProps = {
   onAiSummaryClick: () => void
+  onMemoCreateClick: () => void
   onRiskRecordsClick: () => void
 }
 
 export function ElderDetailQuickActions({
   onAiSummaryClick,
+  onMemoCreateClick,
   onRiskRecordsClick,
 }: ElderDetailQuickActionsProps) {
   return (
@@ -19,6 +26,28 @@ export function ElderDetailQuickActions({
       </h2>
 
       <div className="mt-3 grid gap-3 min-[390px]:grid-cols-2">
+        <button
+          type="button"
+          className="grid min-h-[84px] grid-cols-[52px_minmax(0,1fr)_20px] items-center gap-3 rounded-[20px] border border-[#e5ebf4] bg-white px-3 text-left shadow-[0_12px_24px_rgba(32,79,150,0.09)] transition hover:bg-[#f8fbff] active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+          onClick={onMemoCreateClick}
+        >
+          <span className="grid h-[52px] w-[52px] place-items-center rounded-full bg-[#eaf3ff] text-[#0867f2]">
+            <ClipboardPenLine
+              aria-hidden="true"
+              className="h-8 w-8"
+              strokeWidth={2.6}
+            />
+          </span>
+          <span className="text-[17px] font-black leading-snug text-[#101827]">
+            상담 메모 작성
+          </span>
+          <ChevronRight
+            aria-hidden="true"
+            className="h-5 w-5 text-[#0867f2]"
+            strokeWidth={3}
+          />
+        </button>
+
         <button
           type="button"
           className="grid min-h-[84px] grid-cols-[52px_minmax(0,1fr)_20px] items-center gap-3 rounded-[20px] border border-[#e5ebf4] bg-white px-3 text-left shadow-[0_12px_24px_rgba(32,79,150,0.09)] transition hover:bg-[#f8fbff] active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"

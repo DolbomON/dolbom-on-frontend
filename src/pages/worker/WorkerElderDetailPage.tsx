@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ElderAiSummaryCard } from '../../components/worker/ElderAiSummaryCard'
 import { ElderDetailMetricCard } from '../../components/worker/ElderDetailMetricCard'
 import { ElderDetailPeriodChips } from '../../components/worker/ElderDetailPeriodChips'
@@ -54,6 +54,7 @@ function WorkerElderDetailNotFound() {
 
 export function WorkerElderDetailPage() {
   const { elderId } = useParams()
+  const navigate = useNavigate()
   const [activePeriod, setActivePeriod] = useState<ElderDetailPeriod>('today')
 
   const elder = useMemo(
@@ -78,6 +79,12 @@ export function WorkerElderDetailPage() {
 
   // TODO: Open guardian contact flow when contact logging is implemented.
   const openGuardianContact = () => undefined
+
+  const openMemoCreate = () => {
+    navigate(`/worker/elders/${elder.id}/memo`, {
+      state: { fromWorkerElderDetail: true },
+    })
+  }
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#eef6ff] text-[#071747]">
@@ -135,6 +142,7 @@ export function WorkerElderDetailPage() {
           <div className="mt-8">
             <ElderDetailQuickActions
               onAiSummaryClick={openAiSummary}
+              onMemoCreateClick={openMemoCreate}
               onRiskRecordsClick={openRiskRecords}
             />
           </div>

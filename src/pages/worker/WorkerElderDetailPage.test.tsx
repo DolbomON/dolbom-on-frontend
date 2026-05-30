@@ -51,6 +51,9 @@ describe('WorkerElderDetailPage', () => {
       screen.getByRole('button', { name: '위험 기록 보기' }),
     ).toBeInTheDocument()
     expect(
+      screen.getByRole('button', { name: '상담 메모 작성' }),
+    ).toBeInTheDocument()
+    expect(
       screen.getByRole('button', { name: 'AI 요약 다시 보기' }),
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '대상자' })).toHaveAttribute(
@@ -106,5 +109,28 @@ describe('WorkerElderDetailPage', () => {
       'aria-pressed',
       'true',
     )
+  })
+
+  it('navigates to memo creation from quick actions', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/worker/elders/kim-yeongja']}>
+        <Routes>
+          <Route
+            path="/worker/elders/:elderId"
+            element={<WorkerElderDetailPage />}
+          />
+          <Route
+            path="/worker/elders/:elderId/memo"
+            element={<div>상담 메모 작성 화면</div>}
+          />
+        </Routes>
+      </MemoryRouter>,
+    )
+
+    await user.click(screen.getByRole('button', { name: '상담 메모 작성' }))
+
+    expect(screen.getByText('상담 메모 작성 화면')).toBeInTheDocument()
   })
 })

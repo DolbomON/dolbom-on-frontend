@@ -18,6 +18,8 @@ import {
 import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
 import { WorkerElderDetailPage } from '../pages/worker/WorkerElderDetailPage'
 import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
+import { WorkerMemoCreatePage } from '../pages/worker/WorkerMemoCreatePage'
+import { WorkerMypagePage } from '../pages/worker/WorkerMypagePage'
 import { WorkerReportsPage } from '../pages/worker/WorkerReportsPage'
 
 export const router = createBrowserRouter([
@@ -86,11 +88,19 @@ export const router = createBrowserRouter([
     element: <WorkerEldersPage />,
   },
   {
+    path: '/worker/elders/:elderId/memo',
+    element: <WorkerMemoCreatePage />,
+  },
+  {
     path: '/worker/elders/:elderId',
     element: <WorkerElderDetailPage />,
   },
   {
     path: '/worker/reports',
     element: <WorkerReportsPage />,
+  },
+  {
+    path: '/worker/mypage',
+    element: <WorkerMypagePage />,
   },
 ])
