@@ -11,12 +11,12 @@ import { ElderMealCheckPage } from '../pages/elder/ElderMealCheckPage'
 import { ElderMoodCheckPage } from '../pages/elder/ElderMoodCheckPage'
 import { ElderSleepCheckPage } from '../pages/elder/ElderSleepCheckPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
-import { ElderDetailPage } from '../pages/worker/ElderDetailPage'
 import {
   WorkerAlertDetailPlaceholderPage,
   WorkerAlertsPage,
 } from '../pages/worker/WorkerAlertsPage'
 import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
+import { WorkerElderDetailPage } from '../pages/worker/WorkerElderDetailPage'
 import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
 import { WorkerReportsPage } from '../pages/worker/WorkerReportsPage'
 
@@ -87,7 +87,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/worker/elders/:elderId',
-    element: <ElderDetailPage />,
+    element: <WorkerElderDetailPage />,
   },
   {
     path: '/worker/reports',
