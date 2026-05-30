@@ -7,6 +7,7 @@ import { RoleSelectPage } from './RoleSelectPage'
 const headingName =
   '\uC774\uC6A9 \uC720\uD615\uC744 \uC120\uD0DD\uD574\uC8FC\uC138\uC694'
 const elderRoleName = '\uC5B4\uB974\uC2E0'
+const workerRoleName = '\uBCF5\uC9C0\uC0AC'
 const nextButtonName = '\uB2E4\uC74C'
 
 describe('RoleSelectPage', () => {
@@ -47,5 +48,23 @@ describe('RoleSelectPage', () => {
     await user.click(screen.getByRole('button', { name: nextButtonName }))
 
     expect(screen.getByText('복약 상태 입력 화면')).toBeTruthy()
+  })
+
+  it('navigates welfare workers to the worker dashboard', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/select-role']}>
+        <Routes>
+          <Route path="/select-role" element={<RoleSelectPage />} />
+          <Route path="/worker" element={<p>복지사 대시보드 화면</p>} />
+        </Routes>
+      </MemoryRouter>,
+    )
+
+    await user.click(screen.getByRole('button', { name: workerRoleName }))
+    await user.click(screen.getByRole('button', { name: nextButtonName }))
+
+    expect(screen.getByText('복지사 대시보드 화면')).toBeTruthy()
   })
 })
