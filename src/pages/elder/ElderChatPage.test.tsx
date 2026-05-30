@@ -26,6 +26,9 @@ describe('ElderChatPage', () => {
       screen.getByText('음성 또는 텍스트로 편하게 이야기할 수 있어요.'),
     ).toBeTruthy()
     expect(
+      container.querySelector('img[src="/assets/dolbomon/image.png"]'),
+    ).toBeTruthy()
+    expect(
       container.querySelector(
         'img[src="/assets/dolbomon/elder-chat/ai-chat-robot.png"]',
       ),

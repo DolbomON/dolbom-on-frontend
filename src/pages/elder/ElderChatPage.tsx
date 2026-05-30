@@ -36,7 +36,8 @@ const defaultMessages: ChatMessage[] = [
 
 const quickReplies: string[] = ['좋아요', '조금 피곤해요', '도움이 필요해요']
 
-const aiRobotImageSrc = '/assets/dolbomon/elder-chat/ai-chat-robot.png'
+const chatInfoImageSrc = '/assets/dolbomon/elder-chat/ai-chat-robot.png'
+const chatAvatarImageSrc = '/assets/dolbomon/image.png'
 
 function ChatAvatar() {
   return (
@@ -45,9 +46,9 @@ function ChatAvatar() {
       aria-hidden="true"
     >
       <img
-        src={aiRobotImageSrc}
+        src={chatAvatarImageSrc}
         alt=""
-        className="h-full w-full scale-[1.32] object-cover object-[34%_52%]"
+        className="h-full w-full scale-[1.42] object-cover object-[50%_36%]"
         draggable="false"
       />
     </span>
@@ -129,7 +130,7 @@ export function ElderChatPage() {
           >
             <div className="grid h-[64px] w-[86px] shrink-0 overflow-hidden rounded-[16px] min-[390px]:h-[80px] min-[390px]:w-[108px] min-[390px]:rounded-[18px]">
               <img
-                src={aiRobotImageSrc}
+                src={chatInfoImageSrc}
                 alt=""
                 width="112"
                 height="112"
