@@ -35,46 +35,48 @@ export function MoodQuestionCard({
   onVoiceGuide,
 }: MoodQuestionCardProps) {
   return (
-    <section className="mt-4 overflow-hidden rounded-[22px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#eef7ff_0%,#f8fbff_52%,#edf6ff_100%)] px-4 pb-4 text-center shadow-[0_14px_30px_rgba(46,83,135,0.12),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-5 min-[390px]:pb-5">
+    <section className="mt-4 flex flex-1 flex-col overflow-hidden rounded-[22px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#eef7ff_0%,#f8fbff_52%,#edf6ff_100%)] px-4 pb-4 text-center shadow-[0_14px_30px_rgba(46,83,135,0.12),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-5 min-[390px]:pb-5">
       <MoodIllustrationPlaceholder />
 
-      <h2 className="mt-4 break-keep text-[28px] font-black leading-[1.1] tracking-[-0.055em] text-[#102b53] min-[390px]:text-[32px]">
-        오늘 기분은 어떠세요?
-      </h2>
+      <div className="flex flex-1 flex-col justify-center">
+        <h2 className="mt-4 break-keep text-[28px] font-black leading-[1.1] tracking-[-0.055em] text-[#102b53] min-[390px]:text-[32px]">
+          오늘 기분은 어떠세요?
+        </h2>
 
-      <div className="mt-4 grid gap-3" aria-label="기분 선택">
-        {moodChoices.map((choice) => {
-          const selected = answer === choice.value
+        <div className="mt-4 grid gap-3" aria-label="기분 선택">
+          {moodChoices.map((choice) => {
+            const selected = answer === choice.value
 
-          return (
-            <button
-              key={choice.value}
-              className={cn(
-                'relative flex min-h-[54px] w-full items-center justify-center rounded-[18px] px-4 text-[21px] font-black tracking-[-0.045em] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[58px] min-[390px]:text-[23px]',
-                choice.variant === 'primary'
-                  ? 'bg-gradient-to-br from-[#6fa8ff] to-[#4c8ff0] text-white shadow-[0_20px_34px_rgba(2,92,221,0.24),inset_0_1px_0_rgba(255,255,255,0.24)]'
-                  : 'border-[2.5px] border-[#6fa8ff] bg-white/92 text-[#5f9cf4] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)]',
-                selected &&
-                  'ring-4 ring-[#8bbcff] ring-offset-2 ring-offset-[#edf6ff]',
-              )}
-              type="button"
-              aria-pressed={selected}
-              onClick={() => onAnswer(choice.value)}
-            >
-              {selected ? (
-                <CheckCircle2
-                  className="absolute left-3 h-6 w-6 min-[390px]:left-4"
-                  aria-hidden="true"
-                  strokeWidth={3}
-                />
-              ) : null}
-              <span>{choice.label}</span>
-            </button>
-          )
-        })}
+            return (
+              <button
+                key={choice.value}
+                className={cn(
+                  'relative flex min-h-[54px] w-full items-center justify-center rounded-[18px] px-4 text-[21px] font-black tracking-[-0.045em] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[58px] min-[390px]:text-[23px]',
+                  choice.variant === 'primary'
+                    ? 'bg-gradient-to-br from-[#6fa8ff] to-[#4c8ff0] text-white shadow-[0_20px_34px_rgba(2,92,221,0.24),inset_0_1px_0_rgba(255,255,255,0.24)]'
+                    : 'border-[2.5px] border-[#6fa8ff] bg-white/92 text-[#5f9cf4] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)]',
+                  selected &&
+                    'ring-4 ring-[#8bbcff] ring-offset-2 ring-offset-[#edf6ff]',
+                )}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => onAnswer(choice.value)}
+              >
+                {selected ? (
+                  <CheckCircle2
+                    className="absolute left-3 h-6 w-6 min-[390px]:left-4"
+                    aria-hidden="true"
+                    strokeWidth={3}
+                  />
+                ) : null}
+                <span>{choice.label}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        <VoiceGuideButton variant="pill" onClick={onVoiceGuide} />
       </div>
-
-      <VoiceGuideButton variant="pill" onClick={onVoiceGuide} />
     </section>
   )
 }
@@ -82,7 +84,7 @@ export function MoodQuestionCard({
 function MoodIllustrationPlaceholder() {
   return (
     <div
-      className="relative -mx-4 flex h-[126px] items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#eef7ff_0%,#dcecff_100%)] min-[390px]:-mx-5 min-[390px]:h-[146px]"
+      className="relative -mx-4 flex min-h-[126px] flex-[0.8] items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#eef7ff_0%,#dcecff_100%)] min-[390px]:-mx-5 min-[390px]:min-h-[146px]"
       role="img"
       aria-label="기분 확인 이미지"
     >

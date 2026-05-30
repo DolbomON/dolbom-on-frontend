@@ -57,9 +57,9 @@ export function ElderMoodCheckPage() {
   }
 
   return (
-    <main className="h-svh overflow-hidden bg-[#edf5ff] text-[#102b53]">
+    <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#102b53]">
       <section
-        className="mx-auto h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_80%_22%,rgba(235,247,255,0.95)_0_15%,transparent_34%),linear-gradient(180deg,#ffffff_0%,#fbfdff_55%,#ffffff_100%)] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-[10px] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5"
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_80%_22%,rgba(235,247,255,0.95)_0_15%,transparent_34%),linear-gradient(180deg,#ffffff_0%,#fbfdff_55%,#ffffff_100%)] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-[10px] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5"
         aria-label="기분 상태 입력 화면"
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />

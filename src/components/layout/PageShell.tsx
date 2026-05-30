@@ -19,7 +19,7 @@ export function PageShell({
   title,
 }: PageShellProps) {
   return (
-    <div className="h-svh overflow-hidden bg-[var(--color-page)] text-[var(--color-text)]">
+    <div className="flex min-h-svh flex-col overflow-x-hidden bg-[var(--color-page)] text-[var(--color-text)]">
       <header className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:px-8 sm:py-4">
           <Link
@@ -40,7 +40,7 @@ export function PageShell({
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-4 sm:gap-8 sm:px-8 sm:py-10">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-4 px-4 py-4 sm:gap-8 sm:px-8 sm:py-10">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-5">
           <div className="max-w-3xl">
             {backTo ? (

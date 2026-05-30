@@ -71,9 +71,9 @@ export function RoleSelectPage() {
   }
 
   return (
-    <main className="h-svh overflow-hidden bg-[#eef6ff] text-[#050505]">
+    <main className="min-h-svh overflow-x-hidden bg-[#eef6ff] text-[#050505]">
       <section
-        className="mx-auto h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_87%_25%,rgba(228,242,255,0.95)_0_17%,transparent_36%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-4 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5 min-[390px]:pt-4 sm:px-6"
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_87%_25%,rgba(228,242,255,0.95)_0_17%,transparent_36%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-4 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5 min-[390px]:pt-4 sm:px-6"
         aria-label="이용 유형 선택 화면"
       >
         <RoleSelectHeader onBack={handleBack} />
@@ -125,7 +125,7 @@ export function RoleSelectPage() {
         </section>
 
         <section
-          className="relative z-10 grid grid-cols-2 gap-3"
+          className="relative z-10 grid flex-1 auto-rows-fr grid-cols-2 gap-3"
           aria-label="이용 유형 목록"
         >
           {roleOptions.map((role) => (

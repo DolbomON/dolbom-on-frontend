@@ -37,19 +37,19 @@ export function MealQuestionCard({
   onVoiceGuide,
 }: MealQuestionCardProps) {
   return (
-    <section className="mt-4 overflow-hidden rounded-[22px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#f2f8ff_0%,#eaf5ff_100%)] pb-4 text-center shadow-[0_14px_30px_rgba(46,83,135,0.12),inset_0_1px_0_rgba(255,255,255,0.85)] min-[390px]:pb-5">
-      <div className="bg-[#edf6ff]">
+    <section className="mt-4 flex flex-1 flex-col overflow-hidden rounded-[22px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#f2f8ff_0%,#eaf5ff_100%)] pb-4 text-center shadow-[0_14px_30px_rgba(46,83,135,0.12),inset_0_1px_0_rgba(255,255,255,0.85)] min-[390px]:pb-5">
+      <div className="min-h-[128px] flex-[0.8] bg-[#edf6ff] min-[390px]:min-h-[148px]">
         <img
           src={mealIllustrationSrc}
           alt="식사 확인 이미지"
           width="1448"
           height="1086"
-          className="h-[128px] w-full object-cover object-center min-[390px]:h-[148px]"
+          className="h-full w-full object-cover object-center"
           draggable="false"
         />
       </div>
 
-      <div className="px-4 min-[390px]:px-5">
+      <div className="flex flex-1 flex-col justify-center px-4 min-[390px]:px-5">
         <h2 className="mt-4 whitespace-nowrap text-[27px] font-black leading-[1.1] tracking-[-0.055em] text-[#102b53] min-[390px]:text-[30px]">
           오늘 식사는 하셨나요?
         </h2>

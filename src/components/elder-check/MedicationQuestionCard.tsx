@@ -32,13 +32,13 @@ export function MedicationQuestionCard({
   onAnswer,
 }: MedicationQuestionCardProps) {
   return (
-    <section className="mt-4 rounded-[22px] bg-[radial-gradient(circle_at_50%_23%,rgba(255,255,255,0.86)_0_24%,transparent_50%),linear-gradient(180deg,#eff8ff_0%,#eaf5ff_100%)] px-4 pb-4 pt-5 text-center shadow-[0_14px_30px_rgba(39,77,128,0.12),inset_0_1px_0_rgba(255,255,255,0.8)] min-[390px]:px-5 min-[390px]:pb-5 min-[390px]:pt-6">
+    <section className="mt-4 flex flex-1 flex-col justify-evenly rounded-[22px] bg-[radial-gradient(circle_at_50%_23%,rgba(255,255,255,0.86)_0_24%,transparent_50%),linear-gradient(180deg,#eff8ff_0%,#eaf5ff_100%)] px-4 pb-4 pt-5 text-center shadow-[0_14px_30px_rgba(39,77,128,0.12),inset_0_1px_0_rgba(255,255,255,0.8)] min-[390px]:px-5 min-[390px]:pb-5 min-[390px]:pt-6">
       <img
         src={medicationIconSrc}
         alt="복약 확인 아이콘"
         width="512"
         height="512"
-        className="mx-auto h-[104px] w-[104px] object-contain drop-shadow-[0_14px_20px_rgba(66,105,168,0.18)] min-[390px]:h-[116px] min-[390px]:w-[116px]"
+        className="mx-auto h-[126px] w-[126px] object-contain drop-shadow-[0_14px_20px_rgba(66,105,168,0.18)] min-[390px]:h-[142px] min-[390px]:w-[142px]"
         draggable="false"
       />
 

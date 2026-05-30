@@ -162,9 +162,9 @@ export function ElderCheckCompletePage() {
   }
 
   return (
-    <main className="h-svh overflow-hidden bg-[#edf5ff] text-[#102b53]">
+    <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#102b53]">
       <section
-        className="mx-auto h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-[10px] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5"
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-[10px] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5"
         aria-label="오늘 상태 입력 완료 화면"
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
@@ -183,7 +183,7 @@ export function ElderCheckCompletePage() {
 
         <CompletionProgress />
 
-        <section className="mt-4 rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-4 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)] min-[390px]:p-5">
+        <section className="mt-4 flex flex-1 flex-col justify-evenly rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-4 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)] min-[390px]:p-5">
           <div className="flex items-center gap-3 text-left">
             <img
               src={completionIllustrationSrc}
@@ -219,7 +219,7 @@ export function ElderCheckCompletePage() {
             </button>
 
             <button
-              className="min-h-[42px] w-full rounded-[16px] border-2 border-[#0867f2] bg-white/95 px-4 text-[18px] font-black tracking-[-0.055em] text-[#0867f2] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[48px] min-[390px]:text-[21px]"
+              className="min-h-11 w-full rounded-[16px] border-2 border-[#0867f2] bg-white/95 px-4 text-[18px] font-black tracking-[-0.055em] text-[#0867f2] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[48px] min-[390px]:text-[21px]"
               type="button"
               onClick={handleStartChatClick}
             >

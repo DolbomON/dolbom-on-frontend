@@ -10,7 +10,7 @@ export function RoleSelectHeader({ onBack }: RoleSelectHeaderProps) {
     <header className="relative z-20 flex items-center justify-between">
       <Link
         to="/"
-        className="inline-flex min-h-9 items-baseline rounded-md text-[#0b63df] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-10"
+        className="inline-flex min-h-11 items-center rounded-md text-[#0b63df] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
         aria-label="돌봄온 홈"
       >
         <span className="text-[22px] font-black leading-none tracking-[-0.08em] min-[390px]:text-[24px]">
@@ -22,7 +22,7 @@ export function RoleSelectHeader({ onBack }: RoleSelectHeaderProps) {
       </Link>
 
       <button
-        className="inline-grid h-9 w-9 place-items-center rounded-md text-[#0a56d5] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:h-10 min-[390px]:w-10"
+        className="inline-grid h-11 w-11 place-items-center rounded-md text-[#0a56d5] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
         type="button"
         aria-label="이전 화면으로 이동"
         onClick={onBack}
