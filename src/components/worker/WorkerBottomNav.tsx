@@ -17,7 +17,6 @@ type WorkerNavItem = {
   label: string
 }
 
-// TODO: Add full worker list, alert, and report pages for these routes.
 const workerNavItems: WorkerNavItem[] = [
   {
     href: '/worker',

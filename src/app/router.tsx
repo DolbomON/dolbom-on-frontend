@@ -12,8 +12,13 @@ import { ElderMoodCheckPage } from '../pages/elder/ElderMoodCheckPage'
 import { ElderSleepCheckPage } from '../pages/elder/ElderSleepCheckPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
 import { ElderDetailPage } from '../pages/worker/ElderDetailPage'
+import {
+  WorkerAlertDetailPlaceholderPage,
+  WorkerAlertsPage,
+} from '../pages/worker/WorkerAlertsPage'
 import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
 import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
+import { WorkerReportsPage } from '../pages/worker/WorkerReportsPage'
 
 export const router = createBrowserRouter([
   {
@@ -69,11 +74,23 @@ export const router = createBrowserRouter([
     element: <WorkerDashboardPage />,
   },
   {
+    path: '/worker/alerts',
+    element: <WorkerAlertsPage />,
+  },
+  {
+    path: '/worker/alerts/:alertId',
+    element: <WorkerAlertDetailPlaceholderPage />,
+  },
+  {
     path: '/worker/elders',
     element: <WorkerEldersPage />,
   },
   {
     path: '/worker/elders/:elderId',
     element: <ElderDetailPage />,
+  },
+  {
+    path: '/worker/reports',
+    element: <WorkerReportsPage />,
   },
 ])
