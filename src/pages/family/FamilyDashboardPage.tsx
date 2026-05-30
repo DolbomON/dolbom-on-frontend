@@ -10,32 +10,32 @@ export function FamilyDashboardPage() {
       description="가족이 돌봄 상태를 빠르게 확인하는 화면입니다."
       backTo="/select-role"
     >
-      <section className="grid gap-4">
+      <section className="grid gap-3 sm:gap-4">
         {elderSummaries.slice(0, 2).map((elder) => {
           const risk = riskLevelMeta[elder.riskLevel]
 
           return (
             <article
               key={elder.id}
-              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm"
+              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
             >
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-2xl font-black text-[var(--color-text-strong)]">
+                  <h2 className="text-xl font-black text-[var(--color-text-strong)] sm:text-2xl">
                     {elder.name} 님
                   </h2>
-                  <p className="mt-2 text-lg text-[var(--color-muted)]">
+                  <p className="mt-1 text-sm text-[var(--color-muted)] sm:mt-2 sm:text-lg">
                     최근 확인: {elder.lastCheckAt}
                   </p>
                 </div>
                 <span
-                  className={`inline-flex min-h-11 items-center gap-2 rounded-md px-4 text-lg font-black ${risk.pillClass}`}
+                  className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-md px-3 text-base font-black sm:min-h-11 sm:gap-2 sm:px-4 sm:text-lg ${risk.pillClass}`}
                 >
-                  <ShieldCheck aria-hidden="true" size={22} />
+                  <ShieldCheck aria-hidden="true" size={20} />
                   {risk.label}
                 </span>
               </div>
-              <p className="mt-4 text-xl text-[var(--color-text)]">
+              <p className="mt-3 text-base leading-snug text-[var(--color-text)] sm:mt-4 sm:text-xl">
                 {elder.summary}
               </p>
             </article>

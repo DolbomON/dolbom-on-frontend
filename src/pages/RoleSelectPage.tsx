@@ -71,15 +71,15 @@ export function RoleSelectPage() {
   }
 
   return (
-    <main className="min-h-svh bg-[#eef6ff] text-[#050505]">
+    <main className="h-svh overflow-hidden bg-[#eef6ff] text-[#050505]">
       <section
-        className="mx-auto min-h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_87%_25%,rgba(228,242,255,0.95)_0_17%,transparent_36%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-5 pb-[max(28px,env(safe-area-inset-bottom))] pt-7 shadow-[0_20px_80px_rgba(55,104,184,0.08)] sm:px-6"
+        className="mx-auto h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_87%_25%,rgba(228,242,255,0.95)_0_17%,transparent_36%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-4 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5 min-[390px]:pt-4 sm:px-6"
         aria-label="이용 유형 선택 화면"
       >
         <RoleSelectHeader onBack={handleBack} />
 
         <section
-          className="relative min-h-[344px] pt-16"
+          className="relative min-h-[208px] pt-8 min-[390px]:min-h-[236px] min-[390px]:pt-10"
           aria-labelledby="role-title"
         >
           <div className="relative z-10 flex items-center gap-4">
@@ -90,15 +90,15 @@ export function RoleSelectPage() {
               <strong className="font-black text-[#0867f2]">1</strong>
               <span className="font-bold text-[#8ea7cf]">/ 3</span>
             </span>
-            <span className="text-[18px] font-bold tracking-[-0.045em] text-[#0867f2]">
+            <span className="text-[16px] font-bold tracking-[-0.045em] text-[#0867f2]">
               이용 유형 선택
             </span>
           </div>
 
-          <div className="relative z-10 mt-7">
+          <div className="relative z-10 mt-4 min-[390px]:mt-5">
             <h1
               id="role-title"
-              className="text-[42px] font-black leading-[1.12] tracking-[-0.075em] min-[390px]:text-[50px]"
+              className="text-[32px] font-black leading-[1.1] tracking-[-0.075em] min-[390px]:text-[38px]"
               aria-label="이용 유형을 선택해주세요"
             >
               이용 유형을
@@ -106,7 +106,7 @@ export function RoleSelectPage() {
               <span className="text-[#005ee6]">선택해주세요</span>
             </h1>
 
-            <p className="mt-6 text-[16px] font-medium leading-[1.55] tracking-[-0.045em] text-[#596170] min-[390px]:text-[18px]">
+            <p className="mt-3 text-[14px] font-medium leading-[1.35] tracking-[-0.045em] text-[#596170] min-[390px]:mt-4 min-[390px]:text-[15px]">
               사용할 대상에 맞는 메뉴와
               <br />
               기능을 안내해드릴게요.
@@ -118,14 +118,14 @@ export function RoleSelectPage() {
             alt=""
             width="1448"
             height="1086"
-            className="pointer-events-none absolute right-[-112px] top-8 z-0 w-[345px] max-w-none select-none min-[390px]:right-[-112px] min-[390px]:top-5 min-[390px]:w-[390px]"
+            className="pointer-events-none absolute right-[-68px] top-9 z-0 w-[230px] max-w-none select-none min-[390px]:right-[-86px] min-[390px]:top-7 min-[390px]:w-[282px]"
             aria-hidden="true"
             draggable="false"
           />
         </section>
 
         <section
-          className="relative z-10 grid grid-cols-2 gap-x-3 gap-y-3 min-[390px]:gap-x-4"
+          className="relative z-10 grid grid-cols-2 gap-3"
           aria-label="이용 유형 목록"
         >
           {roleOptions.map((role) => (
@@ -139,7 +139,7 @@ export function RoleSelectPage() {
         </section>
 
         <button
-          className="relative z-10 mt-6 flex min-h-[68px] w-full items-center justify-center rounded-[26px] bg-gradient-to-br from-[#0876ff] to-[#005ee6] px-6 text-[25px] font-black tracking-[-0.045em] text-white shadow-[0_22px_38px_rgba(2,92,221,0.24)] transition enabled:active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-none disabled:bg-[#d8e4f4] disabled:text-[#8190a6] disabled:shadow-none focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[73px] min-[390px]:text-[28px]"
+          className="relative z-10 mt-4 flex min-h-[50px] w-full items-center justify-center rounded-[20px] bg-gradient-to-br from-[#0876ff] to-[#005ee6] px-5 text-[21px] font-black tracking-[-0.045em] text-white shadow-[0_16px_28px_rgba(2,92,221,0.22)] transition enabled:active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-none disabled:bg-[#d8e4f4] disabled:text-[#8190a6] disabled:shadow-none focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[56px] min-[390px]:text-[24px]"
           type="button"
           disabled={!selectedRole}
           onClick={handleNext}

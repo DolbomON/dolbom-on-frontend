@@ -35,14 +35,14 @@ export function MoodQuestionCard({
   onVoiceGuide,
 }: MoodQuestionCardProps) {
   return (
-    <section className="mt-8 overflow-hidden rounded-[32px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#eef7ff_0%,#f8fbff_52%,#edf6ff_100%)] px-5 pb-7 text-center shadow-[0_22px_48px_rgba(46,83,135,0.13),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-7 min-[390px]:pb-8">
+    <section className="mt-4 overflow-hidden rounded-[22px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#eef7ff_0%,#f8fbff_52%,#edf6ff_100%)] px-4 pb-4 text-center shadow-[0_14px_30px_rgba(46,83,135,0.12),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-5 min-[390px]:pb-5">
       <MoodIllustrationPlaceholder />
 
-      <h2 className="mt-8 break-keep text-[31px] font-black leading-[1.14] tracking-[-0.055em] text-[#102b53] min-[360px]:text-[35px] min-[430px]:text-[43px]">
+      <h2 className="mt-4 break-keep text-[28px] font-black leading-[1.1] tracking-[-0.055em] text-[#102b53] min-[390px]:text-[32px]">
         오늘 기분은 어떠세요?
       </h2>
 
-      <div className="mt-8 grid gap-4" aria-label="기분 선택">
+      <div className="mt-4 grid gap-3" aria-label="기분 선택">
         {moodChoices.map((choice) => {
           const selected = answer === choice.value
 
@@ -50,7 +50,7 @@ export function MoodQuestionCard({
             <button
               key={choice.value}
               className={cn(
-                'relative flex min-h-[76px] w-full items-center justify-center rounded-[24px] px-5 text-[25px] font-black tracking-[-0.045em] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[84px] min-[390px]:text-[28px]',
+                'relative flex min-h-[54px] w-full items-center justify-center rounded-[18px] px-4 text-[21px] font-black tracking-[-0.045em] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[58px] min-[390px]:text-[23px]',
                 choice.variant === 'primary'
                   ? 'bg-gradient-to-br from-[#6fa8ff] to-[#4c8ff0] text-white shadow-[0_20px_34px_rgba(2,92,221,0.24),inset_0_1px_0_rgba(255,255,255,0.24)]'
                   : 'border-[2.5px] border-[#6fa8ff] bg-white/92 text-[#5f9cf4] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)]',
@@ -63,7 +63,7 @@ export function MoodQuestionCard({
             >
               {selected ? (
                 <CheckCircle2
-                  className="absolute left-4 h-7 w-7 min-[390px]:left-5 min-[390px]:h-8 min-[390px]:w-8"
+                  className="absolute left-3 h-6 w-6 min-[390px]:left-4"
                   aria-hidden="true"
                   strokeWidth={3}
                 />
@@ -82,13 +82,13 @@ export function MoodQuestionCard({
 function MoodIllustrationPlaceholder() {
   return (
     <div
-      className="relative -mx-5 flex h-[290px] items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#eef7ff_0%,#dcecff_100%)] min-[360px]:h-[330px] min-[390px]:-mx-7 min-[430px]:h-[372px]"
+      className="relative -mx-4 flex h-[126px] items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#eef7ff_0%,#dcecff_100%)] min-[390px]:-mx-5 min-[390px]:h-[146px]"
       role="img"
       aria-label="기분 확인 이미지"
     >
       {/* TODO: Replace this placeholder with /assets/dolbomon/elder-check/mood-illustration.png when that asset is added. */}
       <svg
-        className="h-full w-full max-w-[400px]"
+        className="h-full w-full max-w-[260px]"
         viewBox="0 0 400 360"
         fill="none"
         aria-hidden="true"
@@ -187,7 +187,7 @@ function MoodIllustrationPlaceholder() {
         />
       </svg>
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#f8fbff]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-transparent to-[#f8fbff]"
         aria-hidden="true"
       />
     </div>

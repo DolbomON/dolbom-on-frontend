@@ -162,64 +162,56 @@ export function ElderCheckCompletePage() {
   }
 
   return (
-    <main className="min-h-svh bg-[#edf5ff] text-[#102b53]">
+    <main className="h-svh overflow-hidden bg-[#edf5ff] text-[#102b53]">
       <section
-        className="mx-auto min-h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-5 pb-[calc(28px+env(safe-area-inset-bottom))] pt-7 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
+        className="mx-auto h-svh w-full max-w-[480px] overflow-hidden bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-[10px] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5"
         aria-label="오늘 상태 입력 완료 화면"
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
 
-        <section className="mt-10 min-[390px]:mt-12" aria-labelledby="greeting">
+        <section className="mt-4" aria-labelledby="greeting">
           <h1
             id="greeting"
-            className="text-[37px] font-black leading-[1.13] tracking-[-0.075em] text-[#061844] min-[390px]:text-[48px]"
+            className="text-[28px] font-black leading-[1.1] tracking-[-0.075em] text-[#061844] min-[390px]:text-[32px]"
           >
             안녕하세요, 김영자님
           </h1>
-          <p className="mt-2.5 text-[21px] font-semibold leading-[1.3] tracking-[-0.045em] text-[#5b6473] min-[390px]:text-[24px]">
+          <p className="mt-1 text-[15px] font-semibold leading-[1.25] tracking-[-0.045em] text-[#5b6473] min-[390px]:text-[16px]">
             2024년 5월 16일 (목)
           </p>
         </section>
 
         <CompletionProgress />
 
-        <section className="mt-8 overflow-hidden rounded-[32px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_42%,#edf7ff_100%)] px-4 pb-5 text-center shadow-[0_18px_40px_rgba(36,92,174,0.13),inset_0_1px_0_rgba(255,255,255,0.92)] min-[390px]:px-5 min-[390px]:pb-6">
-          <div className="relative -mx-4 grid min-h-[168px] place-items-center bg-[#edf6ff] px-7 py-7 min-[390px]:-mx-5 min-[390px]:min-h-[190px] min-[390px]:px-9">
+        <section className="mt-4 rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-4 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)] min-[390px]:p-5">
+          <div className="flex items-center gap-3 text-left">
             <img
               src={completionIllustrationSrc}
               alt="오늘 상태 입력 완료 이미지"
               width="305"
               height="160"
-              className="h-auto w-full max-w-[352px] object-contain"
+              className="h-[74px] w-[112px] shrink-0 rounded-[16px] bg-[#edf6ff] object-contain min-[390px]:h-[84px] min-[390px]:w-[128px]"
               draggable="false"
             />
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#f8fbff]"
-              aria-hidden="true"
-            />
-          </div>
-
-          <div className="mt-6">
-            <h2
-              className="text-[35px] font-black leading-[1.16] tracking-[-0.075em] text-[#061844] min-[390px]:text-[42px]"
-              aria-label="오늘 상태 입력이 완료되었어요"
-            >
-              <span className="block">오늘 상태 입력이</span>
-              <span className="block">완료되었어요</span>
-            </h2>
-            <p className="mt-3 text-[18px] font-semibold leading-[1.48] tracking-[-0.045em] text-[#4f5a70] min-[390px]:text-[21px]">
-              <span className="block">기록해주신 내용을 바탕으로</span>
-              <span className="block">
+            <div>
+              <h2
+                className="text-[23px] font-black leading-[1.08] tracking-[-0.075em] text-[#061844] min-[390px]:text-[27px]"
+                aria-label="오늘 상태 입력이 완료되었어요"
+              >
+                <span className="block">오늘 상태 입력이</span>
+                <span className="block">완료되었어요</span>
+              </h2>
+              <p className="mt-1.5 text-[13px] font-semibold leading-[1.25] tracking-[-0.045em] text-[#4f5a70] min-[390px]:mt-2 min-[390px]:text-[14px]">
                 가족과 복지사가 안부를 확인할 수 있어요.
-              </span>
-            </p>
+              </p>
+            </div>
           </div>
 
           <CompletionSummaryCard items={summaryItems} />
 
-          <div className="mt-5 grid gap-3">
+          <div className="mt-2 grid gap-2 min-[390px]:mt-3">
             <button
-              className="min-h-16 w-full rounded-[24px] bg-gradient-to-br from-[#0878ff] to-[#005de8] px-5 text-[26px] font-black tracking-[-0.055em] text-white shadow-[0_18px_32px_rgba(2,92,221,0.24),inset_0_1px_0_rgba(255,255,255,0.24)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[70px] min-[390px]:text-[31px]"
+              className="min-h-[44px] w-full rounded-[17px] bg-gradient-to-br from-[#0878ff] to-[#005de8] px-4 text-[20px] font-black tracking-[-0.055em] text-white shadow-[0_14px_26px_rgba(2,92,221,0.22),inset_0_1px_0_rgba(255,255,255,0.24)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[50px] min-[390px]:text-[23px]"
               type="button"
               onClick={handleHomeClick}
             >
@@ -227,7 +219,7 @@ export function ElderCheckCompletePage() {
             </button>
 
             <button
-              className="min-h-[58px] w-full rounded-[22px] border-[2.5px] border-[#0867f2] bg-white/95 px-5 text-[24px] font-black tracking-[-0.055em] text-[#0867f2] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[64px] min-[390px]:text-[29px]"
+              className="min-h-[42px] w-full rounded-[16px] border-2 border-[#0867f2] bg-white/95 px-4 text-[18px] font-black tracking-[-0.055em] text-[#0867f2] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[48px] min-[390px]:text-[21px]"
               type="button"
               onClick={handleStartChatClick}
             >

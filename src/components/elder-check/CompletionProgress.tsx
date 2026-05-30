@@ -7,15 +7,15 @@ export function CompletionProgress({
 }: CompletionProgressProps) {
   return (
     <section
-      className="mt-6 grid grid-cols-[auto_1fr] items-center gap-4 min-[390px]:gap-5"
+      className="mt-4 grid grid-cols-[auto_1fr] items-center gap-3 min-[390px]:gap-4"
       aria-label="진행률"
     >
-      <strong className="whitespace-nowrap text-[25px] font-black tracking-[-0.05em] text-[#0867f2] min-[390px]:text-[27px]">
+      <strong className="whitespace-nowrap text-[21px] font-black tracking-[-0.05em] text-[#0867f2] min-[390px]:text-[23px]">
         {label}
       </strong>
 
       <div
-        className="h-[15px] overflow-hidden rounded-full bg-[#d9e7ff] shadow-[inset_0_1px_2px_rgba(17,80,170,0.12)]"
+        className="h-2.5 overflow-hidden rounded-full bg-[#d9e7ff] shadow-[inset_0_1px_2px_rgba(17,80,170,0.12)]"
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={100}

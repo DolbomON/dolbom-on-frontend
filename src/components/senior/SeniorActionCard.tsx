@@ -27,17 +27,17 @@ export function SeniorActionCard({
     <Link
       to={to}
       className={cn(
-        'flex min-h-36 flex-col justify-between rounded-lg border-2 p-5 no-underline transition hover:-translate-y-0.5 hover:shadow-md',
+        'flex min-h-[98px] flex-col justify-between rounded-lg border-2 p-3 no-underline transition hover:-translate-y-0.5 hover:shadow-md sm:min-h-36 sm:p-5',
         toneClass[tone],
       )}
     >
-      <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-md bg-white text-[var(--color-brand-strong)] shadow-sm">
+      <span className="mb-1.5 inline-flex h-9 w-9 items-center justify-center rounded-md bg-white text-[var(--color-brand-strong)] shadow-sm sm:mb-4 sm:h-12 sm:w-12">
         {icon}
       </span>
-      <span className="text-2xl font-black text-[var(--color-text-strong)]">
+      <span className="text-lg font-black text-[var(--color-text-strong)] sm:text-2xl">
         {title}
       </span>
-      <span className="mt-2 text-lg text-[var(--color-muted)]">
+      <span className="mt-1 text-sm leading-snug text-[var(--color-muted)] sm:mt-2 sm:text-lg">
         {description}
       </span>
     </Link>

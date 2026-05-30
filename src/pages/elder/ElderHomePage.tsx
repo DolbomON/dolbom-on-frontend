@@ -10,7 +10,7 @@ export function ElderHomePage() {
       description="오늘 필요한 돌봄 기능을 크게 눌러 시작하세요."
       backTo="/select-role"
     >
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid grid-cols-2 gap-3 md:gap-4">
         <SeniorActionCard
           to="/elder/check"
           title="건강 확인"
@@ -26,26 +26,26 @@ export function ElderHomePage() {
         />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-md bg-sky-50 text-sky-700">
-            <Mic aria-hidden="true" size={30} />
+      <section className="grid grid-cols-2 gap-3 md:gap-4">
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 sm:p-5">
+          <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-md bg-sky-50 text-sky-700 sm:mb-4 sm:h-12 sm:w-12">
+            <Mic aria-hidden="true" size={24} />
           </div>
-          <h2 className="text-2xl font-black text-[var(--color-text-strong)]">
+          <h2 className="text-lg font-black text-[var(--color-text-strong)] sm:text-2xl">
             음성 안내
           </h2>
-          <p className="mt-2 text-lg text-[var(--color-muted)]">
+          <p className="mt-1 text-sm leading-snug text-[var(--color-muted)] sm:mt-2 sm:text-lg">
             {voiceGuidanceCopy.elderCheck}
           </p>
         </div>
-        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-md bg-amber-50 text-amber-700">
-            <PhoneCall aria-hidden="true" size={30} />
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3 sm:p-5">
+          <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-md bg-amber-50 text-amber-700 sm:mb-4 sm:h-12 sm:w-12">
+            <PhoneCall aria-hidden="true" size={24} />
           </div>
-          <h2 className="text-2xl font-black text-[var(--color-text-strong)]">
+          <h2 className="text-lg font-black text-[var(--color-text-strong)] sm:text-2xl">
             가족 연결
           </h2>
-          <p className="mt-2 text-lg text-[var(--color-muted)]">
+          <p className="mt-1 text-sm leading-snug text-[var(--color-muted)] sm:mt-2 sm:text-lg">
             위험 신호가 있으면 가족 화면에 바로 표시됩니다.
           </p>
         </div>

@@ -14,8 +14,8 @@ const variantClass: Record<ButtonVariant, string> = {
 }
 
 const sizeClass: Record<ButtonSize, string> = {
-  md: 'min-h-12 px-5 py-3 text-base',
-  lg: 'min-h-16 px-6 py-4 text-xl',
+  md: 'min-h-11 px-4 py-2.5 text-base sm:min-h-12 sm:px-5 sm:py-3',
+  lg: 'min-h-12 px-5 py-3 text-lg sm:min-h-16 sm:px-6 sm:py-4 sm:text-xl',
 }
 
 type SharedButtonProps = {

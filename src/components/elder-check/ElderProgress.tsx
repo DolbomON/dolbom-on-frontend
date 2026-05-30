@@ -26,10 +26,10 @@ export function ElderProgress({
       )}
       aria-label={`${currentStep} / ${totalSteps}`}
     >
-      <strong className="text-[29px] font-black tracking-[-0.04em] text-[#0867f2]">
+      <strong className="text-[22px] font-black tracking-[-0.04em] text-[#0867f2] min-[390px]:text-[24px]">
         {currentStep}
       </strong>
-      <span className="text-[23px] font-semibold tracking-[-0.04em] text-[#6d7280]">
+      <span className="text-[18px] font-semibold tracking-[-0.04em] text-[#6d7280] min-[390px]:text-[19px]">
         / {totalSteps}
       </span>
     </p>
@@ -37,7 +37,7 @@ export function ElderProgress({
 
   const progressBar = (
     <div
-      className="h-3 overflow-hidden rounded-full bg-[#edf2fa]"
+      className="h-2.5 overflow-hidden rounded-full bg-[#edf2fa]"
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={totalSteps}
@@ -55,7 +55,7 @@ export function ElderProgress({
     <section
       className={cn(
         variant === 'inline'
-          ? 'mt-8 grid grid-cols-[auto_1fr] items-center gap-4 min-[390px]:mt-9 min-[390px]:gap-5'
+          ? 'mt-4 grid grid-cols-[auto_1fr] items-center gap-3 min-[390px]:mt-5 min-[390px]:gap-4'
           : 'grid gap-3',
         className,
       )}
