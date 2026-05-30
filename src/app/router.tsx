@@ -13,6 +13,7 @@ import { ElderSleepCheckPage } from '../pages/elder/ElderSleepCheckPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
 import { ElderDetailPage } from '../pages/worker/ElderDetailPage'
 import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
+import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
 
 export const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
   {
     path: '/worker',
     element: <WorkerDashboardPage />,
+  },
+  {
+    path: '/worker/elders',
+    element: <WorkerEldersPage />,
   },
   {
     path: '/worker/elders/:elderId',

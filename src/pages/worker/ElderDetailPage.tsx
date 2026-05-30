@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { PageShell } from '../../components/layout/PageShell'
+import { managedElders } from '../../features/worker/managedEldersData'
 import { cn } from '../../lib/utils'
-import { workerRiskItems } from '../../features/dashboard/workerDashboardData'
 
 const detailRiskTone = {
   caution: {
@@ -12,13 +12,17 @@ const detailRiskTone = {
     badge: 'border-[#ffb8b8] bg-[#fff0f0] text-[#e11d1d]',
     summary: '위험 상태입니다. 빠른 전화 확인 또는 방문 확인이 필요합니다.',
   },
+  stable: {
+    badge: 'border-[#a9e7c0] bg-[#effbf4] text-[#17733d]',
+    summary: '안정 상태입니다. 현재 입력 흐름이 정상입니다.',
+  },
 }
 
 export function ElderDetailPage() {
   const { elderId } = useParams()
   const elder =
-    workerRiskItems.find((item) => item.id === elderId) ?? workerRiskItems[0]
-  const risk = detailRiskTone[elder.riskLevel]
+    managedElders.find((item) => item.id === elderId) ?? managedElders[0]
+  const risk = detailRiskTone[elder.riskStatus]
   const lastInputTime = elder.lastInputText.replace('최근 입력 ', '')
 
   return (
@@ -44,7 +48,7 @@ export function ElderDetailPage() {
             최근 확인: {lastInputTime}
           </p>
           <p className="mt-2 text-base leading-snug text-[var(--color-text)] sm:mt-4 sm:text-xl">
-            {elder.riskReason}. {risk.summary}
+            {elder.statusReason}. {risk.summary}
           </p>
         </article>
 
