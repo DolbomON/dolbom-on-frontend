@@ -51,25 +51,28 @@ export function WorkerReportMetricCard({
   return (
     <article
       className={cn(
-        'flex min-h-[108px] min-w-0 flex-col items-center justify-center rounded-[20px] border px-2.5 py-3 text-center shadow-[0_10px_22px_rgba(40,91,172,0.08)] min-[410px]:min-h-[96px] min-[410px]:flex-row min-[410px]:gap-2.5 min-[410px]:text-left',
+        'flex min-h-[108px] min-w-0 flex-col items-center justify-center rounded-[20px] border px-2.5 py-3 text-center shadow-[0_10px_22px_rgba(40,91,172,0.08)] min-[410px]:min-h-[96px] min-[410px]:flex-row min-[410px]:gap-1.5 min-[410px]:px-2 min-[410px]:text-left',
         tone.card,
       )}
       aria-label={`${metric.label} ${metric.value}`}
     >
       <span
         className={cn(
-          'grid h-12 w-12 shrink-0 place-items-center rounded-full shadow-[0_8px_18px_rgba(45,85,148,0.08)]',
+          'grid h-12 w-12 shrink-0 place-items-center rounded-full shadow-[0_8px_18px_rgba(45,85,148,0.08)] min-[410px]:h-10 min-[410px]:w-10',
           tone.icon,
         )}
         aria-hidden="true"
       >
-        <Icon className="h-7 w-7" strokeWidth={2.8} />
+        <Icon
+          className="h-7 w-7 min-[410px]:h-6 min-[410px]:w-6"
+          strokeWidth={2.8}
+        />
       </span>
 
-      <span className="mt-2 min-w-0 min-[410px]:mt-0">
+      <span className="mt-2 min-w-0 max-w-full min-[410px]:mt-0">
         <span
           className={cn(
-            'block whitespace-nowrap text-[15px] font-black leading-tight',
+            'block text-[14px] font-black leading-tight min-[430px]:text-[15px]',
             tone.text,
           )}
         >
@@ -77,7 +80,7 @@ export function WorkerReportMetricCard({
         </span>
         <strong
           className={cn(
-            'mt-1 block whitespace-nowrap text-[30px] font-black leading-none',
+            'mt-1 block whitespace-nowrap text-[28px] font-black leading-none min-[430px]:text-[29px]',
             tone.text,
           )}
         >
