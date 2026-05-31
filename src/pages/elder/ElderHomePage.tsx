@@ -70,8 +70,12 @@ export function ElderHomePage() {
         </section>
 
         <section
-          className="mt-8 overflow-hidden rounded-[26px] border border-[#cfe1fb] bg-[#f4f9ff] bg-cover bg-center px-4 pb-5 pt-6 shadow-[0_18px_34px_rgba(35,88,168,0.14)] min-[390px]:px-5 min-[390px]:pb-6 min-[390px]:pt-7"
-          style={{ backgroundImage: `url("${recordCardBackgroundSrc}")` }}
+          className="mt-8 overflow-hidden rounded-[26px] bg-[#f4f9ff] bg-no-repeat px-4 pb-5 pt-6 shadow-[0_18px_34px_rgba(35,88,168,0.14)] min-[390px]:px-5 min-[390px]:pb-6 min-[390px]:pt-7"
+          style={{
+            backgroundImage: `url("${recordCardBackgroundSrc}")`,
+            backgroundPosition: 'center',
+            backgroundSize: '100% 100%',
+          }}
           aria-labelledby="record-title"
         >
           <h2
