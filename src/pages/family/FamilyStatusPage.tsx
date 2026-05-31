@@ -84,7 +84,7 @@ const navItems: NavItem[] = [
     notice: true,
   },
   {
-    href: '#chat',
+    href: '/family/chat',
     icon: MessageCircle,
     label: '대화',
   },

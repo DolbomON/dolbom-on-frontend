@@ -1,0 +1,389 @@
+import {
+  BarChart3,
+  Bell,
+  Home,
+  Menu,
+  MessageCircleMore,
+  Mic,
+  Power,
+  Share2,
+  Smile,
+  Stethoscope,
+  UserRound,
+  Utensils,
+  type LucideIcon,
+} from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { cn } from '../../lib/utils'
+
+const familyAiAssetBase = '/assets/dolbomon/familly-ai'
+
+const summaryRobotImageSrc = `${familyAiAssetBase}/ai.png`
+const chatRobotImageSrc = `${familyAiAssetBase}/ai2.png`
+
+type ChatMessage = {
+  id: string
+  role: 'assistant' | 'elder'
+  text: string
+}
+
+type QuickReply = {
+  icon: LucideIcon
+  label: string
+}
+
+type BottomNavItem = {
+  active?: boolean
+  href: string
+  icon: LucideIcon
+  label: string
+  notice?: boolean
+}
+
+const chatMessages: ChatMessage[] = [
+  {
+    id: 'meal-question',
+    role: 'assistant',
+    text: '안녕하세요, 김영자님.\n오늘 식사는 어떠셨어요?',
+  },
+  {
+    id: 'meal-answer',
+    role: 'elder',
+    text: '조금 먹었어요.',
+  },
+  {
+    id: 'pain-question',
+    role: 'assistant',
+    text: '몸이 불편한 곳은 있으세요?',
+  },
+  {
+    id: 'pain-answer',
+    role: 'elder',
+    text: '무릎이 좀 아파요.',
+  },
+  {
+    id: 'mood-question',
+    role: 'assistant',
+    text: '기분은 어떠세요?',
+  },
+  {
+    id: 'mood-answer',
+    role: 'elder',
+    text: '그냥 보통이에요.',
+  },
+]
+
+const quickReplies: QuickReply[] = [
+  {
+    icon: Utensils,
+    label: '식사 자세히',
+  },
+  {
+    icon: Stethoscope,
+    label: '통증 확인',
+  },
+  {
+    icon: Smile,
+    label: '기분 요약',
+  },
+]
+
+const bottomNavItems: BottomNavItem[] = [
+  {
+    href: '/family',
+    icon: Home,
+    label: '홈',
+  },
+  {
+    href: '/family/status',
+    icon: BarChart3,
+    label: '안부현황',
+  },
+  {
+    href: '/family/alerts',
+    icon: Bell,
+    label: '알림',
+    notice: true,
+  },
+  {
+    active: true,
+    href: '/family/chat',
+    icon: MessageCircleMore,
+    label: '대화',
+  },
+]
+
+function Logo() {
+  return (
+    <Link
+      to="/family"
+      className="inline-flex min-h-11 items-center rounded-md text-[#0d61e8] drop-shadow-[0_4px_7px_rgba(18,95,232,0.14)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
+      aria-label="돌봄ON 가족 홈"
+    >
+      <span className="text-[29px] font-black leading-none min-[390px]:text-[31px]">
+        돌봄
+      </span>
+      <Power
+        aria-hidden="true"
+        className="-mx-[1px] h-[30px] w-[30px] min-[390px]:h-[32px] min-[390px]:w-[32px]"
+        strokeWidth={4.3}
+      />
+      <span className="text-[33px] font-black leading-none min-[390px]:text-[36px]">
+        N
+      </span>
+    </Link>
+  )
+}
+
+function AssistantAvatar() {
+  return (
+    <span
+      className="grid h-[43px] w-[43px] shrink-0 overflow-hidden rounded-[15px] bg-[#eef6ff] shadow-[0_8px_18px_rgba(41,91,164,0.13)] min-[390px]:h-[48px] min-[390px]:w-[48px] min-[390px]:rounded-[17px]"
+      aria-hidden="true"
+    >
+      <img
+        src={chatRobotImageSrc}
+        alt=""
+        width="256"
+        height="256"
+        className="h-full w-full scale-[1.42] object-cover object-[50%_49%]"
+        draggable="false"
+      />
+    </span>
+  )
+}
+
+function ElderAvatar() {
+  return (
+    <span
+      className="grid h-[43px] w-[43px] shrink-0 place-items-center rounded-full bg-[#eef6ff] text-[#1467f3] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] min-[390px]:h-[48px] min-[390px]:w-[48px]"
+      aria-hidden="true"
+    >
+      <UserRound
+        className="h-[31px] w-[31px] min-[390px]:h-[34px] min-[390px]:w-[34px]"
+        fill="currentColor"
+        strokeWidth={1.6}
+      />
+    </span>
+  )
+}
+
+function ChatBubble({ message }: { message: ChatMessage }) {
+  const isElder = message.role === 'elder'
+
+  return (
+    <div
+      className={cn(
+        'flex items-start gap-2.5 min-[390px]:gap-3',
+        isElder && 'justify-end',
+      )}
+    >
+      {isElder ? null : <AssistantAvatar />}
+
+      <p
+        className={cn(
+          'max-w-[76%] whitespace-pre-line break-keep px-[17px] py-[10px] text-[17px] font-semibold leading-[1.45] text-[#071747] shadow-[0_8px_18px_rgba(40,86,150,0.08)] min-[390px]:px-5 min-[390px]:py-[11px] min-[390px]:text-[20px]',
+          isElder
+            ? 'rounded-[17px] rounded-br-[5px] bg-[linear-gradient(135deg,#dcebff_0%,#cfe4ff_100%)]'
+            : 'rounded-[17px] rounded-tl-[5px] bg-[#f0f6fe]',
+        )}
+      >
+        {message.text}
+      </p>
+
+      {isElder ? <ElderAvatar /> : null}
+    </div>
+  )
+}
+
+function SummaryCard() {
+  return (
+    <section
+      className="relative mt-7 min-h-[118px] overflow-hidden rounded-[26px] border border-[#c7dbfb] bg-[linear-gradient(135deg,#fafdff_0%,#eef7ff_58%,#f8fbff_100%)] px-5 py-5 shadow-[0_16px_32px_rgba(54,101,173,0.16)] min-[390px]:mt-8 min-[390px]:min-h-[128px] min-[390px]:rounded-[28px] min-[390px]:px-6"
+      aria-labelledby="family-chat-summary-title"
+    >
+      <img
+        src={summaryRobotImageSrc}
+        alt=""
+        width="640"
+        height="420"
+        className="pointer-events-none absolute -bottom-1 left-0 h-[116px] w-[210px] max-w-none select-none object-cover object-[19%_56%] min-[390px]:h-[126px] min-[390px]:w-[226px]"
+        aria-hidden="true"
+        draggable="false"
+      />
+
+      <div className="relative z-10 ml-[46%] min-h-[76px] min-w-0 min-[390px]:ml-[48%]">
+        <h2
+          id="family-chat-summary-title"
+          className="break-keep text-[25px] font-black leading-tight text-[#071747] min-[390px]:text-[29px]"
+        >
+          오늘의 안부 요약
+        </h2>
+        <p className="mt-3 break-keep text-[17px] font-semibold leading-[1.45] text-[#4d5c73] min-[390px]:text-[19px]">
+          기분, 식사, 통증 이야기가 정리되었어요
+        </p>
+      </div>
+    </section>
+  )
+}
+
+function QuickActionButton({ reply }: { reply: QuickReply }) {
+  const Icon = reply.icon
+
+  return (
+    <button
+      type="button"
+      className="inline-flex min-h-[41px] min-w-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-[18px] border border-[#e0e7f1] bg-white px-2 text-[13px] font-black leading-none text-[#095ee8] shadow-[0_9px_18px_rgba(42,77,126,0.1)] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[45px] min-[390px]:gap-2 min-[390px]:text-[16px] min-[430px]:text-[17px]"
+    >
+      <Icon
+        className="h-[20px] w-[20px] shrink-0 text-[#4b94ff] min-[390px]:h-[24px] min-[390px]:w-[24px]"
+        aria-hidden="true"
+        strokeWidth={3}
+      />
+      {reply.label}
+    </button>
+  )
+}
+
+function ChatTranscriptCard() {
+  return (
+    <section
+      className="mt-5 rounded-[25px] border border-[#e1e8f1] bg-white px-3.5 py-4 shadow-[0_14px_32px_rgba(36,75,131,0.13)] min-[390px]:mt-6 min-[390px]:rounded-[28px] min-[390px]:px-4 min-[390px]:py-5"
+      aria-label="AI 안부 대화 내용"
+    >
+      <div className="grid gap-[17px] min-[390px]:gap-[19px]">
+        {chatMessages.map((message) => (
+          <ChatBubble key={message.id} message={message} />
+        ))}
+      </div>
+
+      <div
+        className="mt-5 grid grid-cols-3 gap-2.5 min-[390px]:gap-3"
+        aria-label="대화 빠른 확인"
+      >
+        {quickReplies.map((reply) => (
+          <QuickActionButton key={reply.label} reply={reply} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function ActionButtons() {
+  return (
+    <div className="mt-5 grid grid-cols-2 gap-3.5 min-[390px]:mt-6 min-[390px]:gap-4">
+      <button
+        type="button"
+        className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[18px] bg-[linear-gradient(135deg,#2e8bff_0%,#075bea_100%)] px-3 text-[16px] font-black leading-none text-white shadow-[0_12px_24px_rgba(8,95,232,0.25),inset_0_1px_0_rgba(255,255,255,0.28)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[60px] min-[390px]:gap-3 min-[390px]:text-[20px]"
+      >
+        <Mic className="h-[27px] w-[27px] shrink-0 min-[390px]:h-[32px] min-[390px]:w-[32px]" />
+        <span className="whitespace-nowrap">음성 대화 다시 듣기</span>
+      </button>
+
+      <button
+        type="button"
+        className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[18px] border-2 border-[#0966f2] bg-white px-3 text-[16px] font-black leading-none text-[#095ee8] shadow-[0_10px_22px_rgba(32,80,148,0.08)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[60px] min-[390px]:gap-3 min-[390px]:text-[20px]"
+      >
+        <Share2 className="h-[26px] w-[26px] shrink-0 min-[390px]:h-[30px] min-[390px]:w-[30px]" />
+        <span className="whitespace-nowrap">대화 요약 공유</span>
+      </button>
+    </div>
+  )
+}
+
+function FamilyBottomNav() {
+  return (
+    <nav
+      className="mt-7 grid h-[66px] w-full grid-cols-4 rounded-[24px] border border-[#e1e7f0] bg-white shadow-[0_11px_27px_rgba(33,68,117,0.12)] min-[390px]:h-[68px]"
+      aria-label="가족 하단 메뉴"
+    >
+      {bottomNavItems.map((item) => {
+        const Icon = item.icon
+
+        return (
+          <Link
+            key={item.label}
+            to={item.href}
+            className={cn(
+              'relative flex min-h-[64px] flex-col items-center justify-center gap-0.5 rounded-[21px] text-[13px] font-extrabold leading-tight transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff] min-[390px]:min-h-[66px]',
+              item.active ? 'text-[#0a63ef]' : 'text-[#8b95a6]',
+            )}
+            aria-current={item.active ? 'page' : undefined}
+          >
+            <span className="relative">
+              <Icon
+                aria-hidden="true"
+                className="h-[29px] w-[29px] min-[390px]:h-[31px] min-[390px]:w-[31px]"
+                fill={item.active ? 'currentColor' : 'none'}
+                strokeWidth={item.active ? 2.7 : 2.35}
+              />
+              {item.notice ? (
+                <span
+                  className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#ff3449] ring-2 ring-white"
+                  aria-hidden="true"
+                />
+              ) : null}
+            </span>
+            <span>{item.label}</span>
+            {item.active ? (
+              <span
+                className="absolute bottom-1 h-1.5 w-5 rounded-full bg-[#0a63ef]"
+                aria-hidden="true"
+              />
+            ) : null}
+          </Link>
+        )
+      })}
+    </nav>
+  )
+}
+
+export function FamilyChatPage() {
+  const navigate = useNavigate()
+
+  function handleMenuClick() {
+    navigate('/select-role')
+  }
+
+  return (
+    <main className="min-h-svh overflow-x-hidden bg-[#eef5ff] text-[#071747]">
+      <section
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(18px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)] min-[390px]:px-6 min-[430px]:px-7"
+        aria-label="가족 AI 안부 대화 화면"
+      >
+        <header className="flex min-h-11 items-start justify-between gap-4">
+          <Logo />
+
+          <button
+            className="inline-grid h-11 w-11 place-items-center rounded-md text-[#071747] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
+            type="button"
+            aria-label="메뉴 열기"
+            onClick={handleMenuClick}
+          >
+            <Menu aria-hidden="true" size={38} strokeWidth={2.7} />
+          </button>
+        </header>
+
+        <section className="pt-7" aria-labelledby="family-chat-title">
+          <p className="text-[21px] font-semibold leading-none text-[#52617a] min-[390px]:text-[23px]">
+            5월 31일 토요일
+          </p>
+          <h1
+            id="family-chat-title"
+            className="mt-4 text-[39px] font-black leading-none text-[#071747] min-[390px]:text-[45px]"
+          >
+            AI 안부 대화
+          </h1>
+          <p className="mt-4 break-keep text-[18px] font-semibold leading-snug text-[#52617a] min-[390px]:text-[20px]">
+            어르신과 나눈 오늘의 대화를 가족이 쉽게 확인할 수 있어요.
+          </p>
+        </section>
+
+        <SummaryCard />
+        <ChatTranscriptCard />
+        <ActionButtons />
+        <FamilyBottomNav />
+      </section>
+    </main>
+  )
+}
