@@ -7,7 +7,7 @@ import { RoleSelectPage } from './RoleSelectPage'
 const headingName =
   '\uC774\uC6A9 \uC720\uD615\uC744 \uC120\uD0DD\uD574\uC8FC\uC138\uC694'
 const elderRoleName = '\uC5B4\uB974\uC2E0'
-const workerRoleName = '\uBCF5\uC9C0\uC0AC'
+const workerRoleName = '\uC694\uC591\uC0AC'
 const nextButtonName = '\uB2E4\uC74C'
 
 describe('RoleSelectPage', () => {
@@ -53,7 +53,7 @@ describe('RoleSelectPage', () => {
     expect(screen.getByText('기본 정보 입력 화면')).toBeTruthy()
   })
 
-  it('navigates welfare workers to the worker dashboard', async () => {
+  it('navigates care workers to the worker dashboard', async () => {
     const user = userEvent.setup()
 
     render(

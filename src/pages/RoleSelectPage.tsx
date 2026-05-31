@@ -24,13 +24,13 @@ const roleOptions: Array<RoleOption<UserRole>> = [
     description: '대상자의 안부를 체계적으로 확인해요',
     id: 'worker',
     imageSrc: '/assets/dolbomon/role-select/role-worker.png',
-    title: '복지사',
+    title: '요양사',
   },
   {
     description: '지역 돌봄 현황을 효율적으로 관리해요',
     id: 'government',
     imageSrc: '/assets/dolbomon/role-select/role-government.png',
-    title: '지자체',
+    title: '복지사',
   },
 ]
 

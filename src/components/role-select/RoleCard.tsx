@@ -51,13 +51,13 @@ export function RoleCard<TRole extends string>({
       </span>
 
       <strong
-        className="mt-2 text-[20px] font-black leading-[1.08] tracking-[-0.06em] text-[#050505] min-[390px]:text-[22px]"
+        className="mt-2 text-[23px] font-black leading-[1.05] tracking-[-0.04em] text-[#050505] min-[390px]:text-[26px]"
         aria-hidden="true"
       >
         {role.title}
       </strong>
       <span
-        className="mt-1 text-[12px] font-medium leading-[1.25] tracking-[-0.045em] text-[#5e6673] min-[390px]:text-[13px]"
+        className="mt-1 text-[13px] font-semibold leading-[1.28] tracking-[-0.03em] text-[#4f5968] min-[390px]:text-[15px]"
         aria-hidden="true"
       >
         {role.description}
