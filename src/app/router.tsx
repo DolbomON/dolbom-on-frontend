@@ -21,7 +21,7 @@ import { ElderSleepHabitPage } from '../pages/elder/ElderSleepHabitPage'
 import { ElderSleepCheckPage } from '../pages/elder/ElderSleepCheckPage'
 import { ElderVoiceGuidePage } from '../pages/elder/ElderVoiceGuidePage'
 import { ElderVoiceListeningPage } from '../pages/elder/ElderVoiceListeningPage'
-import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
+import { FamilyStatusPage } from '../pages/family/FamilyStatusPage'
 import {
   WorkerAlertDetailPlaceholderPage,
   WorkerAlertsPage,
@@ -124,7 +124,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/family',
-    element: <FamilyDashboardPage />,
+    element: <FamilyStatusPage />,
   },
   {
     path: '/worker',
