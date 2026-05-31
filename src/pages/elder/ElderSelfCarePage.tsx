@@ -152,7 +152,7 @@ export function ElderSelfCarePage() {
     event.preventDefault()
 
     // TODO: Replace route state with durable onboarding draft persistence.
-    navigate('/elder/check/medication', {
+    navigate('/elder/check/final-survey', {
       state: { ...routeState, selfCare },
     })
   }

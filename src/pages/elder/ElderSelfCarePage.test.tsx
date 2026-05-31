@@ -65,7 +65,7 @@ describe('ElderSelfCarePage', () => {
     expect(helpButton).toHaveAttribute('aria-pressed', 'true')
   })
 
-  it('continues to the medication check after self-care answers', async () => {
+  it('continues to the final survey after self-care answers', async () => {
     const user = userEvent.setup()
 
     render(
@@ -76,8 +76,8 @@ describe('ElderSelfCarePage', () => {
             element={<ElderSelfCarePage />}
           />
           <Route
-            path="/elder/check/medication"
-            element={<p>복약 상태 입력 화면</p>}
+            path="/elder/check/final-survey"
+            element={<p>마지막 설문 입력 화면</p>}
           />
         </Routes>
       </MemoryRouter>,
@@ -85,6 +85,6 @@ describe('ElderSelfCarePage', () => {
 
     await user.click(screen.getByRole('button', { name: '다음' }))
 
-    expect(await screen.findByText('복약 상태 입력 화면')).toBeTruthy()
+    expect(await screen.findByText('마지막 설문 입력 화면')).toBeTruthy()
   })
 })
