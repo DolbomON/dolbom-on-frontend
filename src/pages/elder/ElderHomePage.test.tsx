@@ -24,7 +24,7 @@ describe('ElderHomePage', () => {
     ).toHaveAttribute('href', '/elder/check/medication')
     expect(screen.getByRole('link', { name: /음성으로/ })).toHaveAttribute(
       'href',
-      '/elder/check/medication',
+      '/elder/voice',
     )
     expect(screen.getByRole('link', { name: /말동무/ })).toHaveAttribute(
       'href',

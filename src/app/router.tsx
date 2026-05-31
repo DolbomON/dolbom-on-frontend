@@ -19,6 +19,8 @@ import { ElderPainWalkingPage } from '../pages/elder/ElderPainWalkingPage'
 import { ElderSelfCarePage } from '../pages/elder/ElderSelfCarePage'
 import { ElderSleepHabitPage } from '../pages/elder/ElderSleepHabitPage'
 import { ElderSleepCheckPage } from '../pages/elder/ElderSleepCheckPage'
+import { ElderVoiceGuidePage } from '../pages/elder/ElderVoiceGuidePage'
+import { ElderVoiceListeningPage } from '../pages/elder/ElderVoiceListeningPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
 import {
   WorkerAlertDetailPlaceholderPage,
@@ -55,6 +57,14 @@ export const router = createBrowserRouter([
   {
     path: '/elder/check',
     element: <ElderCheckPage />,
+  },
+  {
+    path: '/elder/voice',
+    element: <ElderVoiceGuidePage />,
+  },
+  {
+    path: '/elder/voice/listening',
+    element: <ElderVoiceListeningPage />,
   },
   {
     path: '/elder/check/medication-habit',

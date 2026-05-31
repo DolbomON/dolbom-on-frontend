@@ -32,8 +32,7 @@ export function LandingPage() {
   const navigate = useNavigate()
 
   function handleVoiceStart() {
-    // TODO: Replace this temporary navigation with the real voice start flow.
-    navigate('/elder/chat')
+    navigate('/elder/voice')
   }
 
   return (

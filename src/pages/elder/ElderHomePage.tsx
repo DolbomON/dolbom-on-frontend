@@ -138,7 +138,7 @@ export function ElderHomePage() {
           aria-label="어르신 안부 메뉴"
         >
           <Link
-            to="/elder/check/medication"
+            to="/elder/voice"
             className="flex min-h-[162px] flex-col items-center justify-center rounded-[22px] border border-[#d8e2ee] bg-white px-2 py-4 text-center shadow-[0_12px_24px_rgba(31,74,128,0.1)] transition active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[178px] min-[390px]:rounded-[24px]"
           >
             <span className="grid h-[74px] w-[74px] place-items-center rounded-full bg-[#eaf6ff] shadow-[inset_0_0_0_2px_rgba(205,226,251,0.68)] min-[390px]:h-[82px] min-[390px]:w-[82px]">
