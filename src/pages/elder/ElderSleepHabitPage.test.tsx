@@ -34,6 +34,7 @@ describe('ElderSleepHabitPage', () => {
     expect(napButton).toHaveAttribute('aria-pressed', 'true')
     expect(wakesOftenButton).toHaveAttribute('aria-pressed', 'true')
     expect(hardToSleepButton).toHaveAttribute('aria-pressed', 'false')
+    expect(hardToSleepButton).toHaveClass('col-span-2')
     expect(fourToSixButton.querySelector('img')).toHaveAttribute(
       'src',
       '/assets/dolbomon/elder-check/시계_선택.png',

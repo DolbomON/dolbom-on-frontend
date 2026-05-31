@@ -113,7 +113,7 @@ export function ElderFinalSurveyPage() {
     event.preventDefault()
 
     // TODO: Replace route state with durable onboarding draft persistence.
-    navigate('/elder/check/medication', {
+    navigate('/elder', {
       state: { ...routeState, finalSurvey: answers },
     })
   }

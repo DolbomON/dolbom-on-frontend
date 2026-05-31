@@ -63,7 +63,7 @@ describe('ElderFinalSurveyPage', () => {
     )
   })
 
-  it('continues to the medication check after completion', async () => {
+  it('continues to the elder home after completion', async () => {
     const user = userEvent.setup()
 
     render(
@@ -73,16 +73,13 @@ describe('ElderFinalSurveyPage', () => {
             path="/elder/check/final-survey"
             element={<ElderFinalSurveyPage />}
           />
-          <Route
-            path="/elder/check/medication"
-            element={<p>복약 상태 입력 화면</p>}
-          />
+          <Route path="/elder" element={<p>어르신 홈 화면</p>} />
         </Routes>
       </MemoryRouter>,
     )
 
     await user.click(screen.getByRole('button', { name: '설문 완료!' }))
 
-    expect(await screen.findByText('복약 상태 입력 화면')).toBeTruthy()
+    expect(await screen.findByText('어르신 홈 화면')).toBeTruthy()
   })
 })

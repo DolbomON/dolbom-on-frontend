@@ -221,7 +221,7 @@ export function ElderSleepHabitPage() {
               잠과 관련해 (복수)
             </legend>
 
-            <div className="grid grid-cols-2 gap-3 min-[390px]:grid-cols-[1fr_1fr_1.2fr] min-[390px]:gap-4">
+            <div className="grid grid-cols-2 gap-3 min-[390px]:gap-4">
               {concernOptions.map((option) => {
                 const selected = concerns.includes(option.value)
 
@@ -233,8 +233,7 @@ export function ElderSleepHabitPage() {
                       selected
                         ? 'border-[#0876ff] bg-gradient-to-br from-[#147cff] to-[#0066f5] text-white shadow-[0_16px_28px_rgba(2,92,221,0.24)]'
                         : 'border-[#b8c1cf] bg-white text-[#061844]',
-                      option.value === 'hard_to_fall_asleep' &&
-                        'col-span-2 min-[390px]:col-span-1',
+                      option.value === 'hard_to_fall_asleep' && 'col-span-2',
                     )}
                     type="button"
                     aria-pressed={selected}

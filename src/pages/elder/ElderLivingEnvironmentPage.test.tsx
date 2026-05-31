@@ -31,6 +31,12 @@ describe('ElderLivingEnvironmentPage', () => {
     expect(familyButton).toHaveAttribute('aria-pressed', 'false')
     expect(apartmentButton).toHaveAttribute('aria-pressed', 'false')
     expect(detachedButton).toHaveAttribute('aria-pressed', 'true')
+    expect(apartmentButton.querySelector('span')).toHaveClass(
+      'whitespace-nowrap',
+    )
+    expect(detachedButton.querySelector('span')).toHaveClass(
+      'whitespace-nowrap',
+    )
     expect(yesButton).toHaveAttribute('aria-pressed', 'true')
     expect(noButton).toHaveAttribute('aria-pressed', 'false')
     expect(aloneButton.querySelector('img')).toHaveAttribute(
