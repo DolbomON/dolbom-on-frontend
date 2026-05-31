@@ -78,7 +78,7 @@ describe('ElderLivingEnvironmentPage', () => {
     expect(noButton).toHaveAttribute('aria-pressed', 'true')
   })
 
-  it('continues to the medication check after living environment answers', async () => {
+  it('continues to the self-care step after living environment answers', async () => {
     const user = userEvent.setup()
 
     render(
@@ -89,8 +89,8 @@ describe('ElderLivingEnvironmentPage', () => {
             element={<ElderLivingEnvironmentPage />}
           />
           <Route
-            path="/elder/check/medication"
-            element={<p>복약 상태 입력 화면</p>}
+            path="/elder/check/self-care"
+            element={<p>스스로 하기 입력 화면</p>}
           />
         </Routes>
       </MemoryRouter>,
@@ -98,6 +98,6 @@ describe('ElderLivingEnvironmentPage', () => {
 
     await user.click(screen.getByRole('button', { name: '다음' }))
 
-    expect(await screen.findByText('복약 상태 입력 화면')).toBeTruthy()
+    expect(await screen.findByText('스스로 하기 입력 화면')).toBeTruthy()
   })
 })

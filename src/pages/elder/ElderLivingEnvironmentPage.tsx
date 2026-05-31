@@ -132,7 +132,7 @@ export function ElderLivingEnvironmentPage() {
     }
 
     // TODO: Replace route state with durable onboarding draft persistence.
-    navigate('/elder/check/medication', {
+    navigate('/elder/check/self-care', {
       state: { ...routeState, livingEnvironment },
     })
   }
