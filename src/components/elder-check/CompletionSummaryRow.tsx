@@ -29,18 +29,18 @@ export function CompletionSummaryRow({ item }: CompletionSummaryRowProps) {
   const Icon = summaryIcons[item.id]
 
   return (
-    <div className="grid min-h-[31px] grid-cols-[1fr_auto] items-center gap-2 border-b border-[#e1e7f0] py-0.5 last:border-b-0 min-[390px]:min-h-[36px] min-[390px]:py-1">
-      <dt className="flex min-w-0 items-center gap-2 text-[16px] font-black leading-tight tracking-[-0.055em] text-[#071326] min-[390px]:text-[18px]">
+    <div className="grid min-h-[46px] grid-cols-[1fr_auto] items-center gap-3 border-b border-[#e1e7f0] py-1 last:border-b-0">
+      <dt className="flex min-w-0 items-center gap-2.5 text-[21px] font-black leading-tight tracking-[-0.055em] text-[#071326]">
         <span
-          className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-b from-[#e8f2ff] to-[#dbeaff] text-[#0867f2] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)] min-[390px]:h-8 min-[390px]:w-8"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-b from-[#e8f2ff] to-[#dbeaff] text-[#0867f2] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]"
           aria-hidden="true"
         >
-          <Icon size={18} strokeWidth={3} />
+          <Icon size={23} strokeWidth={3} />
         </span>
         <span className="truncate">{item.label}</span>
       </dt>
 
-      <dd className="text-right text-[15px] font-black leading-tight tracking-[-0.055em] text-[#0867f2] min-[390px]:text-[17px]">
+      <dd className="text-right text-[20px] font-black leading-tight tracking-[-0.055em] text-[#0867f2]">
         {item.answer}
       </dd>
     </div>

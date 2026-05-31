@@ -26,7 +26,6 @@ describe('ElderCheckCompletePage', () => {
     expect(
       screen.getByRole('button', { name: 'AI 안부 대화 시작' }),
     ).toBeTruthy()
-    expect(screen.getByRole('button', { name: '음성 안내' })).toBeTruthy()
     expect(screen.getByRole('button', { name: '알림 보기' })).toBeTruthy()
     expect(
       screen.getByRole('progressbar', { name: '오늘 상태 입력 완료' }),

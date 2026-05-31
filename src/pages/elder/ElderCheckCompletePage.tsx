@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { CompletionProgress } from '../../components/elder-check/CompletionProgress'
 import { CompletionSummaryCard } from '../../components/elder-check/CompletionSummaryCard'
 import { ElderCheckHeader } from '../../components/elder-check/ElderCheckHeader'
-import { VoiceGuideButton } from '../../components/elder-check/VoiceGuideButton'
 import type { DiscomfortAnswer } from '../../components/elder-check/DiscomfortQuestionCard'
 import type { MealAnswer } from '../../components/elder-check/MealQuestionCard'
 import type { MedicationAnswer } from '../../components/elder-check/MedicationQuestionCard'
@@ -12,9 +11,6 @@ import type { CompletionSummaryItem } from '../../components/elder-check/Complet
 
 const completionIllustrationSrc =
   '/assets/dolbomon/elder-check/completion-illustration.png'
-
-const voiceGuideText =
-  '오늘 상태 입력이 완료되었어요. 기록해주신 내용을 바탕으로 가족과 복지사가 안부를 확인할 수 있어요.'
 
 type DailyCheckRouteState = {
   discomfortAnswer?: Exclude<DiscomfortAnswer, null>
@@ -156,52 +152,49 @@ export function ElderCheckCompletePage() {
     navigate('/elder/chat')
   }
 
-  function handleVoiceGuide() {
-    // TODO: Connect this to the voice/TTS feature when it is ready.
-    console.info(voiceGuideText)
-  }
-
   return (
-    <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#102b53]">
+    <main className="h-svh overflow-hidden bg-[#edf5ff] text-[#102b53]">
       <section
-        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-[10px] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5"
+        className="mx-auto flex h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-5 pb-[calc(14px+env(safe-area-inset-bottom))] pt-[12px] shadow-[0_20px_80px_rgba(55,104,184,0.08)]"
         aria-label="오늘 상태 입력 완료 화면"
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
 
-        <section className="mt-4" aria-labelledby="greeting">
+        <section className="mt-4 shrink-0" aria-labelledby="greeting">
           <h1
             id="greeting"
-            className="text-[28px] font-black leading-[1.1] tracking-[-0.075em] text-[#061844] min-[390px]:text-[32px]"
+            className="text-[34px] font-black leading-[1.06] tracking-[-0.075em] text-[#061844]"
           >
             안녕하세요, 김영자님
           </h1>
-          <p className="mt-1 text-[15px] font-semibold leading-[1.25] tracking-[-0.045em] text-[#5b6473] min-[390px]:text-[16px]">
+          <p className="mt-1 text-[18px] font-bold leading-[1.2] tracking-[-0.045em] text-[#5b6473]">
             2024년 5월 16일 (목)
           </p>
         </section>
 
         <CompletionProgress />
 
-        <section className="mt-4 flex flex-1 flex-col justify-evenly rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-4 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)] min-[390px]:p-5">
-          <div className="flex items-center gap-3 text-left">
+        <section className="mt-4 flex min-h-0 flex-1 flex-col justify-between rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-5 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)]">
+          <div className="flex shrink-0 items-center gap-2 text-left">
             <img
               src={completionIllustrationSrc}
               alt="오늘 상태 입력 완료 이미지"
               width="305"
               height="160"
-              className="h-[74px] w-[112px] shrink-0 rounded-[16px] bg-[#edf6ff] object-contain min-[390px]:h-[84px] min-[390px]:w-[128px]"
+              className="h-[78px] w-[98px] shrink-0 rounded-[16px] bg-[#edf6ff] object-contain"
               draggable="false"
             />
-            <div>
+            <div className="min-w-0 flex-1">
               <h2
-                className="text-[23px] font-black leading-[1.08] tracking-[-0.075em] text-[#061844] min-[390px]:text-[27px]"
+                className="text-[30px] font-black leading-[1.04] tracking-[-0.075em] text-[#061844]"
                 aria-label="오늘 상태 입력이 완료되었어요"
               >
-                <span className="block">오늘 상태 입력이</span>
-                <span className="block">완료되었어요</span>
+                <span className="block whitespace-nowrap">
+                  오늘 상태 입력이
+                </span>
+                <span className="block whitespace-nowrap">완료되었어요</span>
               </h2>
-              <p className="mt-1.5 text-[13px] font-semibold leading-[1.25] tracking-[-0.045em] text-[#4f5a70] min-[390px]:mt-2 min-[390px]:text-[14px]">
+              <p className="mt-2 text-[16px] font-bold leading-[1.25] tracking-[-0.045em] text-[#4f5a70]">
                 가족과 복지사가 안부를 확인할 수 있어요.
               </p>
             </div>
@@ -209,9 +202,9 @@ export function ElderCheckCompletePage() {
 
           <CompletionSummaryCard items={summaryItems} />
 
-          <div className="mt-2 grid gap-2 min-[390px]:mt-3">
+          <div className="grid shrink-0 gap-2">
             <button
-              className="min-h-[44px] w-full rounded-[17px] bg-gradient-to-br from-[#0878ff] to-[#005de8] px-4 text-[20px] font-black tracking-[-0.055em] text-white shadow-[0_14px_26px_rgba(2,92,221,0.22),inset_0_1px_0_rgba(255,255,255,0.24)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[50px] min-[390px]:text-[23px]"
+              className="min-h-[58px] w-full rounded-[18px] bg-gradient-to-br from-[#0878ff] to-[#005de8] px-4 text-[25px] font-black tracking-[-0.055em] text-white shadow-[0_14px_26px_rgba(2,92,221,0.22),inset_0_1px_0_rgba(255,255,255,0.24)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
               type="button"
               onClick={handleHomeClick}
             >
@@ -219,7 +212,7 @@ export function ElderCheckCompletePage() {
             </button>
 
             <button
-              className="min-h-11 w-full rounded-[16px] border-2 border-[#0867f2] bg-white/95 px-4 text-[18px] font-black tracking-[-0.055em] text-[#0867f2] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[48px] min-[390px]:text-[21px]"
+              className="min-h-[52px] w-full rounded-[17px] border-2 border-[#0867f2] bg-white/95 px-4 text-[22px] font-black tracking-[-0.055em] text-[#0867f2] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
               type="button"
               onClick={handleStartChatClick}
             >
@@ -227,8 +220,6 @@ export function ElderCheckCompletePage() {
             </button>
           </div>
         </section>
-
-        <VoiceGuideButton variant="pill" onClick={handleVoiceGuide} />
       </section>
     </main>
   )
