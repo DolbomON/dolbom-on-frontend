@@ -22,20 +22,20 @@ describe('ElderBasicInfoPage', () => {
     expect(screen.queryByLabelText(/단계/)).not.toBeInTheDocument()
   })
 
-  it('continues to the daily check screen', async () => {
+  it('continues to the daily check introduction screen', async () => {
     const user = userEvent.setup()
 
     render(
       <MemoryRouter initialEntries={['/elder/basic-info']}>
         <Routes>
           <Route path="/elder/basic-info" element={<ElderBasicInfoPage />} />
-          <Route path="/elder/check" element={<p>복약 상태 입력 화면</p>} />
+          <Route path="/elder/check" element={<p>처음 한 번만 여쭤볼게요</p>} />
         </Routes>
       </MemoryRouter>,
     )
 
     await user.click(screen.getByRole('button', { name: '다음' }))
 
-    expect(screen.getByText('복약 상태 입력 화면')).toBeTruthy()
+    expect(screen.getByText('처음 한 번만 여쭤볼게요')).toBeTruthy()
   })
 })

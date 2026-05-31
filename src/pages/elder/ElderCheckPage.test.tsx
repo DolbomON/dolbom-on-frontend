@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 import { ElderCheckPage } from './ElderCheckPage'
 
 describe('ElderCheckPage', () => {
-  it('renders the first medication check question', () => {
+  it('renders the daily check introduction screen', () => {
     render(
       <MemoryRouter>
         <ElderCheckPage />
@@ -13,17 +13,19 @@ describe('ElderCheckPage', () => {
     )
 
     expect(
-      screen.getByRole('heading', { name: '오늘 약을 드셨나요?' }),
+      screen.getByRole('heading', { name: /처음 한 번만 여쭤볼게요/ }),
     ).toBeTruthy()
-    expect(screen.getByRole('button', { name: '네, 먹었어요' })).toBeTruthy()
-    expect(
-      screen.getByRole('button', { name: '아직 못 먹었어요' }),
-    ).toBeTruthy()
-    expect(screen.getByRole('button', { name: '음성 안내' })).toBeTruthy()
-    expect(screen.queryByRole('navigation', { name: '하단 메뉴' })).toBeNull()
+    expect(screen.getByText(/평소 건강·생활 습관을/)).toBeTruthy()
+    expect(screen.getByRole('button', { name: '시작하기' })).toBeTruthy()
+    expect(screen.getByText('복약')).toBeTruthy()
+    expect(screen.getByText('질환')).toBeTruthy()
+    expect(screen.getByText('통증')).toBeTruthy()
+    expect(screen.getByText('수면')).toBeTruthy()
+    expect(screen.getByText('생활')).toBeTruthy()
+    expect(screen.getByText('정서')).toBeTruthy()
   })
 
-  it('navigates to the meal check step after a medication answer', async () => {
+  it('navigates to the medication check step when starting', async () => {
     const user = userEvent.setup()
 
     render(
@@ -31,15 +33,15 @@ describe('ElderCheckPage', () => {
         <Routes>
           <Route path="/elder/check" element={<ElderCheckPage />} />
           <Route
-            path="/elder/check/meal"
-            element={<p>식사 상태 입력 화면</p>}
+            path="/elder/check/medication"
+            element={<p>복약 상태 입력 화면</p>}
           />
         </Routes>
       </MemoryRouter>,
     )
 
-    await user.click(screen.getByRole('button', { name: '네, 먹었어요' }))
+    await user.click(screen.getByRole('button', { name: '시작하기' }))
 
-    expect(await screen.findByText('식사 상태 입력 화면')).toBeTruthy()
+    expect(await screen.findByText('복약 상태 입력 화면')).toBeTruthy()
   })
 })
