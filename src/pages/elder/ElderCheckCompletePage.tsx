@@ -174,7 +174,7 @@ export function ElderCheckCompletePage() {
 
         <CompletionProgress />
 
-        <section className="mt-4 flex min-h-0 flex-1 flex-col justify-between rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-5 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)]">
+        <section className="mt-4 flex min-h-0 flex-1 flex-col gap-4 rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-5 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)]">
           <div className="flex shrink-0 items-center gap-2 text-left">
             <img
               src={completionIllustrationSrc}
