@@ -27,7 +27,7 @@ export function ElderVoiceListeningPage() {
           aria-hidden="true"
         />
 
-        <section className="mt-16 text-center min-[430px]:mt-[76px]">
+        <section className="mt-11 text-center min-[430px]:mt-14">
           <h1 className="text-[41px] font-black leading-none text-[#061844] min-[430px]:text-[50px]">
             말씀해 주세요
           </h1>
@@ -36,19 +36,19 @@ export function ElderVoiceListeningPage() {
           </p>
         </section>
 
-        <div className="-mx-11 mt-5 h-[282px] overflow-hidden min-[430px]:-mx-14 min-[430px]:mt-6 min-[430px]:h-[310px]">
+        <div className="-mx-11 mt-5 h-[270px] overflow-hidden min-[430px]:-mx-14 min-[430px]:h-[294px]">
           <img
             src={microphoneImageSrc}
             alt=""
             width="1254"
             height="1254"
-            className="h-full w-full object-contain object-center"
+            className="mx-auto h-[372px] w-[372px] max-w-none -translate-y-[50px] object-contain object-center min-[430px]:h-[430px] min-[430px]:w-[430px] min-[430px]:-translate-y-[66px]"
             aria-hidden="true"
             draggable="false"
           />
         </div>
 
-        <div className="mt-1 flex items-center justify-center gap-5 min-[430px]:mt-2">
+        <div className="mt-0 flex items-center justify-center gap-5">
           <span
             className="h-[24px] w-[24px] rounded-full bg-gradient-to-br from-[#6bb7ff] to-[#0068f2] shadow-[0_8px_14px_rgba(0,104,242,0.25)] min-[430px]:h-[28px] min-[430px]:w-[28px]"
             aria-hidden="true"
