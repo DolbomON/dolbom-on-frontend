@@ -128,7 +128,7 @@ export function ElderSleepHabitPage() {
     }
 
     // TODO: Replace route state with durable onboarding draft persistence.
-    navigate('/elder/check/medication', {
+    navigate('/elder/check/living-environment', {
       state: { ...routeState, sleepHabit },
     })
   }

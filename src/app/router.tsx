@@ -9,6 +9,7 @@ import { ElderCheckPage } from '../pages/elder/ElderCheckPage'
 import { ElderDiseaseHistoryPage } from '../pages/elder/ElderDiseaseHistoryPage'
 import { ElderDiscomfortCheckPage } from '../pages/elder/ElderDiscomfortCheckPage'
 import { ElderHomePage } from '../pages/elder/ElderHomePage'
+import { ElderLivingEnvironmentPage } from '../pages/elder/ElderLivingEnvironmentPage'
 import { ElderMealCheckPage } from '../pages/elder/ElderMealCheckPage'
 import { ElderMedicationCheckPage } from '../pages/elder/ElderMedicationCheckPage'
 import { ElderMedicationHabitPage } from '../pages/elder/ElderMedicationHabitPage'
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
   {
     path: '/elder/check/sleep-habit',
     element: <ElderSleepHabitPage />,
+  },
+  {
+    path: '/elder/check/living-environment',
+    element: <ElderLivingEnvironmentPage />,
   },
   {
     path: '/elder/check/medication',
