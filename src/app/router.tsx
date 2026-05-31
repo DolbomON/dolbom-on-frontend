@@ -14,6 +14,7 @@ import { ElderMedicationCheckPage } from '../pages/elder/ElderMedicationCheckPag
 import { ElderMedicationHabitPage } from '../pages/elder/ElderMedicationHabitPage'
 import { ElderMoodCheckPage } from '../pages/elder/ElderMoodCheckPage'
 import { ElderPainWalkingPage } from '../pages/elder/ElderPainWalkingPage'
+import { ElderSleepHabitPage } from '../pages/elder/ElderSleepHabitPage'
 import { ElderSleepCheckPage } from '../pages/elder/ElderSleepCheckPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
 import {
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
   {
     path: '/elder/check/pain-walking',
     element: <ElderPainWalkingPage />,
+  },
+  {
+    path: '/elder/check/sleep-habit',
+    element: <ElderSleepHabitPage />,
   },
   {
     path: '/elder/check/medication',

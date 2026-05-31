@@ -47,7 +47,7 @@ export function ElderCheckPage() {
   }
 
   function handleStartClick() {
-    navigate('/elder/check/disease-history')
+    navigate('/elder/check/medication-habit')
   }
 
   return (

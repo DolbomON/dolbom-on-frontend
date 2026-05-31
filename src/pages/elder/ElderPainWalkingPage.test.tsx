@@ -71,7 +71,7 @@ describe('ElderPainWalkingPage', () => {
     expect(fallYesButton).toHaveAttribute('aria-pressed', 'true')
   })
 
-  it('continues to the medication habit step after pain walking answers', async () => {
+  it('continues to the sleep habit step after pain walking answers', async () => {
     const user = userEvent.setup()
 
     render(
@@ -82,8 +82,8 @@ describe('ElderPainWalkingPage', () => {
             element={<ElderPainWalkingPage />}
           />
           <Route
-            path="/elder/check/medication-habit"
-            element={<p>복약 습관 입력 화면</p>}
+            path="/elder/check/sleep-habit"
+            element={<p>수면 습관 입력 화면</p>}
           />
         </Routes>
       </MemoryRouter>,
@@ -91,6 +91,6 @@ describe('ElderPainWalkingPage', () => {
 
     await user.click(screen.getByRole('button', { name: '다음' }))
 
-    expect(await screen.findByText('복약 습관 입력 화면')).toBeTruthy()
+    expect(await screen.findByText('수면 습관 입력 화면')).toBeTruthy()
   })
 })

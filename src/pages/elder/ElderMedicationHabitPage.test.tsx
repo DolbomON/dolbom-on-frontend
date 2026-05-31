@@ -14,7 +14,7 @@ describe('ElderMedicationHabitPage', () => {
 
     expect(screen.getByRole('heading', { name: '복약 습관' })).toBeTruthy()
     expect(
-      screen.getByRole('progressbar', { name: '총 6단계 중 4단계' }),
+      screen.getByRole('progressbar', { name: '총 6단계 중 1단계' }),
     ).toBeTruthy()
     expect(screen.getByText('하루에 약을 몇 번 드세요?')).toBeTruthy()
     expect(screen.getByText('언제 드세요? (복수)')).toBeTruthy()
@@ -39,7 +39,7 @@ describe('ElderMedicationHabitPage', () => {
     expect(screen.queryByRole('button', { name: '음성 안내' })).toBeNull()
   })
 
-  it('continues to the medication check after confirming medication habit answers', async () => {
+  it('continues to the known disease step after confirming medication habit answers', async () => {
     const user = userEvent.setup()
 
     render(
@@ -50,8 +50,8 @@ describe('ElderMedicationHabitPage', () => {
             element={<ElderMedicationHabitPage />}
           />
           <Route
-            path="/elder/check/medication"
-            element={<p>복약 상태 입력 화면</p>}
+            path="/elder/check/disease-history"
+            element={<p>알고 계신 병 입력 화면</p>}
           />
         </Routes>
       </MemoryRouter>,
@@ -60,6 +60,6 @@ describe('ElderMedicationHabitPage', () => {
     await user.click(screen.getByRole('button', { name: '점심' }))
     await user.click(screen.getByRole('button', { name: '다음' }))
 
-    expect(await screen.findByText('복약 상태 입력 화면')).toBeTruthy()
+    expect(await screen.findByText('알고 계신 병 입력 화면')).toBeTruthy()
   })
 })
