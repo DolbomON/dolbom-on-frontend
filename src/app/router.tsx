@@ -3,6 +3,7 @@ import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
 import { ElderChatPage } from '../pages/elder/ElderChatPage'
+import { ElderBasicInfoPage } from '../pages/elder/ElderBasicInfoPage'
 import { ElderCheckCompletePage } from '../pages/elder/ElderCheckCompletePage'
 import { ElderCheckPage } from '../pages/elder/ElderCheckPage'
 import { ElderDiscomfortCheckPage } from '../pages/elder/ElderDiscomfortCheckPage'
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
   {
     path: '/elder',
     element: <ElderHomePage />,
+  },
+  {
+    path: '/elder/basic-info',
+    element: <ElderBasicInfoPage />,
   },
   {
     path: '/elder/check',

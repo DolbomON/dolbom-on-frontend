@@ -35,7 +35,7 @@ const roleOptions: Array<RoleOption<UserRole>> = [
 ]
 
 const nextRouteByRole: Record<UserRole, string | null> = {
-  elder: '/elder/check',
+  elder: '/elder/basic-info',
   family: '/family',
   worker: '/worker',
   government: null,

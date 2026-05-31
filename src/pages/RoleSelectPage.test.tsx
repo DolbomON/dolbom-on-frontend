@@ -32,14 +32,17 @@ describe('RoleSelectPage', () => {
     expect(nextButton).toBeEnabled()
   })
 
-  it('navigates elder users to the daily check screen', async () => {
+  it('navigates elder users to the basic information screen', async () => {
     const user = userEvent.setup()
 
     render(
       <MemoryRouter initialEntries={['/select-role']}>
         <Routes>
           <Route path="/select-role" element={<RoleSelectPage />} />
-          <Route path="/elder/check" element={<p>복약 상태 입력 화면</p>} />
+          <Route
+            path="/elder/basic-info"
+            element={<p>기본 정보 입력 화면</p>}
+          />
         </Routes>
       </MemoryRouter>,
     )
@@ -47,7 +50,7 @@ describe('RoleSelectPage', () => {
     await user.click(screen.getByRole('button', { name: elderRoleName }))
     await user.click(screen.getByRole('button', { name: nextButtonName }))
 
-    expect(screen.getByText('복약 상태 입력 화면')).toBeTruthy()
+    expect(screen.getByText('기본 정보 입력 화면')).toBeTruthy()
   })
 
   it('navigates welfare workers to the worker dashboard', async () => {
