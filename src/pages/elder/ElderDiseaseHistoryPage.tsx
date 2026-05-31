@@ -2,7 +2,6 @@ import { Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '../../lib/utils'
-import type { MedicationHabitAnswers } from '../../components/elder-check/MedicationHabitQuestionCard'
 
 export type DiseaseHistoryCondition =
   | 'hypertension'
@@ -21,7 +20,6 @@ export type DiseaseHistoryAnswers = {
 
 type DiseaseHistoryRouteState = {
   diseaseHistory?: DiseaseHistoryAnswers
-  medicationHabit?: MedicationHabitAnswers
 }
 
 type ConditionOption = {
@@ -170,7 +168,7 @@ export function ElderDiseaseHistoryPage() {
     }
 
     // TODO: Replace route state with durable onboarding draft persistence.
-    navigate('/elder/check/medication', {
+    navigate('/elder/check/pain-walking', {
       state: { ...routeState, diseaseHistory },
     })
   }

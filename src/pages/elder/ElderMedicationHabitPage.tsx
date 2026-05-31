@@ -1,6 +1,8 @@
 import { Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import type { DiseaseHistoryAnswers } from './ElderDiseaseHistoryPage'
+import type { PainWalkingAnswers } from './ElderPainWalkingPage'
 import {
   MedicationHabitQuestionCard,
   type MedicationFrequency,
@@ -10,7 +12,9 @@ import {
 } from '../../components/elder-check/MedicationHabitQuestionCard'
 
 type MedicationHabitRouteState = {
+  diseaseHistory?: DiseaseHistoryAnswers
   medicationHabit?: MedicationHabitAnswers
+  painWalking?: PainWalkingAnswers
 }
 
 function getMedicationHabitRouteState(
@@ -24,7 +28,7 @@ function getMedicationHabitRouteState(
 }
 
 function HabitProgress() {
-  const currentStep = 1
+  const currentStep = 4
   const totalSteps = 6
   const progressPercent = (currentStep / totalSteps) * 100
 
@@ -96,7 +100,7 @@ export function ElderMedicationHabitPage() {
     }
 
     // TODO: Replace route state with durable onboarding draft persistence.
-    navigate('/elder/check/disease-history', {
+    navigate('/elder/check/medication', {
       state: { ...routeState, medicationHabit },
     })
   }

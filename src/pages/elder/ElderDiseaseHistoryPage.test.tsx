@@ -62,7 +62,7 @@ describe('ElderDiseaseHistoryPage', () => {
     expect(noButton).toHaveAttribute('aria-pressed', 'false')
   })
 
-  it('continues to the medication check after disease history answers', async () => {
+  it('continues to the pain walking step after disease history answers', async () => {
     const user = userEvent.setup()
 
     render(
@@ -73,8 +73,8 @@ describe('ElderDiseaseHistoryPage', () => {
             element={<ElderDiseaseHistoryPage />}
           />
           <Route
-            path="/elder/check/medication"
-            element={<p>복약 상태 입력 화면</p>}
+            path="/elder/check/pain-walking"
+            element={<p>통증 걷기 입력 화면</p>}
           />
         </Routes>
       </MemoryRouter>,
@@ -82,6 +82,6 @@ describe('ElderDiseaseHistoryPage', () => {
 
     await user.click(screen.getByRole('button', { name: '다음' }))
 
-    expect(await screen.findByText('복약 상태 입력 화면')).toBeTruthy()
+    expect(await screen.findByText('통증 걷기 입력 화면')).toBeTruthy()
   })
 })
