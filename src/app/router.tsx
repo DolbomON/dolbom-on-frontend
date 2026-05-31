@@ -6,10 +6,12 @@ import { ElderChatPage } from '../pages/elder/ElderChatPage'
 import { ElderBasicInfoPage } from '../pages/elder/ElderBasicInfoPage'
 import { ElderCheckCompletePage } from '../pages/elder/ElderCheckCompletePage'
 import { ElderCheckPage } from '../pages/elder/ElderCheckPage'
+import { ElderDiseaseHistoryPage } from '../pages/elder/ElderDiseaseHistoryPage'
 import { ElderDiscomfortCheckPage } from '../pages/elder/ElderDiscomfortCheckPage'
 import { ElderHomePage } from '../pages/elder/ElderHomePage'
 import { ElderMealCheckPage } from '../pages/elder/ElderMealCheckPage'
 import { ElderMedicationCheckPage } from '../pages/elder/ElderMedicationCheckPage'
+import { ElderMedicationHabitPage } from '../pages/elder/ElderMedicationHabitPage'
 import { ElderMoodCheckPage } from '../pages/elder/ElderMoodCheckPage'
 import { ElderSleepCheckPage } from '../pages/elder/ElderSleepCheckPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
@@ -48,6 +50,14 @@ export const router = createBrowserRouter([
   {
     path: '/elder/check',
     element: <ElderCheckPage />,
+  },
+  {
+    path: '/elder/check/medication-habit',
+    element: <ElderMedicationHabitPage />,
+  },
+  {
+    path: '/elder/check/disease-history',
+    element: <ElderDiseaseHistoryPage />,
   },
   {
     path: '/elder/check/medication',

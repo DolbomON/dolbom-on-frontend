@@ -5,41 +5,29 @@ import { describe, expect, it } from 'vitest'
 import { ElderMedicationCheckPage } from './ElderMedicationCheckPage'
 
 describe('ElderMedicationCheckPage', () => {
-  it('renders the first medication habit step', () => {
+  it('renders the medication check question', () => {
     render(
       <MemoryRouter>
         <ElderMedicationCheckPage />
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole('heading', { name: '복약 습관' })).toBeTruthy()
     expect(
-      screen.getByRole('progressbar', { name: '총 6단계 중 1단계' }),
+      screen.getByRole('heading', { name: '오늘 약을 드셨나요?' }),
     ).toBeTruthy()
-    expect(screen.getByText('하루에 약을 몇 번 드세요?')).toBeTruthy()
-    expect(screen.getByText('언제 드세요? (복수)')).toBeTruthy()
-    expect(screen.getByText('약 챙기기 도움이 필요하세요?')).toBeTruthy()
-    expect(screen.getByRole('button', { name: '2번' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    )
-    expect(screen.getByRole('button', { name: '아침' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    )
-    expect(screen.getByRole('button', { name: '저녁' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    )
-    expect(screen.getByRole('button', { name: '혼자 가능' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    )
-    expect(screen.getByRole('button', { name: '다음' })).toBeTruthy()
-    expect(screen.queryByRole('button', { name: '음성 안내' })).toBeNull()
+    expect(screen.getByRole('button', { name: '네, 먹었어요' })).toBeTruthy()
+    expect(
+      screen.getByRole('button', { name: '아직 못 먹었어요' }),
+    ).toBeTruthy()
+    expect(screen.getByRole('button', { name: '음성 안내' })).toBeTruthy()
+    expect(screen.getByLabelText('1 / 5')).toBeTruthy()
+    expect(
+      screen.getByRole('progressbar', { name: '총 5단계 중 1단계' }),
+    ).toBeTruthy()
+    expect(screen.queryByRole('navigation', { name: '하단 메뉴' })).toBeNull()
   })
 
-  it('continues after confirming medication habit answers', async () => {
+  it('navigates to the meal check step after a medication answer', async () => {
     const user = userEvent.setup()
 
     render(
@@ -57,8 +45,7 @@ describe('ElderMedicationCheckPage', () => {
       </MemoryRouter>,
     )
 
-    await user.click(screen.getByRole('button', { name: '점심' }))
-    await user.click(screen.getByRole('button', { name: '다음' }))
+    await user.click(screen.getByRole('button', { name: '네, 먹었어요' }))
 
     expect(await screen.findByText('식사 상태 입력 화면')).toBeTruthy()
   })

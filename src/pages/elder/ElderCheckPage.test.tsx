@@ -33,8 +33,8 @@ describe('ElderCheckPage', () => {
         <Routes>
           <Route path="/elder/check" element={<ElderCheckPage />} />
           <Route
-            path="/elder/check/medication"
-            element={<p>복약 상태 입력 화면</p>}
+            path="/elder/check/medication-habit"
+            element={<p>복약 습관 입력 화면</p>}
           />
         </Routes>
       </MemoryRouter>,
@@ -42,6 +42,6 @@ describe('ElderCheckPage', () => {
 
     await user.click(screen.getByRole('button', { name: '시작하기' }))
 
-    expect(await screen.findByText('복약 상태 입력 화면')).toBeTruthy()
+    expect(await screen.findByText('복약 습관 입력 화면')).toBeTruthy()
   })
 })
