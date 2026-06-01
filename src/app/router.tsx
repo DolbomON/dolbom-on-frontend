@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
+import { CaregiverDashboardPage } from '../pages/caregiver/CaregiverDashboardPage'
 import { ElderChatPage } from '../pages/elder/ElderChatPage'
 import { ElderBasicInfoPage } from '../pages/elder/ElderBasicInfoPage'
 import { ElderCheckCompletePage } from '../pages/elder/ElderCheckCompletePage'
@@ -144,6 +145,10 @@ export const router = createBrowserRouter([
   {
     path: '/family/chat',
     element: <FamilyChatPage />,
+  },
+  {
+    path: '/caregiver',
+    element: <CaregiverDashboardPage />,
   },
   {
     path: '/worker',

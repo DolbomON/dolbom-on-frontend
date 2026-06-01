@@ -3,6 +3,7 @@ import {
   CalendarDays,
   ChevronDown,
   ChevronRight,
+  ClipboardList,
   Home,
   Info,
   Pencil,
@@ -23,7 +24,7 @@ const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
 const navItems = [
   { href: '/worker', label: '홈' },
   { href: '/worker/alerts', label: '안부현황' },
-  { href: '/worker/elders/kim-yeongja', label: '기록' },
+  { href: '/worker/elders/kim-yeongja', label: '방문 기록' },
   { href: '/worker#schedule', label: '일정' },
   { href: '/worker#family-memo', label: '가족메모' },
   { href: '/worker/mypage', label: '설정' },
@@ -119,6 +120,12 @@ const familyContacts = [
     name: '최복례 (며느리)',
     phone: '010-2222-3333',
   },
+] as const
+
+const welfareRequests = [
+  '식사량 감소 원인과 식사 태도를 관찰해 주세요.',
+  '아침 복약 여부와 복약 시간이 지연된 이유를 확인해 주세요.',
+  '가족에게 저녁 복약 시간과 식사량 변화를 인계해 주세요.',
 ] as const
 
 const todayRecords = [
@@ -240,7 +247,7 @@ function WorkerDetailTopBar() {
           aria-label="요양사 메뉴"
         >
           {navItems.map((item) => {
-            const isActive = item.label === '기록'
+            const isActive = item.label === '방문 기록'
 
             return (
               <Link
@@ -509,7 +516,7 @@ function AiSummaryPanel() {
           className="h-5 w-5 shrink-0 text-[#7b8aa7]"
           strokeWidth={2.5}
         />
-        <p>AI 요약은 참고용으로 제공되며, 실제 상담을 대체하지 않습니다.</p>
+        <p>AI 요약은 참고용으로 제공되며, 현장 판단을 대체하지 않습니다.</p>
       </div>
     </section>
   )
@@ -539,7 +546,7 @@ function TodayRecordsPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
           id="today-records-title"
           className="text-[19px] font-black leading-tight text-[#071747]"
         >
-          오늘 기록
+          오늘 방문 기록
         </h2>
         <button
           type="button"
@@ -547,13 +554,13 @@ function TodayRecordsPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
           onClick={onMemoCreate}
         >
           <PlusCircle aria-hidden="true" className="h-5 w-5" />
-          기록 추가
+          방문 기록 추가
         </button>
       </div>
 
       <div className="mt-3 overflow-x-auto rounded-[14px] border border-[#e3ebf7]">
         <table className="w-full min-w-[680px] border-collapse text-left">
-          <caption className="sr-only">김영자님 오늘 상태 기록</caption>
+          <caption className="sr-only">김영자님 오늘 방문 기록</caption>
           <thead className="bg-[#fbfdff] text-[13px] font-black leading-tight text-[#687792]">
             <tr>
               <th className="w-[96px] px-4 py-1" scope="col">
@@ -656,6 +663,49 @@ function FamilyContactsPanel() {
   )
 }
 
+function WelfareRequestPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
+  return (
+    <section
+      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      aria-labelledby="welfare-request-title"
+    >
+      <div className="flex items-center gap-2">
+        <ClipboardList
+          aria-hidden="true"
+          className="h-6 w-6 text-[#0867f2]"
+          strokeWidth={2.7}
+        />
+        <h2
+          id="welfare-request-title"
+          className="text-[19px] font-black leading-tight text-[#071747]"
+        >
+          복지사 요청사항
+        </h2>
+      </div>
+
+      <ul className="mt-3 grid gap-2">
+        {welfareRequests.map((request) => (
+          <li
+            key={request}
+            className="rounded-[12px] border border-[#e2eaf6] bg-[#fbfdff] px-3 py-2 text-[13px] font-bold leading-snug text-[#52627f]"
+          >
+            {request}
+          </li>
+        ))}
+      </ul>
+
+      <button
+        type="button"
+        className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#0867f2] px-4 text-[15px] font-black text-white shadow-[0_12px_22px_rgba(8,103,242,0.24)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        onClick={onMemoCreate}
+      >
+        <Pencil aria-hidden="true" className="h-5 w-5" strokeWidth={2.7} />
+        방문 기록 작성
+      </button>
+    </section>
+  )
+}
+
 function RecentMemoPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
   return (
     <section
@@ -667,7 +717,7 @@ function RecentMemoPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
           id="recent-memo-title"
           className="text-[19px] font-black leading-tight text-[#071747]"
         >
-          최근 상담 메모
+          최근 방문 기록
         </h2>
         <button
           type="button"
@@ -680,11 +730,10 @@ function RecentMemoPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
 
       <article className="mt-2.5 rounded-[12px] border border-[#e2eaf6] bg-[#fbfdff] px-4 py-2.5">
         <h3 className="text-[15px] font-black leading-tight text-[#071747]">
-          식사량 감소 관련 상담
+          식사량 감소 관찰 기록
         </h3>
         <p className="mt-1.5 text-[13px] font-bold leading-[1.45] text-[#52627f]">
-          최근 식사량이 줄어든 원인에 대해 이야기하고 소량씩 자주 드시도록
-          안내드렸습니다.
+          최근 식사량이 줄어든 원인을 관찰하고 소량씩 자주 드시도록 도왔습니다.
         </p>
         <p className="mt-2 text-[12px] font-bold text-[#6e7c98]">
           김민수 요양사 · 2024.05.31 10:45
@@ -697,7 +746,7 @@ function RecentMemoPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
         onClick={onMemoCreate}
       >
         <Pencil aria-hidden="true" className="h-6 w-6" strokeWidth={2.7} />
-        상담 메모 작성
+        방문 기록 작성
       </button>
     </section>
   )
@@ -841,7 +890,7 @@ export function WorkerElderDetailPage() {
             to="/worker/elders/kim-yeongja"
             className="transition hover:text-[#0867f2] focus-visible:rounded-lg"
           >
-            기록
+            방문 기록
           </Link>
           <ChevronRight aria-hidden="true" className="h-4 w-4" />
           <Link
@@ -871,7 +920,7 @@ export function WorkerElderDetailPage() {
                 {detailTitle}
               </h1>
               <p className="mt-1 text-[15px] font-bold leading-snug text-[#566784]">
-                오늘의 상태와 기록을 확인하고 관리하세요.
+                오늘의 상태와 방문 기록을 확인하고 관리하세요.
               </p>
             </section>
 
@@ -895,8 +944,9 @@ export function WorkerElderDetailPage() {
 
           <aside
             className="grid gap-3 xl:-mt-5"
-            aria-label="연락처 및 상담 정보"
+            aria-label="연락처 및 방문 기록 정보"
           >
+            <WelfareRequestPanel onMemoCreate={openMemoCreate} />
             <FamilyContactsPanel />
             <RecentMemoPanel onMemoCreate={openMemoCreate} />
             <WeeklyTrendPanel />

@@ -81,7 +81,7 @@ describe('WorkerSignupPage', () => {
     expect(screen.getByText('전체 첨부 파일 보기 (3개)')).toBeTruthy()
     expect(screen.getByRole('link', { name: '가입 완료' })).toHaveAttribute(
       'href',
-      '/worker',
+      '/caregiver',
     )
   })
 })

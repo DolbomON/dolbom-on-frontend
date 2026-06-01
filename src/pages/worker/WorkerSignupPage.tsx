@@ -527,7 +527,7 @@ function WorkerSignupPreviewMain() {
           이전
         </button>
         <Link
-          to="/worker"
+          to="/caregiver"
           className="inline-flex min-h-12 min-w-[170px] items-center justify-center rounded-lg bg-[#0867f2] px-7 text-[16px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.26)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           가입 완료

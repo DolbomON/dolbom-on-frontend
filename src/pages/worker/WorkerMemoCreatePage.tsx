@@ -27,7 +27,7 @@ const dayLabels = ['일', '월', '화', '수', '목', '금', '토']
 const navItems = [
   { href: '/worker', label: '홈' },
   { href: '/worker/alerts', label: '안부현황' },
-  { href: '/worker/elders/kim-yeongja', label: '기록' },
+  { href: '/worker/elders/kim-yeongja', label: '방문 기록' },
   { href: '/worker#schedule', label: '일정' },
   { href: '/worker#family-memo', label: '가족메모' },
   { href: '/worker/mypage', label: '설정' },
@@ -36,9 +36,9 @@ const navItems = [
 const purposeOptions = [
   '정기 방문 관찰',
   '식사 및 복약 확인',
-  '수면 상태 상담',
+  '수면 상태 관찰',
   '통증 및 불편감 확인',
-  '보호자 전달 상담',
+  '가족 전달 확인',
 ]
 
 const symptomOptions = [
@@ -170,8 +170,8 @@ const requiredMemoFields: Array<keyof CaseMemoFormState> = [
 ]
 
 const fieldErrorMessages: Partial<Record<keyof CaseMemoFormState, string>> = {
-  consultationContent: '상담 내용을 입력해주세요.',
-  memoContent: '메모를 입력해주세요.',
+  consultationContent: '대화 및 반응을 입력해주세요.',
+  memoContent: '방문 기록 메모를 입력해주세요.',
   observationContent: '관찰 내용을 입력해주세요.',
   visitPurpose: '방문 목적을 선택해주세요.',
 }
@@ -203,7 +203,7 @@ function WorkerMemoTopBar() {
           aria-label="요양사 메뉴"
         >
           {navItems.map((item) => {
-            const isActive = item.label === '기록'
+            const isActive = item.label === '방문 기록'
 
             return (
               <Link
@@ -337,7 +337,7 @@ function VisitSummaryCard({
   return (
     <section
       className="grid gap-4 rounded-[18px] border border-[#dfe7f3] bg-white px-4 py-4 shadow-[0_15px_38px_rgba(47,86,145,0.08)] lg:h-[136px] lg:grid-cols-[300px_220px_220px_minmax(280px,1fr)] lg:items-center lg:px-5 lg:py-3"
-      aria-label="방문 상담 요약"
+      aria-label="방문 기록 요약"
     >
       <div className="flex items-center gap-4">
         <img
@@ -551,7 +551,7 @@ function RecentMemoList() {
           id="recent-memo-list-title"
           className="text-[20px] font-black leading-tight text-[#071747]"
         >
-          최근 메모 목록
+          최근 방문 기록 목록
         </h2>
         <Link
           to="/worker/reports"
@@ -821,7 +821,7 @@ export function WorkerMemoCreatePage() {
           </button>
 
           <h1 className="text-center text-[30px] font-black leading-tight text-[#071747] lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:text-[31px]">
-            상담 · 관찰 기록
+            방문 기록 작성
           </h1>
         </div>
 
@@ -924,7 +924,7 @@ export function WorkerMemoCreatePage() {
 
               <MemoTextareaRow
                 id="consultationContent"
-                label="상담 내용"
+                label="대화 및 반응"
                 maxLength={1000}
                 value={formState.consultationContent}
                 onChange={(value) =>
@@ -955,11 +955,11 @@ export function WorkerMemoCreatePage() {
 
               <MemoTextareaRow
                 id="memoContent"
-                label="메모 작성"
+                label="방문 기록 메모"
                 maxLength={1500}
                 value={formState.memoContent}
                 onChange={(value) => updateTextField('memoContent', value)}
-                placeholder="기타 참고할 사항을 자유롭게 작성해주세요."
+                placeholder="방문 중 참고할 사항을 자유롭게 작성해주세요."
                 errorMessage={errors.memoContent}
                 required
               />
@@ -1059,12 +1059,12 @@ export function WorkerMemoCreatePage() {
                 type="submit"
                 className="mt-4 min-h-14 w-full rounded-lg bg-[#0867f2] px-5 text-[19px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] lg:mt-3 lg:min-h-12"
               >
-                기록 저장
+                방문 기록 저장
               </button>
             </form>
           </div>
 
-          <aside className="grid gap-5" aria-label="상담 메모 보조 정보">
+          <aside className="grid gap-5" aria-label="방문 기록 보조 정보">
             <RecentMemoList />
             <QuickTemplatePanel />
           </aside>
@@ -1077,7 +1077,7 @@ export function WorkerMemoCreatePage() {
             strokeWidth={2.7}
           />
           <p>
-            작성한 상담·관찰 기록은 담당 돌봄 관리에 활용되며 보호자에게 필요한
+            작성한 방문 기록은 담당 돌봄 관리에 활용되며 보호자에게 필요한
             내용만 전달됩니다.
           </p>
         </div>

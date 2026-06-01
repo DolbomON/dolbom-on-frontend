@@ -5,9 +5,16 @@ import {
   Pencil,
   Search,
   TriangleAlert,
+  UserPlus,
+  X,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  caregiverAssignmentStorageKey,
+  type AssignmentPriority,
+  type CaregiverAssignment,
+} from '../../features/caregiver/visitAssignments'
 import { cn } from '../../lib/utils'
 
 const welfareAssetBase = '/assets/dolbomon/welfare'
@@ -75,10 +82,17 @@ type MemoItem = {
   title: string
 }
 
+type AssignmentFormState = {
+  assignedCaregiver: string
+  dueTime: string
+  priority: AssignmentPriority
+  requestContent: string
+}
+
 const navItems = [
   { href: '/worker', label: '홈' },
   { href: '/worker/elders', label: '복지 현황' },
-  { href: '/worker/elders/kim-yeongja/memo', label: '상담 관리' },
+  { href: '/worker/elders/kim-yeongja/memo', label: '사례 관리' },
   { href: '/worker/reports', label: '보고서' },
   { href: '/worker#schedule', label: '기관 일정' },
   { href: '/worker/mypage', label: '설정' },
@@ -102,20 +116,20 @@ const metricCards: MetricCard[] = [
     value: '7',
   },
   {
-    description: '금일 접수된 상담',
+    description: '사례 관리 메모',
     iconSrc: `${welfareAssetBase}/대화.png`,
     id: 'new-consult',
-    label: '신규 상담',
+    label: '사례 메모',
     unit: '건',
     value: '5',
   },
   {
-    description: '예정된 방문 활동',
+    description: '요양사 배정 대기',
     iconSrc: `${welfareAssetBase}/집.png`,
     id: 'today-visit',
-    label: '오늘 방문',
+    label: '배정 필요',
     unit: '건',
-    value: '9',
+    value: '4',
   },
 ]
 
@@ -179,22 +193,22 @@ const quickMenus: QuickMenuItem[] = [
     title: '알림 관리',
   },
   {
-    description: '상담 기록 작성',
+    description: '사례 관리 메모 작성',
     href: '/worker/elders/kim-yeongja/memo',
     iconSrc: `${welfareAssetBase}/채팅.png`,
-    title: '상담 메모',
+    title: '사례 메모',
   },
   {
-    description: '서식 및 활동 보고',
+    description: '서식 및 대응 보고',
     href: '/worker/reports',
     iconSrc: `${welfareAssetBase}/체크.png`,
-    title: '보고서',
+    title: '보고서 생성',
   },
   {
-    description: '가족 연락처 관리',
+    description: '대응 결과 확인',
     href: '/worker/elders',
     iconSrc: `${welfareAssetBase}/연락.png`,
-    title: '가족 연락',
+    title: '대응 완료',
   },
 ]
 
@@ -204,12 +218,12 @@ const scheduleItems: ScheduleItem[] = [
     color: '#0a68f3',
     description: '서울 강서구 화곡동',
     time: '10:00',
-    title: '김영자 어르신 방문 상담',
+    title: '김영자 어르신 방문 대응',
   },
   {
     category: '회의',
     color: '#22b964',
-    description: '3층 상담실',
+    description: '3층 사례 회의실',
     time: '13:30',
     title: '사례 회의',
   },
@@ -254,10 +268,10 @@ const serviceLinks: ServiceLinkItem[] = [
 ]
 
 const weeklyReports: WeeklyReportItem[] = [
-  { label: '상담 진행', value: '28건' },
-  { label: '방문 활동', value: '16건' },
+  { label: '사례 메모', value: '28건' },
+  { label: '요양사 배정', value: '16건' },
   { label: '서비스 연계', value: '12건' },
-  { label: '위기 대응', value: '3건' },
+  { label: '대응 완료', value: '3건' },
 ]
 
 const recentMemos: MemoItem[] = [
@@ -266,7 +280,7 @@ const recentMemos: MemoItem[] = [
     body: '식사 불균형으로 혈당 수치가 불안정하여 식단 조절과 ...',
     status: 'danger',
     statusLabel: '위험',
-    title: '김영자 어르신 혈당 관리 상담',
+    title: '김영자 어르신 혈당 사례 관리',
   },
   {
     age: '5시간 전',
@@ -283,6 +297,17 @@ const statusFilters: Array<{ label: string; value: ElderStatus | 'all' }> = [
   { label: '주의', value: 'caution' },
   { label: '안정', value: 'stable' },
 ]
+
+const caregiverOptions = ['김민수 요양사', '박지연 요양사', '최은주 요양사']
+
+const priorityOptions: AssignmentPriority[] = ['긴급', '높음', '보통']
+
+const defaultAssignmentForm: AssignmentFormState = {
+  assignedCaregiver: caregiverOptions[0],
+  dueTime: '13:00',
+  priority: '높음',
+  requestContent: '',
+}
 
 const statusStyles: Record<
   ElderStatus,
@@ -334,6 +359,10 @@ function elderMatchesSearch(elder: ElderRow, searchQuery: string) {
     .map(normalizeSearchValue)
     .join(' ')
     .includes(keyword)
+}
+
+function buildDefaultRequest(elder: ElderRow) {
+  return `${elder.memo} 방문 확인 후 관찰 결과와 가족 인계 내용을 남겨 주세요.`
 }
 
 function WorkerDashboardTopBar() {
@@ -517,11 +546,18 @@ function StatusMemoIcon({ status }: { status: ElderStatus }) {
   )
 }
 
-function ElderDashboardRow({ elder }: { elder: ElderRow }) {
+function ElderDashboardRow({
+  elder,
+  onAssignCaregiver,
+}: {
+  elder: ElderRow
+  onAssignCaregiver: (elder: ElderRow) => void
+}) {
   const tone = statusStyles[elder.status]
+  const isHighRisk = elder.status !== 'stable'
 
   return (
-    <article className="grid gap-4 border-t border-[#e5edf8] bg-white px-4 py-1.5 first:border-t-0 lg:grid-cols-[minmax(260px,1.2fr)_86px_minmax(270px,1.45fr)_82px_204px] lg:items-center">
+    <article className="grid gap-4 border-t border-[#e5edf8] bg-white px-4 py-2 first:border-t-0 lg:grid-cols-[minmax(230px,1fr)_76px_minmax(240px,1.3fr)_78px_180px] lg:items-center">
       <div className="flex min-w-0 items-center gap-4">
         <img
           src={elder.avatarSrc}
@@ -565,7 +601,7 @@ function ElderDashboardRow({ elder }: { elder: ElderRow }) {
         </strong>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:flex sm:justify-end">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-1">
         <Link
           to={`/worker/elders/${elder.id}`}
           className="inline-flex min-h-9 whitespace-nowrap items-center justify-center gap-1 rounded-lg border border-[#dbe5f3] bg-white px-3 text-[13px] font-black text-[#0867f2] shadow-[0_7px_16px_rgba(37,72,125,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
@@ -573,12 +609,26 @@ function ElderDashboardRow({ elder }: { elder: ElderRow }) {
           상세 보기
           <ChevronRight aria-hidden="true" className="h-4 w-4" />
         </Link>
+        {isHighRisk ? (
+          <button
+            type="button"
+            className="inline-flex min-h-9 whitespace-nowrap items-center justify-center gap-1 rounded-lg border border-[#bfd6fb] bg-[#edf6ff] px-3 text-[13px] font-black text-[#0867f2] shadow-[0_7px_16px_rgba(37,72,125,0.06)] transition hover:bg-[#e2f0ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            onClick={() => onAssignCaregiver(elder)}
+          >
+            <UserPlus
+              aria-hidden="true"
+              className="h-4 w-4"
+              strokeWidth={2.8}
+            />
+            요양사 배정
+          </button>
+        ) : null}
         <Link
           to={`/worker/elders/${elder.id}/memo`}
           className="inline-flex min-h-9 whitespace-nowrap items-center justify-center gap-1 rounded-lg bg-[#0867f2] px-3 text-[13px] font-black text-white shadow-[0_9px_18px_rgba(8,103,242,0.25)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           <Pencil aria-hidden="true" className="h-4 w-4" strokeWidth={2.8} />
-          상담 작성
+          사례 메모
         </Link>
       </div>
     </article>
@@ -589,11 +639,13 @@ function RiskElderPanel({
   activeFilter,
   filteredElders,
   onFilterChange,
+  onAssignCaregiver,
   onSearchChange,
   searchQuery,
 }: {
   activeFilter: ElderStatus | 'all'
   filteredElders: ElderRow[]
+  onAssignCaregiver: (elder: ElderRow) => void
   onFilterChange: (filter: ElderStatus | 'all') => void
   onSearchChange: (value: string) => void
   searchQuery: string
@@ -609,10 +661,10 @@ function RiskElderPanel({
             id="risk-elder-title"
             className="text-[21px] font-black leading-tight text-[#071747]"
           >
-            위기·주의 어르신 현황
+            고위험 어르신 우선순위
           </h2>
           <span className="inline-flex min-h-8 items-center rounded-lg bg-[#e8f2ff] px-3 text-[13px] font-black text-[#0867f2]">
-            4명
+            3명
           </span>
         </div>
         <SearchAndFilter
@@ -625,7 +677,11 @@ function RiskElderPanel({
 
       <div className="overflow-hidden rounded-b-[15px] border-t border-[#e5edf8]">
         {filteredElders.map((elder) => (
-          <ElderDashboardRow key={elder.id} elder={elder} />
+          <ElderDashboardRow
+            key={elder.id}
+            elder={elder}
+            onAssignCaregiver={onAssignCaregiver}
+          />
         ))}
 
         {filteredElders.length === 0 ? (
@@ -640,11 +696,180 @@ function RiskElderPanel({
           to="/worker/elders"
           className="inline-flex min-h-8 items-center justify-center gap-1 rounded-lg px-3 text-[15px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
-          전체 위기·주의 어르신 보기
+          전체 고위험 어르신 보기
           <ChevronRight aria-hidden="true" className="h-4 w-4" />
         </Link>
       </div>
     </section>
+  )
+}
+
+function CaregiverAssignmentModal({
+  elder,
+  formState,
+  onClose,
+  onFieldChange,
+  onSubmit,
+}: {
+  elder: ElderRow | null
+  formState: AssignmentFormState
+  onClose: () => void
+  onFieldChange: (field: keyof AssignmentFormState, value: string) => void
+  onSubmit: () => void
+}) {
+  if (!elder) {
+    return null
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 grid place-items-center bg-[#071747]/50 px-4 py-6"
+      role="presentation"
+    >
+      <section
+        className="w-full max-w-[560px] rounded-[18px] border border-[#dfe8f5] bg-white shadow-[0_22px_60px_rgba(7,23,71,0.24)]"
+        role="dialog"
+        aria-labelledby="caregiver-assignment-title"
+        aria-modal="true"
+      >
+        <div className="flex items-start justify-between gap-3 border-b border-[#e5edf8] px-5 py-4">
+          <div>
+            <p className="text-[13px] font-black text-[#0867f2]">고위험 대응</p>
+            <h2
+              id="caregiver-assignment-title"
+              className="mt-1 text-[24px] font-black leading-tight text-[#071747]"
+            >
+              요양사 배정
+            </h2>
+          </div>
+          <button
+            type="button"
+            className="inline-grid h-10 w-10 place-items-center rounded-lg text-[#60708e] transition hover:bg-[#f1f6ff] hover:text-[#071747] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            aria-label="요양사 배정 닫기"
+            onClick={onClose}
+          >
+            <X aria-hidden="true" className="h-6 w-6" />
+          </button>
+        </div>
+
+        <form
+          className="grid gap-4 px-5 py-5"
+          onSubmit={(event) => {
+            event.preventDefault()
+            onSubmit()
+          }}
+        >
+          <div>
+            <label
+              className="text-[15px] font-black leading-tight text-[#112250]"
+              htmlFor="assignment-elder"
+            >
+              어르신
+            </label>
+            <input
+              id="assignment-elder"
+              value={elder.name}
+              readOnly
+              className="mt-2 h-11 w-full rounded-lg border border-[#dbe3ef] bg-[#f8fbff] px-4 text-[16px] font-black text-[#10204a]"
+            />
+          </div>
+
+          <div>
+            <label
+              className="text-[15px] font-black leading-tight text-[#112250]"
+              htmlFor="assignment-request"
+            >
+              요청 내용
+            </label>
+            <textarea
+              id="assignment-request"
+              value={formState.requestContent}
+              rows={3}
+              onChange={(event) =>
+                onFieldChange('requestContent', event.target.value)
+              }
+              className="mt-2 min-h-[108px] w-full resize-none rounded-lg border border-[#dbe3ef] bg-white px-4 py-3 text-[16px] font-bold leading-snug text-[#10204a] outline-none transition placeholder:text-[#9aa8be] focus:border-[#0867f2] focus:ring-4 focus:ring-[#0867f2]/10"
+              placeholder="요양사에게 전달할 방문 요청을 입력하세요."
+              required
+            />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div>
+              <label
+                className="text-[15px] font-black leading-tight text-[#112250]"
+                htmlFor="assignment-priority"
+              >
+                우선순위
+              </label>
+              <select
+                id="assignment-priority"
+                value={formState.priority}
+                onChange={(event) =>
+                  onFieldChange('priority', event.target.value)
+                }
+                className="mt-2 h-11 w-full rounded-lg border border-[#dbe3ef] bg-white px-3 text-[15px] font-black text-[#10204a] outline-none focus:border-[#0867f2] focus:ring-4 focus:ring-[#0867f2]/10"
+              >
+                {priorityOptions.map((priority) => (
+                  <option key={priority} value={priority}>
+                    {priority}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label
+                className="text-[15px] font-black leading-tight text-[#112250]"
+                htmlFor="assignment-caregiver"
+              >
+                배정 요양사
+              </label>
+              <select
+                id="assignment-caregiver"
+                value={formState.assignedCaregiver}
+                onChange={(event) =>
+                  onFieldChange('assignedCaregiver', event.target.value)
+                }
+                className="mt-2 h-11 w-full rounded-lg border border-[#dbe3ef] bg-white px-3 text-[15px] font-black text-[#10204a] outline-none focus:border-[#0867f2] focus:ring-4 focus:ring-[#0867f2]/10"
+              >
+                {caregiverOptions.map((caregiver) => (
+                  <option key={caregiver} value={caregiver}>
+                    {caregiver}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label
+                className="text-[15px] font-black leading-tight text-[#112250]"
+                htmlFor="assignment-due-time"
+              >
+                마감 시간
+              </label>
+              <input
+                id="assignment-due-time"
+                type="time"
+                value={formState.dueTime}
+                onChange={(event) =>
+                  onFieldChange('dueTime', event.target.value)
+                }
+                className="mt-2 h-11 w-full rounded-lg border border-[#dbe3ef] bg-white px-3 text-[15px] font-black text-[#10204a] outline-none focus:border-[#0867f2] focus:ring-4 focus:ring-[#0867f2]/10"
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="mt-1 inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-5 text-[17px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+          >
+            배정하기
+          </button>
+        </form>
+      </section>
+    </div>
   )
 }
 
@@ -763,7 +988,7 @@ function RecentMemoPanel() {
           id="recent-memo-title"
           className="text-[20px] font-black leading-tight text-[#071747]"
         >
-          최근 상담 메모
+          최근 사례 관리 메모
         </h2>
         <Link
           to="/worker/reports"
@@ -905,7 +1130,7 @@ function WeeklyReportPanel() {
 
       <div className="grid gap-3 rounded-[15px] border border-[#dfe8f5] bg-white px-5 py-4 shadow-[0_12px_26px_rgba(37,72,125,0.06)] sm:grid-cols-[1fr_auto] sm:items-center">
         <p className="break-keep text-[13px] font-bold leading-relaxed text-[#62718d]">
-          이번 주 상담은 전주 대비 12% 증가했어요.
+          이번 주 고위험 대응은 전주 대비 12% 증가했어요.
           <br />
           서식 제출 문서가 8건이 예정되었습니다.
         </p>
@@ -922,6 +1147,15 @@ function WeeklyReportPanel() {
 
 export function WorkerDashboardPage() {
   const [activeFilter, setActiveFilter] = useState<ElderStatus | 'all'>('all')
+  const [assignmentForm, setAssignmentForm] = useState<AssignmentFormState>(
+    defaultAssignmentForm,
+  )
+  const [assignmentMessage, setAssignmentMessage] = useState<string | null>(
+    null,
+  )
+  const [assignmentTarget, setAssignmentTarget] = useState<ElderRow | null>(
+    null,
+  )
   const [searchQuery, setSearchQuery] = useState('')
 
   const filteredElders = useMemo(() => {
@@ -932,6 +1166,59 @@ export function WorkerDashboardPage() {
       return matchesFilter && elderMatchesSearch(elder, searchQuery)
     })
   }, [activeFilter, searchQuery])
+
+  const openAssignmentModal = (elder: ElderRow) => {
+    setAssignmentTarget(elder)
+    setAssignmentForm({
+      assignedCaregiver: caregiverOptions[0],
+      dueTime: elder.status === 'danger' ? '12:00' : '15:00',
+      priority: elder.status === 'danger' ? '긴급' : '높음',
+      requestContent: buildDefaultRequest(elder),
+    })
+  }
+
+  const updateAssignmentField = (
+    field: keyof AssignmentFormState,
+    value: string,
+  ) => {
+    setAssignmentForm(
+      (current) =>
+        ({
+          ...current,
+          [field]: value,
+        }) as AssignmentFormState,
+    )
+  }
+
+  const submitAssignment = () => {
+    if (!assignmentTarget || !assignmentForm.requestContent.trim()) {
+      return
+    }
+
+    const payload: CaregiverAssignment = {
+      assignedCaregiver: assignmentForm.assignedCaregiver,
+      createdAt: new Date().toISOString(),
+      dueTime: assignmentForm.dueTime,
+      elderId: assignmentTarget.id,
+      elderName: assignmentTarget.name,
+      priority: assignmentForm.priority,
+      requestContent: assignmentForm.requestContent.trim(),
+    }
+
+    try {
+      window.localStorage.setItem(
+        caregiverAssignmentStorageKey,
+        JSON.stringify(payload),
+      )
+    } catch {
+      // Local persistence is best-effort until the assignment API exists.
+    }
+
+    setAssignmentMessage(
+      `${payload.elderName} 새 배정 업무가 요양사 대시보드에 전달되었습니다.`,
+    )
+    setAssignmentTarget(null)
+  }
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
@@ -947,10 +1234,11 @@ export function WorkerDashboardPage() {
               id="worker-dashboard-title"
               className="break-keep text-[28px] font-black leading-tight text-[#071747] sm:text-[32px]"
             >
-              이수진 복지사님, 오늘도 감사합니다! 💙
+              이수진 복지사님, 위험 대응 현황입니다.
             </h1>
             <p className="mt-3 text-[15px] font-bold leading-snug text-[#425371]">
-              담당 어르신의 상태와 복지 연계 현황을 한눈에 확인하세요.
+              고위험 어르신 우선순위, 요양사 배정, 사례 메모와 대응 완료를
+              한눈에 확인하세요.
             </p>
           </section>
 
@@ -966,10 +1254,20 @@ export function WorkerDashboardPage() {
           <RiskElderPanel
             activeFilter={activeFilter}
             filteredElders={filteredElders}
+            onAssignCaregiver={openAssignmentModal}
             onFilterChange={setActiveFilter}
             onSearchChange={setSearchQuery}
             searchQuery={searchQuery}
           />
+
+          {assignmentMessage ? (
+            <p
+              className="rounded-[14px] border border-[#bfeccf] bg-[#edf9f1] px-4 py-3 text-[15px] font-black text-[#15803d] shadow-[0_10px_22px_rgba(34,197,94,0.1)]"
+              role="status"
+            >
+              {assignmentMessage}
+            </p>
+          ) : null}
 
           <ServiceLinksPanel />
           <WeeklyReportPanel />
@@ -981,6 +1279,14 @@ export function WorkerDashboardPage() {
           <RecentMemoPanel />
         </aside>
       </div>
+
+      <CaregiverAssignmentModal
+        elder={assignmentTarget}
+        formState={assignmentForm}
+        onClose={() => setAssignmentTarget(null)}
+        onFieldChange={updateAssignmentField}
+        onSubmit={submitAssignment}
+      />
     </main>
   )
 }

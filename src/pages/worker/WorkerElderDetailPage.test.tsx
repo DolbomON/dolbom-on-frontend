@@ -30,7 +30,7 @@ describe('WorkerElderDetailPage', () => {
     expect(
       within(screen.getByRole('navigation', { name: '요양사 메뉴' })).getByRole(
         'link',
-        { name: '기록' },
+        { name: '방문 기록' },
       ),
     ).toHaveAttribute('aria-current', 'page')
 
@@ -57,23 +57,26 @@ describe('WorkerElderDetailPage', () => {
       screen.getByRole('heading', { name: 'AI 생활 상태 요약' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '오늘 기록' }),
+      screen.getByRole('heading', { name: '오늘 방문 기록' }),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: '가족 연락처' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '최근 상담 메모' }),
+      screen.getByRole('heading', { name: '복지사 요청사항' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '최근 방문 기록' }),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: '주간 변화 추이' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: '기록 추가' }),
+      screen.getByRole('button', { name: '방문 기록 추가' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: '상담 메모 작성' }),
-    ).toBeInTheDocument()
+      screen.getAllByRole('button', { name: '방문 기록 작성' }).length,
+    ).toBeGreaterThanOrEqual(1)
     expect(screen.getByRole('button', { name: '최근 7일' })).toBeInTheDocument()
   })
 
@@ -112,14 +115,16 @@ describe('WorkerElderDetailPage', () => {
           />
           <Route
             path="/worker/elders/:elderId/memo"
-            element={<div>상담 메모 작성 화면</div>}
+            element={<div>방문 기록 작성 화면</div>}
           />
         </Routes>
       </MemoryRouter>,
     )
 
-    await user.click(screen.getByRole('button', { name: '상담 메모 작성' }))
+    await user.click(
+      screen.getAllByRole('button', { name: '방문 기록 작성' })[0],
+    )
 
-    expect(screen.getByText('상담 메모 작성 화면')).toBeInTheDocument()
+    expect(screen.getByText('방문 기록 작성 화면')).toBeInTheDocument()
   })
 })

@@ -21,24 +21,24 @@ const roleOptions: Array<RoleOption<UserRole>> = [
     title: '가족',
   },
   {
-    description: '대상자의 안부를 체계적으로 확인해요',
+    description: '오늘 방문 업무를 실행하고 기록해요',
     id: 'worker',
     imageSrc: '/assets/dolbomon/role-select/role-worker.png',
     title: '요양사',
   },
   {
-    description: '지역 돌봄 현황을 효율적으로 관리해요',
+    description: '위험 대응과 요양사 배정을 관리해요',
     id: 'government',
     imageSrc: '/assets/dolbomon/role-select/role-government.png',
     title: '복지사',
   },
 ]
 
-const nextRouteByRole: Record<UserRole, string | null> = {
+const nextRouteByRole: Record<UserRole, string> = {
   elder: '/elder/basic-info',
   family: '/family',
   worker: '/worker/signup',
-  government: null,
+  government: '/worker',
 }
 
 export function RoleSelectPage() {
@@ -60,12 +60,6 @@ export function RoleSelectPage() {
     }
 
     const nextRoute = nextRouteByRole[selectedRole]
-
-    if (!nextRoute) {
-      // TODO: Navigate to /government when the local government route exists.
-      console.info('Government role flow is not implemented yet.')
-      return
-    }
 
     navigate(nextRoute)
   }
