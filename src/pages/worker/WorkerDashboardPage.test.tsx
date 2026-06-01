@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { WorkerDashboardPage } from './WorkerDashboardPage'
 
 describe('WorkerDashboardPage', () => {
-  it('renders the caregiver dashboard content and navigation', () => {
+  it('renders the welfare worker home content and navigation', () => {
     render(
       <MemoryRouter initialEntries={['/worker']}>
         <WorkerDashboardPage />
@@ -12,16 +12,24 @@ describe('WorkerDashboardPage', () => {
     )
 
     expect(
-      screen.getByRole('heading', { name: '담당 어르신 대시보드' }),
+      screen.getByRole('heading', {
+        name: '이수진 복지사님, 오늘도 감사합니다! 💙',
+      }),
     ).toBeTruthy()
-    expect(screen.getByText('담당 어르신')).toBeTruthy()
-    expect(screen.getByText('김영자님')).toBeTruthy()
-    expect(screen.getByText('이순자님')).toBeTruthy()
-    expect(screen.getByText('박철수님')).toBeTruthy()
-    expect(screen.getByText('최복례님')).toBeTruthy()
+    expect(screen.getByText('관리 어르신')).toBeTruthy()
+    expect(screen.getByText('김영자 어르신')).toBeTruthy()
+    expect(screen.getByText('이순자 어르신')).toBeTruthy()
+    expect(screen.getByText('박철수 어르신')).toBeTruthy()
+    expect(screen.getByText('최복례 어르신')).toBeTruthy()
+    expect(
+      screen.getByRole('heading', { name: '위기·주의 어르신 현황' }),
+    ).toBeTruthy()
     expect(screen.getByRole('heading', { name: '빠른 메뉴' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: '오늘 일정' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: '최근 상담 메모' })).toBeTruthy()
+    expect(
+      screen.getByRole('heading', { name: '복지 서비스 연계 현황' }),
+    ).toBeTruthy()
     expect(screen.getByRole('link', { name: '홈' })).toHaveAttribute(
       'aria-current',
       'page',
