@@ -221,11 +221,12 @@ const trendToneClasses = {
 } as const
 
 type StatusTone = keyof typeof statusPillClasses
+type ProfileInfoRow = (typeof profileInfoRows)[number]
 
 function WorkerDetailTopBar() {
   return (
     <header className="sticky top-0 z-30 border-b border-[#e3ebf7] bg-white/96 shadow-[0_6px_20px_rgba(35,73,128,0.07)] backdrop-blur">
-      <div className="mx-auto grid min-h-[74px] w-full max-w-[1640px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-3 lg:grid-cols-[190px_minmax(0,1fr)_auto] lg:px-10">
+      <div className="mx-auto grid min-h-[82px] w-full max-w-[1640px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-2 lg:h-[72px] lg:min-h-[72px] lg:grid-cols-[190px_minmax(0,1fr)_auto] lg:px-10 lg:py-0">
         <Link
           to="/"
           className="inline-flex min-h-11 items-center text-[29px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.18)] focus-visible:rounded-lg lg:text-[34px]"
@@ -235,7 +236,7 @@ function WorkerDetailTopBar() {
         </Link>
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-2 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-8"
+          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-2 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-7"
           aria-label="요양사 메뉴"
         >
           {navItems.map((item) => {
@@ -338,6 +339,23 @@ function NotFoundState() {
   )
 }
 
+function ProfileInfoIcon({ row }: { row: ProfileInfoRow }) {
+  if ('iconSrc' in row) {
+    return (
+      <img
+        src={row.iconSrc}
+        alt=""
+        className="h-6 w-6 object-contain"
+        draggable="false"
+      />
+    )
+  }
+
+  const Icon = row.icon
+
+  return <Icon aria-hidden="true" size={22} strokeWidth={2.5} />
+}
+
 function ProfileSummaryCard({
   age,
   avatarSrc,
@@ -351,66 +369,55 @@ function ProfileSummaryCard({
 }) {
   return (
     <aside
-      className="rounded-[18px] border border-[#dfe8f5] bg-white px-4 py-5 shadow-[0_18px_42px_rgba(47,86,145,0.09)]"
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-4 py-4 shadow-[0_18px_42px_rgba(47,86,145,0.09)]"
       aria-label={`${name} 기본 정보`}
     >
       <div className="flex flex-col items-center text-center">
         <img
           src={avatarSrc}
           alt={`${name} 프로필`}
-          className="h-[142px] w-[142px] rounded-full bg-[#f2f6ff] object-cover shadow-[0_12px_28px_rgba(47,86,145,0.13)]"
+          className="h-[132px] w-[132px] rounded-full bg-[#f2f6ff] object-cover shadow-[0_12px_28px_rgba(47,86,145,0.13)]"
           draggable="false"
         />
-        <h2 className="mt-5 text-[28px] font-black leading-tight text-[#071747]">
+        <h2 className="mt-4 text-[26px] font-black leading-tight text-[#071747]">
           {name}
         </h2>
-        <p className="mt-2 text-[17px] font-bold leading-tight text-[#546384]">
+        <p className="mt-2 text-[16px] font-bold leading-tight text-[#546384]">
           {age}세 · {household}
         </p>
       </div>
 
-      <section className="mt-8 rounded-[16px] border border-[#e3ebf7] bg-white px-4 py-5 shadow-[0_10px_24px_rgba(47,86,145,0.05)]">
+      <section className="mt-6 rounded-[16px] border border-[#e3ebf7] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(47,86,145,0.05)]">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="text-[19px] font-black leading-tight text-[#071747]">
+          <h3 className="text-[18px] font-black leading-tight text-[#071747]">
             오늘 상태 요약
           </h3>
-          <span className="inline-flex min-h-8 items-center rounded-full bg-[#fff1bd] px-4 text-[16px] font-black text-[#e68900]">
+          <span className="inline-flex min-h-7 items-center rounded-full bg-[#fff1bd] px-4 text-[15px] font-black text-[#e68900]">
             주의
           </span>
         </div>
 
-        <p className="mt-5 text-[16px] font-bold leading-[1.65] text-[#4c5d7c]">
+        <p className="mt-4 text-[15px] font-bold leading-[1.55] text-[#4c5d7c]">
           식사량이 평소보다 낮고, 복약 시간이 불규칙했습니다.
         </p>
 
-        <div className="my-4 h-px bg-[#e6eef8]" aria-hidden="true" />
+        <div className="my-3 h-px bg-[#e6eef8]" aria-hidden="true" />
 
-        <dl className="grid gap-4">
+        <dl className="grid gap-3">
           {profileInfoRows.map((row) => {
-            const Icon = 'icon' in row ? row.icon : null
-
             return (
               <div
                 key={row.id}
-                className="grid grid-cols-[34px_minmax(84px,1fr)_auto] items-center gap-2"
+                className="grid grid-cols-[32px_minmax(84px,1fr)_auto] items-center gap-2"
               >
-                <span className="inline-grid h-8 w-8 place-items-center text-[#0867f2]">
-                  {Icon ? (
-                    <Icon aria-hidden="true" size={24} strokeWidth={2.5} />
-                  ) : (
-                    <img
-                      src={row.iconSrc}
-                      alt=""
-                      className="h-7 w-7 object-contain"
-                      draggable="false"
-                    />
-                  )}
+                <span className="inline-grid h-7 w-7 place-items-center text-[#0867f2]">
+                  <ProfileInfoIcon row={row} />
                 </span>
-                <dt className="text-[15px] font-bold leading-tight text-[#75819a]">
+                <dt className="text-[14px] font-bold leading-tight text-[#75819a]">
                   {row.label}
                 </dt>
-                <dd className="text-right text-[15px] font-black leading-tight text-[#071747]">
-                  {row.value}
+                <dd className="text-right text-[14px] font-black leading-tight text-[#071747]">
+                  {row.id === 'household' ? household : row.value}
                 </dd>
               </div>
             )
@@ -420,7 +427,7 @@ function ProfileSummaryCard({
 
       <Link
         to="/worker/elders/kim-yeongja"
-        className="mx-auto mt-5 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-4 text-[17px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        className="mx-auto mt-4 inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-4 text-[16px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
       >
         어르신 정보 보기
         <ChevronRight aria-hidden="true" className="h-5 w-5" />
@@ -431,19 +438,19 @@ function ProfileSummaryCard({
 
 function StatusMetricCard({ card }: { card: (typeof statusCards)[number] }) {
   return (
-    <article className="flex min-h-[168px] flex-col items-center justify-center rounded-[16px] border border-[#e2eaf6] bg-white px-3 py-4 text-center shadow-[0_14px_32px_rgba(47,86,145,0.08)]">
+    <article className="flex min-h-[156px] flex-col items-center justify-center rounded-[16px] border border-[#e2eaf6] bg-white px-3 py-3 text-center shadow-[0_14px_32px_rgba(47,86,145,0.08)]">
       <img
         src={card.iconSrc}
         alt=""
-        className="h-[82px] w-[92px] object-contain"
+        className="h-[74px] w-[88px] object-contain"
         draggable="false"
       />
-      <h3 className="mt-1 text-[17px] font-black leading-tight text-[#071747]">
+      <h3 className="text-[16px] font-black leading-tight text-[#071747]">
         {card.label}
       </h3>
       <span
         className={cn(
-          'mt-3 inline-flex min-h-8 min-w-[78px] items-center justify-center rounded-full px-4 text-[15px] font-black leading-none shadow-[0_8px_16px_rgba(47,86,145,0.08)]',
+          'mt-2 inline-flex min-h-7 min-w-[74px] items-center justify-center rounded-full px-4 text-[14px] font-black leading-none shadow-[0_8px_16px_rgba(47,86,145,0.08)]',
           statusPillClasses[card.tone],
         )}
       >
@@ -459,7 +466,7 @@ function AiSummaryPanel() {
       className="rounded-[18px] border border-[#e0e8f5] bg-white shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
       aria-labelledby="ai-summary-title"
     >
-      <div className="flex items-start gap-4 px-5 py-5">
+      <div className="flex items-start gap-4 px-5 py-3.5">
         <img
           src={`${workerAssetBase}/ai.png`}
           alt=""
@@ -470,7 +477,7 @@ function AiSummaryPanel() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2
               id="ai-summary-title"
-              className="text-[19px] font-black leading-tight text-[#071747]"
+              className="text-[18px] font-black leading-tight text-[#071747]"
             >
               AI 생활 상태 요약
             </h2>
@@ -486,7 +493,7 @@ function AiSummaryPanel() {
             </div>
           </div>
 
-          <p className="mt-3 text-[16px] font-bold leading-[1.75] text-[#314263]">
+          <p className="mt-2 text-[15px] font-bold leading-[1.45] text-[#314263]">
             식사량이 평소 대비 감소하였고, 복약 시간이 다소 지연되었습니다.
             <br />
             통증과 기분은 보통 수준이며, 수면은 안정적으로 유지되었습니다.
@@ -496,7 +503,7 @@ function AiSummaryPanel() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 border-t border-[#e6eef8] px-5 py-3 text-[13px] font-bold text-[#7a86a0]">
+      <div className="flex items-center gap-2 border-t border-[#e6eef8] px-5 py-2 text-[13px] font-bold text-[#7a86a0]">
         <Info
           aria-hidden="true"
           className="h-5 w-5 shrink-0 text-[#7b8aa7]"
@@ -512,7 +519,7 @@ function StatusBadge({ status, tone }: { status: string; tone: StatusTone }) {
   return (
     <span
       className={cn(
-        'inline-flex min-h-7 min-w-[64px] items-center justify-center rounded-full px-3 text-[14px] font-black leading-none',
+        'inline-flex min-h-5 min-w-[56px] items-center justify-center rounded-full px-3 text-[12px] font-black leading-none',
         statusPillClasses[tone],
       )}
     >
@@ -530,7 +537,7 @@ function TodayRecordsPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2
           id="today-records-title"
-          className="text-[20px] font-black leading-tight text-[#071747]"
+          className="text-[19px] font-black leading-tight text-[#071747]"
         >
           오늘 기록
         </h2>
@@ -547,37 +554,37 @@ function TodayRecordsPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
       <div className="mt-3 overflow-x-auto rounded-[14px] border border-[#e3ebf7]">
         <table className="w-full min-w-[680px] border-collapse text-left">
           <caption className="sr-only">김영자님 오늘 상태 기록</caption>
-          <thead className="bg-[#fbfdff] text-[14px] font-black text-[#687792]">
+          <thead className="bg-[#fbfdff] text-[13px] font-black leading-tight text-[#687792]">
             <tr>
-              <th className="w-[96px] px-4 py-2.5" scope="col">
+              <th className="w-[96px] px-4 py-1" scope="col">
                 시간
               </th>
-              <th className="w-[130px] px-4 py-2.5" scope="col">
+              <th className="w-[130px] px-4 py-1" scope="col">
                 항목
               </th>
-              <th className="px-4 py-2.5" scope="col">
+              <th className="px-4 py-1" scope="col">
                 내용
               </th>
-              <th className="w-[128px] px-4 py-2.5" scope="col">
+              <th className="w-[128px] px-4 py-1" scope="col">
                 상태
               </th>
-              <th className="w-[150px] px-4 py-2.5" scope="col">
+              <th className="w-[150px] px-4 py-1" scope="col">
                 기록자
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#e7eef8] text-[14px] font-bold text-[#253758]">
+          <tbody className="divide-y divide-[#e7eef8] text-[12px] font-bold leading-tight text-[#253758]">
             {todayRecords.map((record) => (
               <tr key={record.id} className="bg-white">
-                <td className="px-4 py-2.5 font-black text-[#1e3a66]">
+                <td className="px-4 py-1 font-black text-[#1e3a66]">
                   {record.time}
                 </td>
-                <td className="px-4 py-2.5">{record.item}</td>
-                <td className="px-4 py-2.5">{record.content}</td>
-                <td className="px-4 py-2.5">
+                <td className="px-4 py-1">{record.item}</td>
+                <td className="px-4 py-1">{record.content}</td>
+                <td className="px-4 py-1">
                   <StatusBadge status={record.status} tone={record.tone} />
                 </td>
-                <td className="px-4 py-2.5">{record.author}</td>
+                <td className="px-4 py-1">{record.author}</td>
               </tr>
             ))}
           </tbody>
@@ -590,39 +597,39 @@ function TodayRecordsPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
 function FamilyContactsPanel() {
   return (
     <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
       aria-labelledby="family-contacts-title"
     >
       <h2
         id="family-contacts-title"
-        className="text-[20px] font-black leading-tight text-[#071747]"
+        className="text-[19px] font-black leading-tight text-[#071747]"
       >
         가족 연락처
       </h2>
 
-      <ul className="mt-5 divide-y divide-[#e6eef8]">
+      <ul className="mt-3 divide-y divide-[#e6eef8]">
         {familyContacts.map((contact) => (
           <li
             key={contact.id}
-            className="grid grid-cols-[54px_minmax(0,1fr)_auto_auto] items-center gap-3 py-3 first:pt-0"
+            className="grid grid-cols-[44px_minmax(0,1fr)_auto_auto] items-center gap-3 py-2 first:pt-0"
           >
             <img
               src={contact.avatarSrc}
               alt=""
-              className="h-[50px] w-[50px] rounded-full bg-[#f2f6ff] object-cover shadow-[0_8px_18px_rgba(47,86,145,0.12)]"
+              className="h-[40px] w-[40px] rounded-full bg-[#f2f6ff] object-cover shadow-[0_8px_18px_rgba(47,86,145,0.12)]"
               draggable="false"
             />
             <div className="min-w-0">
-              <p className="truncate text-[15px] font-black leading-tight text-[#071747]">
+              <p className="truncate text-[14px] font-black leading-tight text-[#071747]">
                 {contact.name}
               </p>
-              <p className="mt-1 text-[13px] font-bold leading-tight text-[#697895]">
+              <p className="mt-1 text-[12px] font-bold leading-tight text-[#697895]">
                 가족
               </p>
             </div>
             <a
               href={`tel:${contact.phone.replaceAll('-', '')}`}
-              className="hidden whitespace-nowrap text-[14px] font-bold text-[#496186] transition hover:text-[#0867f2] min-[380px]:inline"
+              className="hidden whitespace-nowrap text-[13px] font-bold text-[#496186] transition hover:text-[#0867f2] min-[380px]:inline"
             >
               {contact.phone}
             </a>
@@ -639,7 +646,7 @@ function FamilyContactsPanel() {
 
       <button
         type="button"
-        className="mx-auto mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-4 text-[16px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        className="mx-auto mt-1.5 inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-4 text-[15px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
       >
         <Users aria-hidden="true" className="h-5 w-5" strokeWidth={2.5} />
         전체 연락처 보기
@@ -652,13 +659,13 @@ function FamilyContactsPanel() {
 function RecentMemoPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
   return (
     <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
       aria-labelledby="recent-memo-title"
     >
       <div className="flex items-center justify-between gap-3">
         <h2
           id="recent-memo-title"
-          className="text-[20px] font-black leading-tight text-[#071747]"
+          className="text-[19px] font-black leading-tight text-[#071747]"
         >
           최근 상담 메모
         </h2>
@@ -671,22 +678,22 @@ function RecentMemoPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
         </button>
       </div>
 
-      <article className="mt-4 rounded-[12px] border border-[#e2eaf6] bg-[#fbfdff] px-4 py-4">
-        <h3 className="text-[16px] font-black leading-tight text-[#071747]">
+      <article className="mt-2.5 rounded-[12px] border border-[#e2eaf6] bg-[#fbfdff] px-4 py-2.5">
+        <h3 className="text-[15px] font-black leading-tight text-[#071747]">
           식사량 감소 관련 상담
         </h3>
-        <p className="mt-2 text-[14px] font-bold leading-[1.65] text-[#52627f]">
+        <p className="mt-1.5 text-[13px] font-bold leading-[1.45] text-[#52627f]">
           최근 식사량이 줄어든 원인에 대해 이야기하고 소량씩 자주 드시도록
           안내드렸습니다.
         </p>
-        <p className="mt-3 text-[13px] font-bold text-[#6e7c98]">
+        <p className="mt-2 text-[12px] font-bold text-[#6e7c98]">
           김민수 요양사 · 2024.05.31 10:45
         </p>
       </article>
 
       <button
         type="button"
-        className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#0867f2] px-4 text-[17px] font-black text-white shadow-[0_14px_26px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        className="mt-2.5 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#0867f2] px-4 text-[16px] font-black text-white shadow-[0_14px_26px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         onClick={onMemoCreate}
       >
         <Pencil aria-hidden="true" className="h-6 w-6" strokeWidth={2.7} />
@@ -703,13 +710,13 @@ function WeeklyTrendPanel() {
 
   return (
     <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
       aria-labelledby="weekly-trend-title"
     >
       <div className="flex items-center justify-between gap-3">
         <h2
           id="weekly-trend-title"
-          className="text-[20px] font-black leading-tight text-[#071747]"
+          className="text-[19px] font-black leading-tight text-[#071747]"
         >
           주간 변화 추이
         </h2>
@@ -722,10 +729,10 @@ function WeeklyTrendPanel() {
         </button>
       </div>
 
-      <div className="mt-5 overflow-hidden">
+      <div className="mt-3 overflow-hidden">
         <svg
           aria-label="5월 25일부터 5월 31일까지 주간 변화 추이"
-          className="h-[138px] w-full"
+          className="h-[98px] w-full"
           role="img"
           viewBox="0 0 320 138"
         >
@@ -777,7 +784,7 @@ function WeeklyTrendPanel() {
 
       <button
         type="button"
-        className="mx-auto mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-4 text-[16px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        className="mx-auto mt-1.5 inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-4 text-[15px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
       >
         <img
           src={`${workerAssetBase}/파일.png`}
@@ -825,7 +832,7 @@ export function WorkerElderDetailPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
       <WorkerDetailTopBar />
 
-      <div className="mx-auto w-full max-w-[1600px] px-5 pb-10 pt-8 lg:px-11">
+      <div className="mx-auto w-full max-w-[1600px] px-5 pb-10 pt-4 lg:px-11">
         <nav
           className="flex flex-wrap items-center gap-2 text-[15px] font-bold text-[#64738f]"
           aria-label="현재 위치"
@@ -863,13 +870,13 @@ export function WorkerElderDetailPage() {
               >
                 {detailTitle}
               </h1>
-              <p className="mt-2 text-[16px] font-bold leading-snug text-[#566784]">
+              <p className="mt-1 text-[15px] font-bold leading-snug text-[#566784]">
                 오늘의 상태와 기록을 확인하고 관리하세요.
               </p>
             </section>
 
             <section
-              className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
+              className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
               aria-label="오늘 주요 상태"
             >
               {statusCards.map((card) => (
@@ -886,7 +893,10 @@ export function WorkerElderDetailPage() {
             </div>
           </div>
 
-          <aside className="grid gap-4" aria-label="연락처 및 상담 정보">
+          <aside
+            className="grid gap-3 xl:-mt-5"
+            aria-label="연락처 및 상담 정보"
+          >
             <FamilyContactsPanel />
             <RecentMemoPanel onMemoCreate={openMemoCreate} />
             <WeeklyTrendPanel />
