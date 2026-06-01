@@ -53,14 +53,14 @@ describe('RoleSelectPage', () => {
     expect(screen.getByText('기본 정보 입력 화면')).toBeTruthy()
   })
 
-  it('navigates care workers to the worker dashboard', async () => {
+  it('navigates care workers to the worker signup screen', async () => {
     const user = userEvent.setup()
 
     render(
       <MemoryRouter initialEntries={['/select-role']}>
         <Routes>
           <Route path="/select-role" element={<RoleSelectPage />} />
-          <Route path="/worker" element={<p>복지사 대시보드 화면</p>} />
+          <Route path="/worker/signup" element={<p>요양사 가입 정보 화면</p>} />
         </Routes>
       </MemoryRouter>,
     )
@@ -68,6 +68,6 @@ describe('RoleSelectPage', () => {
     await user.click(screen.getByRole('button', { name: workerRoleName }))
     await user.click(screen.getByRole('button', { name: nextButtonName }))
 
-    expect(screen.getByText('복지사 대시보드 화면')).toBeTruthy()
+    expect(screen.getByText('요양사 가입 정보 화면')).toBeTruthy()
   })
 })

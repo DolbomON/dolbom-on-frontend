@@ -34,7 +34,11 @@ import { WorkerElderDetailPage } from '../pages/worker/WorkerElderDetailPage'
 import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
 import { WorkerMemoCreatePage } from '../pages/worker/WorkerMemoCreatePage'
 import { WorkerMypagePage } from '../pages/worker/WorkerMypagePage'
+import { WorkerPortfolioPage } from '../pages/worker/WorkerPortfolioPage'
 import { WorkerReportsPage } from '../pages/worker/WorkerReportsPage'
+import { WorkerSignupBasicInfoPage } from '../pages/worker/WorkerSignupBasicInfoPage'
+import { WorkerSignupLicensePage } from '../pages/worker/WorkerSignupLicensePage'
+import { WorkerSignupPage } from '../pages/worker/WorkerSignupPage'
 
 export const router = createBrowserRouter([
   {
@@ -146,6 +150,18 @@ export const router = createBrowserRouter([
     element: <WorkerDashboardPage />,
   },
   {
+    path: '/worker/signup',
+    element: <WorkerSignupBasicInfoPage />,
+  },
+  {
+    path: '/worker/signup/license',
+    element: <WorkerSignupLicensePage />,
+  },
+  {
+    path: '/worker/signup/preview',
+    element: <WorkerSignupPage />,
+  },
+  {
     path: '/worker/alerts',
     element: <WorkerAlertsPage />,
   },
@@ -168,6 +184,10 @@ export const router = createBrowserRouter([
   {
     path: '/worker/reports',
     element: <WorkerReportsPage />,
+  },
+  {
+    path: '/worker/portfolio',
+    element: <WorkerPortfolioPage />,
   },
   {
     path: '/worker/mypage',

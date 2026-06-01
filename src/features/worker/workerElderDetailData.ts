@@ -49,16 +49,16 @@ export const elderDetailPeriods: Array<{
 // TODO: Replace this mock data with the worker elder detail API when it is ready.
 export const elderDetails: ElderDetail[] = [
   {
-    age: 78,
+    age: 84,
     avatarSrc: '/assets/dolbomon/worker-elders/elder-kim-yeongja.png',
-    guardianName: '김민수',
-    household: '독거',
+    guardianName: '김민수 요양사',
+    household: '배우자와 거주',
     id: 'kim-yeongja',
     name: '김영자님',
     phoneNumber: '010-0000-0000',
     riskLabel: '주의',
     riskStatus: 'caution',
-    statusText: '식사 입력 지연 · 최근 입력 09:23',
+    statusText: '식사량 감소 · 복약 시간 불규칙',
   },
   {
     age: 82,
