@@ -143,7 +143,7 @@ function WorkerSignupTopBar() {
         <div className="flex items-center gap-4">
           <button
             type="button"
-            className="relative inline-grid min-h-10 min-w-10 place-items-center rounded-lg text-[#60708e] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            className="relative hidden min-h-10 min-w-10 place-items-center rounded-lg text-[#60708e] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] sm:inline-grid"
             aria-label="알림 2건 확인"
           >
             <Bell aria-hidden="true" size={27} strokeWidth={2.4} />
@@ -225,13 +225,13 @@ function SignupStepProgress() {
             {isComplete ? (
               <Check
                 aria-hidden="true"
-                className="h-6 w-6 justify-self-end text-[#1f3e75]"
+                className="hidden h-6 w-6 justify-self-end text-[#1f3e75] sm:block"
                 strokeWidth={3}
               />
             ) : (
               <ChevronRight
                 aria-hidden="true"
-                className="h-6 w-6 justify-self-end text-[#1f3e75]"
+                className="hidden h-6 w-6 justify-self-end text-[#1f3e75] sm:block"
                 strokeWidth={2.8}
               />
             )}
@@ -665,13 +665,13 @@ export function WorkerSignupPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
       <WorkerSignupTopBar />
 
-      <div className="mx-4 box-border grid max-w-[1544px] gap-6 py-4 md:mx-auto md:w-full md:px-6 xl:grid-cols-[minmax(0,1040px)_432px] xl:gap-10 xl:px-4">
+      <div className="mx-4 box-border grid w-[calc(100vw-32px)] max-w-[1544px] gap-6 py-4 md:mx-auto md:w-full md:px-6 xl:grid-cols-[minmax(0,1040px)_432px] xl:gap-10 xl:px-4">
         <div className="min-w-0">
           <header>
             <h1 className="text-[31px] font-black leading-tight text-[#071747]">
               요양사 가입 정보
             </h1>
-            <p className="mt-2 text-[14px] font-bold leading-snug text-[#52617d]">
+            <p className="mt-2 max-w-[350px] text-[14px] font-bold leading-snug text-[#52617d] sm:max-w-none">
               정확한 정보로 등록하시면 더 빠르고 정확하게 활동을 시작하실 수
               있습니다.
             </p>
