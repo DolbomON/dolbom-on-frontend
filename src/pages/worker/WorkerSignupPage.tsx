@@ -116,7 +116,7 @@ const guardianIntroduction =
 function WorkerSignupTopBar() {
   return (
     <header className="sticky top-0 z-30 border-b border-[#e5ecf7] bg-white/95 shadow-[0_4px_18px_rgba(32,70,130,0.06)] backdrop-blur">
-      <div className="flex min-h-[67px] w-full flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-1 lg:flex-nowrap lg:px-10">
+      <div className="mx-5 box-border flex min-h-[67px] flex-wrap items-center justify-between gap-x-6 gap-y-2 py-1 lg:mx-0 lg:w-full lg:flex-nowrap lg:px-10">
         <Link
           to="/"
           className="inline-flex min-h-11 items-center text-[30px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.16)] focus-visible:rounded-lg lg:text-[34px]"
@@ -154,7 +154,7 @@ function WorkerSignupTopBar() {
 
           <Link
             to="/worker/mypage"
-            className="inline-flex min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            className="hidden min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] sm:inline-flex"
             aria-label="김민수 요양사 프로필 보기"
           >
             <img
@@ -662,10 +662,10 @@ function SubmissionChecklistCard() {
 
 export function WorkerSignupPage() {
   return (
-    <main className="min-h-svh bg-[#f8fbff] text-[#071747]">
+    <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
       <WorkerSignupTopBar />
 
-      <div className="mx-auto grid w-full max-w-[1500px] gap-6 px-4 py-6 md:px-6 xl:grid-cols-[minmax(0,1040px)_390px] xl:gap-10 xl:px-4">
+      <div className="mx-4 box-border grid max-w-[1544px] gap-6 py-4 md:mx-auto md:w-full md:px-6 xl:grid-cols-[minmax(0,1040px)_432px] xl:gap-10 xl:px-4">
         <div className="min-w-0">
           <header>
             <h1 className="text-[31px] font-black leading-tight text-[#071747]">
