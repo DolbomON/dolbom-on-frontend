@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
@@ -25,59 +25,53 @@ function renderWorkerMemoCreatePage(
 }
 
 describe('WorkerMemoCreatePage', () => {
-  it('renders the memo creation form for the selected elder', () => {
+  it('renders the consultation observation record form for the selected elder', () => {
     renderWorkerMemoCreatePage()
 
     expect(
-      screen.getByRole('heading', { name: '상담 메모 작성' }),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText('상담 내용을 기록하고 다음 계획을 남겨주세요.'),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', { name: '작성 가이드' }),
+      screen.getByRole('heading', { name: '상담 · 관찰 기록' }),
     ).toBeInTheDocument()
     expect(screen.getByText('김영자님')).toBeInTheDocument()
-    expect(screen.getByText('78세 · 독거')).toBeInTheDocument()
-    expect(
-      screen.getByText('담당자: 이복지 선임사회복지사'),
-    ).toBeInTheDocument()
+    expect(screen.getByText('84세 · 배우자와 거주')).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: '김영자님 상세 보기' }),
     ).toHaveAttribute('href', '/worker/elders/kim-yeongja')
+    expect(screen.getByText('2025.05.31 (토)')).toBeInTheDocument()
+    expect(screen.getByText('10:30 ~ 11:10')).toBeInTheDocument()
+    expect(screen.getAllByText('김민수 요양사').length).toBeGreaterThan(0)
+    expect(screen.getByText('위험 1')).toBeInTheDocument()
+    expect(screen.getByText('주의 1')).toBeInTheDocument()
+    expect(screen.getByText('안정 2')).toBeInTheDocument()
+
+    expect(screen.getByLabelText(/방문 목적/)).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '상담 방식' }),
+      screen.getByRole('button', { name: '식사량 감소' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '전화 상담' })).toHaveAttribute(
+    expect(
+      screen.getByRole('button', { name: '수면 문제' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: '통증 호소' }),
+    ).toBeInTheDocument()
+    expect(screen.getByLabelText(/관찰 내용/)).toBeInTheDocument()
+    expect(screen.getByLabelText(/상담 내용/)).toBeInTheDocument()
+    expect(screen.getByLabelText('보호자 전달 사항')).toBeInTheDocument()
+    expect(screen.getByLabelText('후속 조치 / 계획')).toBeInTheDocument()
+    expect(screen.getByLabelText(/메모 작성/)).toBeInTheDocument()
+    expect(screen.getAllByText('0/1000')).toHaveLength(4)
+    expect(screen.getByText('0/1500')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '음성 녹음' })).toHaveAttribute(
       'aria-pressed',
-      'true',
+      'false',
     )
     expect(
-      screen.getByRole('button', { name: '방문 상담' }),
+      screen.getByRole('button', { name: '사진 선택' }),
     ).toBeInTheDocument()
+    expect(screen.getAllByRole('img', { name: /사진 첨부/ })).toHaveLength(3)
     expect(
-      screen.getByRole('button', { name: '문자 상담' }),
+      screen.getByRole('button', { name: '기록 저장' }),
     ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: '상담 일시' }),
-    ).toBeInTheDocument()
-    expect(screen.getByText('2024.05.29 (수) 14:30')).toBeInTheDocument()
-    expect(screen.getByLabelText('상담 내용')).toBeInTheDocument()
-    expect(screen.getByLabelText('조치 사항')).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: '다음 확인 일정' }),
-    ).toBeInTheDocument()
-    expect(screen.getByText('2024.06.05 (수)')).toBeInTheDocument()
-    expect(screen.getByText('10:00')).toBeInTheDocument()
-    expect(screen.getAllByText('0 / 500')).toHaveLength(2)
-    expect(
-      screen.getByText(
-        '메모는 담당팀과 공유되며, 어르신의 돌봄 관리에 활용됩니다.',
-      ),
-    ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '취소' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '저장하기' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: '대상자' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: '기록' })).toHaveAttribute(
       'aria-current',
       'page',
     )
@@ -93,41 +87,66 @@ describe('WorkerMemoCreatePage', () => {
     ).toHaveAttribute('href', '/worker/elders/lee-sunja')
   })
 
-  it('changes the selected consultation method', async () => {
+  it('updates selected symptoms and audio memo state', async () => {
     const user = userEvent.setup()
 
     renderWorkerMemoCreatePage()
 
-    await user.click(screen.getByRole('button', { name: '방문 상담' }))
+    const sleepButton = screen.getByRole('button', { name: '수면 문제' })
+    const audioButton = screen.getByRole('button', { name: '음성 녹음' })
 
-    expect(screen.getByRole('button', { name: '방문 상담' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    )
-    expect(screen.getByRole('button', { name: '전화 상담' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
-    )
+    await user.click(sleepButton)
+    await user.click(audioButton)
+
+    expect(sleepButton).toHaveAttribute('aria-pressed', 'true')
+    expect(audioButton).toHaveAttribute('aria-pressed', 'true')
   })
 
-  it('updates the consultation content character counter', async () => {
+  it('updates text character counters', async () => {
     const user = userEvent.setup()
 
     renderWorkerMemoCreatePage()
 
-    await user.type(screen.getByLabelText('상담 내용'), 'abc')
+    await user.type(screen.getByLabelText(/관찰 내용/), 'abc')
+    await user.type(screen.getByLabelText(/메모 작성/), '상담 완료')
 
-    expect(screen.getByText('3 / 500')).toBeInTheDocument()
+    expect(screen.getByText('3/1000')).toBeInTheDocument()
+    expect(screen.getByText('5/1500')).toBeInTheDocument()
   })
 
-  it('shows an inline validation message when memo content is empty', async () => {
+  it('removes a local photo attachment', async () => {
     const user = userEvent.setup()
 
     renderWorkerMemoCreatePage()
 
-    await user.click(screen.getByRole('button', { name: '저장하기' }))
+    const photoRegion = screen
+      .getByRole('img', { name: '식사 사진 첨부' })
+      .closest('div')
 
+    expect(photoRegion).not.toBeNull()
+    await user.click(
+      within(photoRegion as HTMLElement).getByRole('button', {
+        name: '식사 사진 첨부 삭제',
+      }),
+    )
+
+    expect(
+      screen.queryByRole('img', { name: '식사 사진 첨부' }),
+    ).not.toBeInTheDocument()
+    expect(screen.getAllByRole('img', { name: /사진 첨부/ })).toHaveLength(2)
+  })
+
+  it('shows inline validation messages when required fields are empty', async () => {
+    const user = userEvent.setup()
+
+    renderWorkerMemoCreatePage()
+
+    await user.click(screen.getByRole('button', { name: '기록 저장' }))
+
+    expect(screen.getByText('방문 목적을 선택해주세요.')).toBeInTheDocument()
+    expect(screen.getByText('관찰 내용을 입력해주세요.')).toBeInTheDocument()
     expect(screen.getByText('상담 내용을 입력해주세요.')).toBeInTheDocument()
+    expect(screen.getByText('메모를 입력해주세요.')).toBeInTheDocument()
     expect(screen.queryByText('대상자 상세 화면')).not.toBeInTheDocument()
   })
 
@@ -136,18 +155,32 @@ describe('WorkerMemoCreatePage', () => {
 
     renderWorkerMemoCreatePage()
 
-    await user.type(screen.getByLabelText('상담 내용'), '상담 완료')
-    await user.click(screen.getByRole('button', { name: '저장하기' }))
+    await user.selectOptions(
+      screen.getByLabelText(/방문 목적/),
+      '정기 방문 관찰',
+    )
+    await user.type(
+      screen.getByLabelText(/관찰 내용/),
+      '식사량을 확인했습니다.',
+    )
+    await user.type(
+      screen.getByLabelText(/상담 내용/),
+      '수면 상태를 상담했습니다.',
+    )
+    await user.type(screen.getByLabelText(/메모 작성/), '보호자에게 공유 예정')
+    await user.click(screen.getByRole('button', { name: '기록 저장' }))
 
     expect(screen.getByText('대상자 상세 화면')).toBeInTheDocument()
   })
 
-  it('navigates back to the elder detail page when cancel is clicked', async () => {
+  it('navigates back to the elder detail page when back is clicked', async () => {
     const user = userEvent.setup()
 
     renderWorkerMemoCreatePage()
 
-    await user.click(screen.getByRole('button', { name: '취소' }))
+    await user.click(
+      screen.getByRole('button', { name: '어르신 상세로 돌아가기' }),
+    )
 
     expect(screen.getByText('대상자 상세 화면')).toBeInTheDocument()
   })

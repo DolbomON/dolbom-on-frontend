@@ -12,13 +12,19 @@ export type WorkerElder = {
 export type ConsultationMethod = 'phone' | 'visit' | 'message'
 
 export type CaseMemoFormState = {
+  audioMemoAttached: boolean
+  caregiverMessage: string
+  consultationContent: string
   elderId: string
-  method: ConsultationMethod
-  consultationDateTime: string
+  followUpPlan: string
   memoContent: string
-  actionNotes: string
-  nextFollowUpDate: string
-  nextFollowUpTime: string
+  observationContent: string
+  photoAttachmentIds: string[]
+  symptomIds: string[]
+  visitDate: string
+  visitEndTime: string
+  visitPurpose: string
+  visitStartTime: string
 }
 
 export type CaseMemoPayload = CaseMemoFormState & {
@@ -29,16 +35,16 @@ export type CaseMemoPayload = CaseMemoFormState & {
 // TODO: Replace this mock data with the worker elder API when memo creation is connected.
 export const caseMemoElders: WorkerElder[] = [
   {
-    age: 78,
-    assignedWorkerName: '이복지 선임사회복지사',
+    age: 84,
+    assignedWorkerName: '김민수 요양사',
     avatarSrc: '/assets/dolbomon/worker-elders/elder-kim-yeongja.png',
-    household: '독거',
+    household: '배우자와 거주',
     id: 'kim-yeongja',
     name: '김영자님',
   },
   {
     age: 82,
-    assignedWorkerName: '이복지 선임사회복지사',
+    assignedWorkerName: '김민수 요양사',
     avatarSrc: '/assets/dolbomon/worker-elders/elder-lee-sunja.png',
     household: '독거',
     id: 'lee-sunja',
@@ -46,7 +52,7 @@ export const caseMemoElders: WorkerElder[] = [
   },
   {
     age: 75,
-    assignedWorkerName: '이복지 선임사회복지사',
+    assignedWorkerName: '김민수 요양사',
     avatarSrc: '/assets/dolbomon/worker-elders/elder-park-cheolsu.png',
     household: '배우자 동거',
     id: 'park-cheolsu',
@@ -54,7 +60,7 @@ export const caseMemoElders: WorkerElder[] = [
   },
   {
     age: 80,
-    assignedWorkerName: '이복지 선임사회복지사',
+    assignedWorkerName: '김민수 요양사',
     avatarSrc: '/assets/dolbomon/worker-elders/elder-choi-bokrye.png',
     household: '독거',
     id: 'choi-bokrye',
@@ -63,10 +69,16 @@ export const caseMemoElders: WorkerElder[] = [
 ]
 
 export const defaultCaseMemoFormState: Omit<CaseMemoFormState, 'elderId'> = {
-  actionNotes: '',
-  consultationDateTime: '2024-05-29T14:30',
+  audioMemoAttached: false,
+  caregiverMessage: '',
+  consultationContent: '',
+  followUpPlan: '',
   memoContent: '',
-  method: 'phone',
-  nextFollowUpDate: '2024-06-05',
-  nextFollowUpTime: '10:00',
+  observationContent: '',
+  photoAttachmentIds: [],
+  symptomIds: [],
+  visitDate: '2025-05-31',
+  visitEndTime: '11:10',
+  visitPurpose: '',
+  visitStartTime: '10:30',
 }
