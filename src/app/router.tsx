@@ -7,6 +7,7 @@ import { CaregiverVisitRecordsPage } from '../pages/caregiver/CaregiverVisitReco
 import { CaregiverVisitSchedulePage } from '../pages/caregiver/CaregiverVisitSchedulePage'
 import { ElderChatPage } from '../pages/elder/ElderChatPage'
 import { ElderBasicInfoPage } from '../pages/elder/ElderBasicInfoPage'
+import { ElderCareTeamPage } from '../pages/elder/ElderCareTeamPage'
 import { ElderCheckCompletePage } from '../pages/elder/ElderCheckCompletePage'
 import { ElderCheckPage } from '../pages/elder/ElderCheckPage'
 import { ElderDiseaseHistoryPage } from '../pages/elder/ElderDiseaseHistoryPage'
@@ -136,6 +137,10 @@ export const router = createBrowserRouter([
   {
     path: '/elder/chat',
     element: <ElderChatPage />,
+  },
+  {
+    path: '/elder/connect',
+    element: <ElderCareTeamPage />,
   },
   {
     path: '/family',

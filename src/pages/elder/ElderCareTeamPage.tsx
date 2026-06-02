@@ -1,0 +1,648 @@
+import {
+  Bell,
+  CheckCircle2,
+  ChevronDown,
+  Copy,
+  Eye,
+  Heart,
+  Send,
+  Users,
+  type LucideIcon,
+} from 'lucide-react'
+import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
+import { cn } from '../../lib/utils'
+
+const welfareAssetBase = '/assets/dolbomon/welfare'
+const workerAssetBase = '/assets/dolbomon/worker'
+const elderProfileSrc =
+  '/assets/dolbomon/worker-dashboard/elder-kim-yeongja.png'
+
+const teamHeroSrc = `${welfareAssetBase}/6f29695f-1a78-453b-a8a0-b3caa432e8ab.png`
+const socialWorkerSrc = `${welfareAssetBase}/image-removebg-preview%20(1).png`
+const caregiverSrc = `${welfareAssetBase}/image-removebg-preview%20(2).png`
+const securityShieldSrc = `${welfareAssetBase}/image-removebg-preview%20(3).png`
+const inviteIconSrc = `${welfareAssetBase}/image-removebg-preview%20(4).png`
+const laptopSrc = `${welfareAssetBase}/image-removebg-preview%20(5).png`
+const caregiverPropsSrc = `${welfareAssetBase}/image-removebg-preview%20(6).png`
+const infoShieldSrc = `${welfareAssetBase}/image-removebg-preview%20(7).png`
+const familyIconSrc = `${welfareAssetBase}/image-removebg-preview.png`
+const eyeIconSrc = `${welfareAssetBase}/1.png`
+const lockIconSrc = `${welfareAssetBase}/2.png`
+const sliderIconSrc = `${welfareAssetBase}/3.png`
+const chatIconSrc = `${welfareAssetBase}/4.png`
+
+type NavItem = {
+  active?: boolean
+  href: string
+  label: string
+}
+
+type FamilyMember = {
+  avatarSrc: string
+  name: string
+  relation: string
+}
+
+type TeamRole = {
+  avatarSrc: string
+  badge: string
+  badgeClassName: string
+  description: string
+  heading: string
+  iconSrc: string
+  name: string
+  propSrc: string
+}
+
+type InfoItem = {
+  description: string
+  icon?: LucideIcon
+  iconClassName?: string
+  iconSrc?: string
+  title?: string
+}
+
+const navItems: NavItem[] = [
+  { href: '/elder', label: '홈' },
+  { href: '/elder/check', label: '오늘기록' },
+  { href: '/elder/check/complete', label: '건강상태' },
+  { active: true, href: '/elder/connect', label: '내 돌봄팀' },
+  { href: '#alerts', label: '알림' },
+  { href: '#settings', label: '설정' },
+]
+
+const familyMembers: FamilyMember[] = [
+  {
+    avatarSrc: `${workerAssetBase}/딸.png`,
+    name: '이순자',
+    relation: '딸',
+  },
+  {
+    avatarSrc: `${workerAssetBase}/아들.png`,
+    name: '박철수',
+    relation: '아들',
+  },
+]
+
+const teamRoles: TeamRole[] = [
+  {
+    avatarSrc: socialWorkerSrc,
+    badge: '복지사',
+    badgeClassName: 'bg-[#efeaff] text-[#654ee9]',
+    description: '전체 관리 및 연결 지원',
+    heading: '담당 복지사',
+    iconSrc: socialWorkerSrc,
+    name: '이수진',
+    propSrc: laptopSrc,
+  },
+  {
+    avatarSrc: caregiverSrc,
+    badge: '요양사',
+    badgeClassName: 'bg-[#dff8e8] text-[#0a8f53]',
+    description: '방문 돌봄 및 생활 지원',
+    heading: '담당 요양사',
+    iconSrc: caregiverSrc,
+    name: '김민수',
+    propSrc: caregiverPropsSrc,
+  },
+]
+
+const infoItems: InfoItem[] = [
+  {
+    description: '',
+    iconSrc: infoShieldSrc,
+    title: '정보 공유 안내',
+  },
+  {
+    description: '연결된 가족만 오늘 상태와 알림을 볼 수 있어요.',
+    iconSrc: eyeIconSrc,
+  },
+  {
+    description: '담당 복지사와 요양사는 돌봄을 위해 필요한 정보만 확인해요.',
+    iconSrc: lockIconSrc,
+  },
+  {
+    description: '연결 정보는 언제든 관리자가 조정할 수 있어요.',
+    iconSrc: sliderIconSrc,
+  },
+  {
+    description: '궁금한 점이 있으면 담당 복지사에게 문의하세요.',
+    iconSrc: chatIconSrc,
+  },
+]
+
+function Logo() {
+  return (
+    <Link
+      to="/elder"
+      className="inline-flex min-h-12 items-center gap-2 rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
+      aria-label="돌봄ON 홈"
+    >
+      <span className="grid h-10 w-10 place-items-center rounded-[12px] bg-[#0867f2] text-white shadow-[0_8px_18px_rgba(8,103,242,0.18)]">
+        <Heart
+          aria-hidden="true"
+          className="h-7 w-7 fill-current"
+          strokeWidth={3}
+        />
+      </span>
+      <span className="whitespace-nowrap text-[30px] font-black leading-none tracking-normal lg:text-[38px]">
+        돌봄ON
+      </span>
+    </Link>
+  )
+}
+
+function TopNavigation() {
+  return (
+    <header className="sticky top-0 z-40 border-b border-[#dce5f1] bg-white/96 shadow-[0_5px_18px_rgba(35,73,128,0.06)] backdrop-blur">
+      <div className="mx-auto grid min-h-[74px] w-full max-w-[1800px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 lg:grid-cols-[300px_minmax(0,1fr)_auto] lg:px-8">
+        <Logo />
+
+        <nav
+          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-5 overflow-x-auto text-[16px] font-extrabold text-[#0c1531] [-ms-overflow-style:none] [scrollbar-width:none] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-14 [&::-webkit-scrollbar]:hidden"
+          aria-label="어르신 돌봄 메뉴"
+        >
+          {navItems.map((item) => (
+            <Link
+              key={item.label}
+              to={item.href}
+              className={cn(
+                'relative inline-flex min-h-12 shrink-0 items-center justify-center rounded-md px-2 transition hover:text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] lg:min-h-[74px]',
+                item.active ? 'text-[#0867f2]' : 'text-[#111827]',
+              )}
+              aria-current={item.active ? 'page' : undefined}
+            >
+              {item.label}
+              <span
+                className={cn(
+                  'absolute bottom-0 left-1 right-1 h-1 rounded-full bg-[#0867f2]',
+                  !item.active && 'hidden',
+                )}
+                aria-hidden="true"
+              />
+            </Link>
+          ))}
+        </nav>
+
+        <div className="col-start-2 row-start-1 flex items-center gap-4 justify-self-end lg:col-start-3">
+          <button
+            type="button"
+            className="relative inline-grid h-12 w-12 place-items-center rounded-full text-[#111827] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            aria-label="읽지 않은 알림 3개"
+          >
+            <Bell aria-hidden="true" className="h-7 w-7" strokeWidth={2.5} />
+            <span className="absolute right-0.5 top-1 grid h-[22px] min-w-[22px] place-items-center rounded-full bg-[#ef3445] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
+              3
+            </span>
+          </button>
+
+          <Link
+            to="#profile"
+            className="hidden min-h-14 items-center gap-3 rounded-full border border-[#dfe7f2] bg-white px-3 py-1 shadow-[0_8px_20px_rgba(48,82,132,0.08)] transition hover:bg-[#f8fbff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] sm:inline-flex"
+            aria-label="김영자 어르신 프로필"
+          >
+            <img
+              src={elderProfileSrc}
+              alt=""
+              className="h-12 w-12 rounded-full bg-[#e9f4ff] object-cover"
+              draggable="false"
+            />
+            <span className="hidden text-left md:block">
+              <strong className="block whitespace-nowrap text-[17px] font-black leading-tight text-[#10172a]">
+                김영자
+              </strong>
+              <span className="mt-0.5 block whitespace-nowrap text-[15px] font-bold leading-tight text-[#5d697c]">
+                어르신
+              </span>
+            </span>
+            <ChevronDown
+              aria-hidden="true"
+              className="hidden h-5 w-5 text-[#25324a] md:block"
+              strokeWidth={2.7}
+            />
+          </Link>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+function HeroMetric({
+  count,
+  iconSrc,
+  label,
+}: {
+  count: string
+  iconSrc: string
+  label: string
+}) {
+  return (
+    <span className="inline-flex min-h-[74px] min-w-[160px] items-center justify-center gap-3 rounded-[12px] border border-[#e5edf7] bg-white/92 px-4 shadow-[0_12px_24px_rgba(43,86,150,0.08)]">
+      <img
+        src={iconSrc}
+        alt=""
+        className="h-11 w-11 object-contain"
+        aria-hidden="true"
+        draggable="false"
+      />
+      <span className="text-left">
+        <span className="block text-[16px] font-extrabold leading-tight text-[#253653]">
+          {label}
+        </span>
+        <strong className="block text-[27px] font-black leading-none text-[#071747]">
+          {count}
+        </strong>
+      </span>
+    </span>
+  )
+}
+
+function PrivacyHero() {
+  return (
+    <section
+      className="relative min-h-[230px] overflow-hidden rounded-[14px] border border-[#cfe0f6] bg-[linear-gradient(105deg,#f9fcff_0%,#eef7ff_54%,#f8fbff_100%)] shadow-[0_14px_34px_rgba(44,91,157,0.09)] md:h-[230px]"
+      aria-labelledby="care-team-privacy-title"
+    >
+      <img
+        src={teamHeroSrc}
+        alt=""
+        className="pointer-events-none absolute bottom-0 left-[-22px] hidden h-full w-[590px] select-none object-cover object-left md:block"
+        aria-hidden="true"
+        draggable="false"
+      />
+
+      <div className="relative z-10 grid min-h-[230px] gap-5 px-5 py-6 md:h-full md:min-h-0 md:grid-cols-[minmax(360px,0.82fr)_minmax(430px,1fr)_minmax(240px,0.62fr)] md:items-center md:px-8 lg:grid-cols-[520px_minmax(430px,1fr)_330px] lg:px-10">
+        <div className="hidden md:block" aria-hidden="true" />
+
+        <div className="min-w-0">
+          <h2
+            id="care-team-privacy-title"
+            className="break-keep text-[31px] font-black leading-tight text-[#071747] lg:text-[36px]"
+          >
+            내 정보는 연결된 가족과 <br className="hidden sm:block" />
+            담당자에게만 공유돼요.
+          </h2>
+
+          <div
+            className="mt-6 flex flex-wrap gap-5"
+            aria-label="돌봄팀 연결 요약"
+          >
+            <HeroMetric count="2명" iconSrc={familyIconSrc} label="가족" />
+            <HeroMetric count="1명" iconSrc={socialWorkerSrc} label="복지사" />
+            <HeroMetric count="1명" iconSrc={caregiverSrc} label="요양사" />
+          </div>
+        </div>
+
+        <div className="relative min-h-[170px] md:min-h-[210px]">
+          <img
+            src={securityShieldSrc}
+            alt=""
+            className="pointer-events-none absolute bottom-[-10px] left-1/2 h-[190px] w-[240px] -translate-x-1/2 select-none object-contain drop-shadow-[0_22px_28px_rgba(55,110,194,0.14)] md:right-0 md:left-auto md:h-[220px] md:w-[300px] md:translate-x-0"
+            aria-hidden="true"
+            draggable="false"
+          />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SectionCard({
+  children,
+  className,
+  titleId,
+}: {
+  children: ReactNode
+  className?: string
+  titleId?: string
+}) {
+  return (
+    <section
+      className={cn(
+        'rounded-[14px] border border-[#dfe7f2] bg-white p-5 shadow-[0_14px_34px_rgba(40,76,132,0.08)]',
+        className,
+      )}
+      aria-labelledby={titleId}
+    >
+      {children}
+    </section>
+  )
+}
+
+function CardTitle({
+  children,
+  iconSrc,
+  id,
+}: {
+  children: ReactNode
+  iconSrc?: string
+  id: string
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      {iconSrc ? (
+        <img
+          src={iconSrc}
+          alt=""
+          className="h-8 w-8 object-contain"
+          aria-hidden="true"
+          draggable="false"
+        />
+      ) : (
+        <Users aria-hidden="true" className="h-8 w-8 text-[#0867f2]" />
+      )}
+      <h2
+        id={id}
+        className="text-[22px] font-black leading-tight text-[#071747]"
+      >
+        {children}
+      </h2>
+    </div>
+  )
+}
+
+function PermissionPill({
+  children,
+  icon: Icon,
+  tone = 'blue',
+}: {
+  children: ReactNode
+  icon: LucideIcon
+  tone?: 'blue' | 'green'
+}) {
+  return (
+    <span
+      className={cn(
+        'inline-flex min-h-7 items-center gap-1.5 rounded-full px-3 text-[13px] font-black leading-none',
+        tone === 'green'
+          ? 'bg-[#e6f8ed] text-[#118248]'
+          : 'bg-[#edf5ff] text-[#0867f2]',
+      )}
+    >
+      <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={2.6} />
+      {children}
+    </span>
+  )
+}
+
+function FamilyMemberRow({ member }: { member: FamilyMember }) {
+  return (
+    <article className="grid min-h-[104px] grid-cols-[74px_minmax(0,1fr)_32px] items-center gap-4 rounded-[12px] border border-[#e3eaf4] bg-white px-4 py-3 shadow-[0_8px_20px_rgba(35,68,116,0.05)]">
+      <img
+        src={member.avatarSrc}
+        alt=""
+        className="h-[74px] w-[74px] rounded-full bg-[#eef6ff] object-cover"
+        aria-hidden="true"
+        draggable="false"
+      />
+
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <strong className="text-[23px] font-black leading-tight text-[#071747]">
+            {member.name}
+          </strong>
+          <span className="inline-flex min-h-7 items-center rounded-full bg-[#eaf3ff] px-3 text-[14px] font-black leading-none text-[#0867f2]">
+            {member.relation}
+          </span>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <PermissionPill icon={Eye}>상태 요약 보기 가능</PermissionPill>
+          <PermissionPill icon={Bell} tone="green">
+            알림 수신 중
+          </PermissionPill>
+        </div>
+      </div>
+
+      <CheckCircle2
+        aria-label="연결 완료"
+        className="h-8 w-8 text-[#14a34a]"
+        strokeWidth={2.6}
+      />
+    </article>
+  )
+}
+
+function FamilyCard() {
+  return (
+    <SectionCard
+      className="min-h-[360px] xl:h-[360px]"
+      titleId="connected-family-title"
+    >
+      <CardTitle id="connected-family-title" iconSrc={familyIconSrc}>
+        가족
+      </CardTitle>
+
+      <div className="mt-4 grid gap-3">
+        {familyMembers.map((member) => (
+          <FamilyMemberRow key={member.name} member={member} />
+        ))}
+      </div>
+    </SectionCard>
+  )
+}
+
+function TeamRoleCard({ role }: { role: TeamRole }) {
+  return (
+    <SectionCard
+      className="min-h-[360px] xl:h-[360px]"
+      titleId={`${role.name}-title`}
+    >
+      <CardTitle id={`${role.name}-title`} iconSrc={role.iconSrc}>
+        {role.heading}
+      </CardTitle>
+
+      <article className="mt-5 flex min-h-[265px] flex-col items-center justify-between text-center">
+        <div className="flex flex-col items-center">
+          <img
+            src={role.avatarSrc}
+            alt=""
+            className="h-[96px] w-[96px] rounded-full bg-[#eef6ff] object-contain shadow-[0_10px_22px_rgba(39,80,140,0.1)]"
+            aria-hidden="true"
+            draggable="false"
+          />
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <strong className="text-[24px] font-black leading-tight text-[#071747]">
+              {role.name}
+            </strong>
+            <span
+              className={cn(
+                'inline-flex min-h-7 items-center rounded-full px-3 text-[14px] font-black leading-none',
+                role.badgeClassName,
+              )}
+            >
+              {role.badge}
+            </span>
+          </div>
+          <p className="mt-3 break-keep text-[16px] font-bold leading-tight text-[#53627a]">
+            {role.description}
+          </p>
+        </div>
+
+        <img
+          src={role.propSrc}
+          alt=""
+          className="h-[88px] w-[190px] object-contain drop-shadow-[0_14px_18px_rgba(55,91,143,0.1)]"
+          aria-hidden="true"
+          draggable="false"
+        />
+      </article>
+    </SectionCard>
+  )
+}
+
+function InviteCodeCard() {
+  return (
+    <SectionCard
+      className="min-h-[360px] p-5 xl:h-[360px]"
+      titleId="family-invite-title"
+    >
+      <div className="flex items-center gap-3">
+        <img
+          src={inviteIconSrc}
+          alt=""
+          className="h-9 w-9 object-contain"
+          aria-hidden="true"
+          draggable="false"
+        />
+        <h2
+          id="family-invite-title"
+          className="break-keep text-[21px] font-black leading-tight text-[#071747]"
+        >
+          가족에게 초대코드 보내기
+        </h2>
+      </div>
+
+      <div className="mt-5 rounded-[12px] border border-[#bcd8ff] bg-[#f1f7ff] p-2 shadow-[inset_0_0_0_4px_rgba(255,255,255,0.55)]">
+        <p className="rounded-[10px] border-2 border-dashed border-[#c8ddff] bg-white/72 px-4 py-4 text-center text-[34px] font-black leading-none tracking-[0.05em] text-[#0867f2]">
+          DOLBOM-3942
+        </p>
+      </div>
+
+      <p className="mx-auto mt-4 max-w-[300px] break-keep text-center text-[16px] font-bold leading-snug text-[#52617a]">
+        가족이 이 코드를 입력하면 담당 복지사 승인 후 연결돼요.
+      </p>
+
+      <div className="mt-4 grid gap-3">
+        <button
+          type="button"
+          className="inline-flex min-h-[52px] w-full items-center justify-center gap-3 rounded-[8px] bg-[#0867f2] px-4 text-[19px] font-black leading-none text-white shadow-[0_14px_28px_rgba(8,103,242,0.23)] transition hover:bg-[#005cdf] active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
+        >
+          <Send aria-hidden="true" className="h-6 w-6" strokeWidth={2.8} />
+          초대코드 보내기
+        </button>
+        <button
+          type="button"
+          className="inline-flex min-h-[46px] w-full items-center justify-center gap-3 rounded-[8px] border-2 border-[#0867f2] bg-white px-4 text-[17px] font-black leading-none text-[#0867f2] transition hover:bg-[#f2f7ff] active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
+        >
+          <Copy aria-hidden="true" className="h-6 w-6" strokeWidth={2.7} />
+          코드 복사
+        </button>
+      </div>
+    </SectionCard>
+  )
+}
+
+function InfoItemCard({
+  item,
+  showDivider,
+}: {
+  item: InfoItem
+  showDivider: boolean
+}) {
+  const Icon = item.icon
+
+  return (
+    <article className="relative flex min-h-[88px] items-center gap-4 px-4 py-3">
+      {item.iconSrc ? (
+        <img
+          src={item.iconSrc}
+          alt=""
+          className="h-12 w-12 shrink-0 object-contain"
+          aria-hidden="true"
+          draggable="false"
+        />
+      ) : Icon ? (
+        <Icon
+          aria-hidden="true"
+          className={cn('h-12 w-12 shrink-0', item.iconClassName)}
+          strokeWidth={2.7}
+        />
+      ) : null}
+
+      <div className="min-w-0">
+        {item.title ? (
+          <h2 className="text-[21px] font-black leading-tight text-[#071747]">
+            {item.title}
+          </h2>
+        ) : (
+          <p className="break-keep text-[16px] font-bold leading-snug text-[#34415d]">
+            {item.description}
+          </p>
+        )}
+      </div>
+
+      {showDivider ? (
+        <span
+          className="absolute right-0 top-1/2 hidden h-16 w-px -translate-y-1/2 bg-[#d7dfea] lg:block"
+          aria-hidden="true"
+        />
+      ) : null}
+    </article>
+  )
+}
+
+function InfoBar() {
+  return (
+    <section
+      className="grid rounded-[14px] border border-[#dfe7f2] bg-white shadow-[0_14px_34px_rgba(40,76,132,0.08)] md:grid-cols-2 lg:grid-cols-[1.12fr_1.4fr_1.55fr_1.4fr_1.45fr]"
+      aria-label="정보 공유 안내"
+    >
+      {infoItems.map((item, index) => (
+        <InfoItemCard
+          key={item.title ?? item.description}
+          item={item}
+          showDivider={index < infoItems.length - 1}
+        />
+      ))}
+    </section>
+  )
+}
+
+export function ElderCareTeamPage() {
+  return (
+    <main className="min-h-svh overflow-x-hidden bg-[#fbfdff] text-[#071747]">
+      <TopNavigation />
+
+      <div className="mx-auto w-full max-w-[1800px] px-5 pb-7 pt-6 sm:px-7 lg:px-[54px]">
+        <section aria-labelledby="care-team-title">
+          <h1
+            id="care-team-title"
+            className="text-[42px] font-black leading-tight text-[#071747] lg:text-[52px]"
+          >
+            내 돌봄팀
+          </h1>
+          <p className="mt-2 break-keep text-[19px] font-bold leading-snug text-[#3f4e68]">
+            누가 내 정보를 보고 있는지 한눈에 확인해보세요.
+          </p>
+        </section>
+
+        <div className="mt-6">
+          <PrivacyHero />
+        </div>
+
+        <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(470px,1.28fr)_minmax(260px,0.62fr)_minmax(270px,0.66fr)_minmax(360px,0.94fr)]">
+          <FamilyCard />
+          {teamRoles.map((role) => (
+            <TeamRoleCard key={role.name} role={role} />
+          ))}
+          <InviteCodeCard />
+        </div>
+
+        <div className="mt-5">
+          <InfoBar />
+        </div>
+      </div>
+    </main>
+  )
+}
