@@ -44,7 +44,7 @@ describe('CaregiverDashboardPage', () => {
     )
     expect(
       screen.getAllByRole('link', { name: '방문 시작' })[0],
-    ).toHaveAttribute('href', '/worker/elders/kim-yeongja/memo')
+    ).toHaveAttribute('href', '/caregiver/records')
     expect(
       screen.getByRole('heading', { name: '최근 방문 기록' }),
     ).toBeInTheDocument()
@@ -52,7 +52,7 @@ describe('CaregiverDashboardPage', () => {
 
     expect(
       within(quickMenu).getByRole('link', { name: '방문 시작' }),
-    ).toHaveAttribute('href', '/worker/elders/kim-yeongja/memo')
+    ).toHaveAttribute('href', '/caregiver/records')
     expect(
       within(quickMenu).getByRole('link', { name: '방문 기록' }),
     ).toHaveAttribute('href', '/caregiver/records')
@@ -61,7 +61,7 @@ describe('CaregiverDashboardPage', () => {
     ).toHaveAttribute('href', '/caregiver/schedules')
     expect(
       within(quickMenu).getByRole('link', { name: '담당 어르신' }),
-    ).toHaveAttribute('href', '/worker/elders')
+    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
     expect(
       within(quickMenu).queryByRole('link', { name: '요양사 가입 정보' }),
     ).toBeNull()
@@ -84,7 +84,7 @@ describe('CaregiverDashboardPage', () => {
     ).toHaveAttribute('href', '/caregiver/schedules')
     expect(
       within(caregiverMenu).getByRole('link', { name: '담당어르신' }),
-    ).toHaveAttribute('href', '/worker/elders/kim-yeongja')
+    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
     expect(
       within(caregiverMenu).getByRole('link', { name: '방문기록' }),
     ).toHaveAttribute('href', '/caregiver/records')

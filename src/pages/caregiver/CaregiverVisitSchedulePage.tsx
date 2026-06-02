@@ -305,7 +305,7 @@ function CaregiverVisitTopBar() {
           </button>
 
           <Link
-            to="/worker/mypage"
+            to="/caregiver"
             className="hidden min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[560px]:inline-flex"
             aria-label="김민수 요양사 프로필 보기"
           >
@@ -513,7 +513,7 @@ function VisitScheduleRow({ visit }: { visit: VisitItem }) {
           전화하기
         </a>
         <Link
-          to={`/worker/elders/${visit.elderId}/memo`}
+          to="/caregiver/records"
           className={cn(
             'inline-flex min-h-9 items-center justify-center rounded-lg px-4 text-[14px] font-black shadow-[0_10px_20px_rgba(8,103,242,0.24)] transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]',
             visit.status === 'completed'

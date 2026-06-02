@@ -140,7 +140,7 @@ const elderRows: ElderRow[] = [
 const quickMenus: QuickMenuItem[] = [
   {
     description: '오늘 방문 기록 작성',
-    href: '/worker/elders/kim-yeongja/memo',
+    href: '/caregiver/records',
     iconSrc: `${dashboardAssetBase}/체크.png`,
     label: '방문 시작',
   },
@@ -157,8 +157,8 @@ const quickMenus: QuickMenuItem[] = [
     label: '방문 일정',
   },
   {
-    description: '전체 목록 및 상태 확인',
-    href: '/worker/elders',
+    description: '담당 어르신 상세 확인',
+    href: '/caregiver/elders/kim-yeongja',
     iconSrc: `${dashboardAssetBase}/체크2.png`,
     label: '담당 어르신',
   },
@@ -311,7 +311,7 @@ function CaregiverDashboardTopBar() {
           </button>
 
           <Link
-            to="/worker/mypage"
+            to="/caregiver"
             className="hidden min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[520px]:inline-flex"
             aria-label="김민수 요양사 프로필 보기"
           >
@@ -481,18 +481,18 @@ function ElderDashboardRow({ elder }: { elder: ElderRow }) {
 
       <div className="grid grid-cols-2 gap-3 sm:flex sm:justify-end">
         <Link
-          to={`/worker/elders/${elder.id}`}
+          to={`/caregiver/elders/${elder.id}`}
           className="inline-flex min-h-9 items-center justify-center gap-2 rounded-lg border border-[#dfe7f4] bg-white px-4 text-[15px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           상세 보기
           <ChevronRight aria-hidden="true" className="h-5 w-5" />
         </Link>
         <Link
-          to={`/worker/elders/${elder.id}/memo`}
+          to="/caregiver/records"
           className="inline-flex min-h-9 items-center justify-center gap-2 rounded-lg bg-[#0867f2] px-4 text-[15px] font-black text-white shadow-[0_10px_22px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           <Pencil aria-hidden="true" className="h-5 w-5" strokeWidth={2.8} />
-          메모 작성
+          기록 작성
         </Link>
       </div>
     </article>
@@ -550,7 +550,7 @@ function NextVisitPanel() {
           전화하기
         </a>
         <Link
-          to={`/worker/elders/${caregiverNextVisit.elderId}/memo`}
+          to="/caregiver/records"
           className="inline-flex min-h-10 items-center justify-center gap-1 rounded-lg bg-[#0867f2] px-2 text-[13px] font-black text-white shadow-[0_10px_20px_rgba(8,103,242,0.24)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           <PlayCircle aria-hidden="true" className="h-4 w-4" />
@@ -852,10 +852,10 @@ export function CaregiverDashboardPage() {
 
               <div className="mt-2 flex justify-center">
                 <Link
-                  to="/worker/elders"
+                  to="/caregiver/elders/kim-yeongja"
                   className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-5 text-[17px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
                 >
-                  더 많은 어르신 보기
+                  담당 어르신 상세 보기
                   <ChevronDown
                     aria-hidden="true"
                     className="h-5 w-5"

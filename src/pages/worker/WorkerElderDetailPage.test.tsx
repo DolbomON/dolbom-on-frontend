@@ -29,9 +29,9 @@ describe('WorkerElderDetailPage', () => {
     expect(screen.getByText(/82세/)).toBeInTheDocument()
     expect(screen.getByText(/배우자와 거주/)).toBeInTheDocument()
     expect(
-      within(screen.getByRole('navigation', { name: '요양사 메뉴' })).getByRole(
+      within(screen.getByRole('navigation', { name: '복지사 메뉴' })).getByRole(
         'link',
-        { name: '담당어르신' },
+        { name: '복지 현황' },
       ),
     ).toHaveAttribute('aria-current', 'page')
 
@@ -102,6 +102,32 @@ describe('WorkerElderDetailPage', () => {
     expect(screen.getByAltText('이순자님 프로필')).toBeInTheDocument()
     expect(screen.getByText(/82세/)).toBeInTheDocument()
     expect(screen.getByText(/독거/)).toBeInTheDocument()
+  })
+
+  it('keeps caregiver detail navigation on the caregiver detail route', () => {
+    render(
+      <MemoryRouter initialEntries={['/caregiver/elders/kim-yeongja']}>
+        <Routes>
+          <Route
+            path="/caregiver/elders/:elderId"
+            element={<WorkerElderDetailPage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    )
+
+    expect(
+      within(screen.getByRole('navigation', { name: '요양사 메뉴' })).getByRole(
+        'link',
+        { name: '담당어르신' },
+      ),
+    ).toHaveAttribute('aria-current', 'page')
+    expect(
+      screen.getByRole('link', { name: '전체 기록 보기' }),
+    ).toHaveAttribute('href', '/caregiver/records')
+    expect(
+      screen.getByRole('link', { name: '어르신 정보 보기' }),
+    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
   })
 
   it('renders a friendly not-found state for an unknown elderId', () => {

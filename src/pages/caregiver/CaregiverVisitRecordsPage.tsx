@@ -337,7 +337,7 @@ function CaregiverRecordTopBar() {
           </button>
 
           <Link
-            to="/worker/mypage"
+            to="/caregiver"
             className="hidden min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[560px]:inline-flex"
             aria-label="김민수 요양사 프로필 보기"
           >
@@ -512,7 +512,7 @@ function RecordActionLink({ record }: { record: VisitRecord }) {
 
   return (
     <Link
-      to={`/worker/elders/${record.elderId}/memo`}
+      to="/caregiver/records"
       className={cn(
         'inline-flex min-h-10 items-center justify-center rounded-lg px-4 text-[15px] font-black shadow-[0_10px_20px_rgba(8,103,242,0.23)] transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]',
         style.action,
@@ -570,7 +570,7 @@ function RecordTable({ records }: { records: VisitRecord[] }) {
             </div>
             <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center sm:justify-start lg:justify-end">
               <Link
-                to={`/worker/elders/${record.elderId}`}
+                to={`/caregiver/elders/${record.elderId}`}
                 className="inline-flex min-h-10 items-center justify-center rounded-lg border border-[#dbe5f3] bg-white px-4 text-[15px] font-black text-[#1f2c48] shadow-[0_6px_14px_rgba(37,72,125,0.04)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
               >
                 상세 보기

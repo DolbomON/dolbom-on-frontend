@@ -17,13 +17,14 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { useMemo } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
 import { elderDetails } from '../../features/worker/workerElderDetailData'
 import { cn } from '../../lib/utils'
 
 const workerAssetBase = '/assets/dolbomon/worker'
 const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
+const workerProfileSrc = '/assets/dolbomon/worker-mypage/worker-lee-bokji.png'
 
 const statusCards = [
   {
@@ -162,10 +163,32 @@ const statusPillClasses = {
 
 type StatusTone = keyof typeof statusPillClasses
 
-function WorkerDetailTopBar() {
+type DetailViewRole = 'caregiver' | 'worker'
+
+const workerDetailTopNavItems = [
+  { href: '/worker', label: '홈' },
+  { href: '/worker/elders', label: '복지 현황' },
+  { href: '/worker/consultations', label: '상담 관리' },
+  { href: '/worker/reports', label: '보고서' },
+  { href: '/worker/schedules', label: '기관 일정' },
+  { href: '/worker/mypage', label: '설정' },
+] as const
+
+function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
+  const isCaregiverView = viewRole === 'caregiver'
+  const navItems = isCaregiverView
+    ? caregiverTopNavItems
+    : workerDetailTopNavItems
+  const navLabel = isCaregiverView ? '요양사 메뉴' : '복지사 메뉴'
+  const profileHref = isCaregiverView ? '/caregiver' : '/worker/mypage'
+  const profileName = isCaregiverView ? '김민수 요양사' : '이수진 복지사'
+  const profileImageSrc = isCaregiverView
+    ? `${workerAssetBase}/아들.png`
+    : workerProfileSrc
+
   return (
     <header className="sticky top-0 z-30 border-b border-[#dde7f4] bg-white/95 shadow-[0_5px_18px_rgba(35,73,128,0.07)] backdrop-blur">
-      <div className="mx-auto grid min-h-[82px] w-full grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-2 lg:h-[72px] lg:min-h-[72px] lg:grid-cols-[214px_minmax(0,1fr)_auto] lg:px-8 lg:py-0">
+      <div className="mx-auto grid min-h-[82px] w-full grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-2 lg:h-[72px] lg:min-h-[72px] lg:grid-cols-[214px_minmax(0,1fr)_auto] lg:px-[31px] lg:py-0">
         <Link
           to="/"
           className="inline-flex min-h-11 items-center text-[29px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.16)] focus-visible:rounded-lg lg:text-[34px]"
@@ -176,17 +199,19 @@ function WorkerDetailTopBar() {
 
         <nav
           className="col-span-2 row-start-2 flex min-w-0 justify-start gap-3 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-12"
-          aria-label="요양사 메뉴"
+          aria-label={navLabel}
         >
-          {caregiverTopNavItems.map((item) => {
-            const isActive = item.label === '담당어르신'
+          {navItems.map((item) => {
+            const isActive = isCaregiverView
+              ? item.label === '담당어르신'
+              : item.href === '/worker/elders'
 
             return (
               <Link
                 key={item.label}
                 to={item.href}
                 className={cn(
-                  'relative inline-flex min-h-11 shrink-0 items-center justify-center px-2 transition hover:text-[#0867f2] focus-visible:rounded-lg',
+                  'relative inline-flex min-h-11 shrink-0 items-center justify-center px-2 transition hover:text-[#0867f2] focus-visible:rounded-lg lg:min-h-[72px]',
                   isActive ? 'text-[#0867f2]' : 'text-[#111827]',
                 )}
                 aria-current={isActive ? 'page' : undefined}
@@ -217,18 +242,18 @@ function WorkerDetailTopBar() {
           </button>
 
           <Link
-            to="/worker/mypage"
+            to={profileHref}
             className="hidden min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[540px]:inline-flex"
-            aria-label="김민수 요양사 프로필 보기"
+            aria-label={`${profileName} 프로필 보기`}
           >
             <img
-              src={`${dashboardAssetBase}/요양사.png`}
+              src={profileImageSrc}
               alt=""
               className="h-11 w-11 rounded-full bg-[#f0f5ff] object-cover shadow-[0_6px_14px_rgba(42,96,184,0.16)]"
               draggable="false"
             />
             <strong className="hidden text-[15px] font-black leading-tight text-[#111827] sm:block">
-              김민수 요양사
+              {profileName}
             </strong>
             <ChevronDown
               aria-hidden="true"
@@ -242,10 +267,12 @@ function WorkerDetailTopBar() {
   )
 }
 
-function NotFoundState() {
+function NotFoundState({ viewRole }: { viewRole: DetailViewRole }) {
+  const backHref = viewRole === 'caregiver' ? '/caregiver' : '/worker/elders'
+
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f6f9fd] text-[#071747]">
-      <WorkerDetailTopBar />
+      <WorkerDetailTopBar viewRole={viewRole} />
 
       <div className="mx-auto w-full max-w-[760px] px-5 py-16">
         <section
@@ -262,7 +289,7 @@ function NotFoundState() {
             대상자 목록에서 다시 선택해 주세요.
           </p>
           <Link
-            to="/worker/elders"
+            to={backHref}
             className="mt-6 inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-5 text-[17px] font-black text-white shadow-[0_12px_22px_rgba(8,103,242,0.22)] transition hover:bg-[#075fe0] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
           >
             대상자 목록으로 돌아가기
@@ -276,11 +303,13 @@ function NotFoundState() {
 function ProfileSummaryCard({
   age,
   avatarSrc,
+  detailHref,
   household,
   name,
 }: {
   age: number
   avatarSrc: string
+  detailHref: string
   household: string
   name: string
 }) {
@@ -293,7 +322,7 @@ function ProfileSummaryCard({
         <img
           src={avatarSrc}
           alt={`${name} 프로필`}
-          className="h-[188px] w-[218px] object-contain"
+          className="h-[188px] w-[188px] rounded-full bg-[#e8f3ff] object-cover shadow-[0_10px_24px_rgba(47,86,145,0.12)]"
           draggable="false"
         />
         <h2 className="mt-4 text-[28px] font-black leading-tight text-[#111827]">
@@ -332,7 +361,7 @@ function ProfileSummaryCard({
       </dl>
 
       <Link
-        to="/worker/elders/kim-yeongja"
+        to={detailHref}
         className="mt-8 inline-flex min-h-[58px] w-full items-center justify-center gap-2 rounded-lg border border-[#d5e0ee] bg-white px-4 text-[18px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] xl:mt-auto"
       >
         <FileText aria-hidden="true" className="h-6 w-6" strokeWidth={2.6} />
@@ -369,7 +398,7 @@ function StatusMetricCard({ card }: { card: (typeof statusCards)[number] }) {
 function RequestSummaryPanel() {
   return (
     <section
-      className="grid gap-5 rounded-[18px] border border-[#dfe8f5] bg-white p-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)] lg:grid-cols-[1.1fr_1fr] lg:gap-0 xl:h-[260px]"
+      className="grid gap-5 overflow-hidden rounded-[18px] border border-[#dfe8f5] bg-white p-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)] lg:grid-cols-[1.1fr_1fr] lg:gap-0 xl:h-[260px]"
       aria-label="방문 전 요청사항과 참고 요약"
     >
       <div className="min-w-0 lg:border-r lg:border-[#dfe6f1] lg:pr-7">
@@ -382,18 +411,18 @@ function RequestSummaryPanel() {
           </h2>
         </div>
 
-        <div className="mt-5 grid gap-5 sm:grid-cols-[142px_minmax(0,1fr)] sm:items-center">
+        <div className="mt-4 grid gap-4 sm:grid-cols-[142px_minmax(0,1fr)] sm:items-center">
           <img
             src={`${workerAssetBase}/체크.png`}
             alt=""
             className="mx-auto h-[132px] w-[132px] object-contain sm:mx-0"
             draggable="false"
           />
-          <ul className="grid gap-4">
+          <ul className="grid gap-3">
             {welfareRequests.map((request) => (
               <li
                 key={request}
-                className="flex items-start gap-3 text-[17px] font-bold leading-snug text-[#172033]"
+                className="flex items-start gap-3 text-[16px] font-bold leading-snug text-[#172033]"
               >
                 <span
                   className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ff4c5c]"
@@ -416,11 +445,11 @@ function RequestSummaryPanel() {
           </h2>
         </div>
 
-        <ul className="mt-6 grid gap-4">
+        <ul className="mt-5 grid gap-3">
           {referenceSummaries.map((summary) => (
             <li
               key={summary}
-              className="flex items-start gap-3 text-[17px] font-bold leading-[1.5] text-[#172033]"
+              className="flex items-start gap-3 text-[16px] font-bold leading-[1.42] text-[#172033]"
             >
               <span
                 className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#b8c1d0]"
@@ -435,10 +464,10 @@ function RequestSummaryPanel() {
   )
 }
 
-function RecentVisitHistoryPanel() {
+function RecentVisitHistoryPanel({ recordsHref }: { recordsHref: string }) {
   return (
     <section
-      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-4 shadow-[0_16px_36px_rgba(47,86,145,0.08)] xl:h-[192px]"
+      className="overflow-hidden rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-3 shadow-[0_16px_36px_rgba(47,86,145,0.08)] xl:h-[192px]"
       aria-labelledby="recent-visit-history-title"
     >
       <div className="flex items-center justify-between gap-3">
@@ -450,39 +479,60 @@ function RecentVisitHistoryPanel() {
           />
           <h2
             id="recent-visit-history-title"
-            className="text-[23px] font-black leading-tight text-[#111827]"
+            className="text-[22px] font-black leading-tight text-[#111827]"
           >
             최근 방문 기록
           </h2>
         </div>
         <Link
-          to="/caregiver/records"
-          className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-[16px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+          to={recordsHref}
+          className="inline-flex min-h-8 items-center gap-1 rounded-lg px-2 text-[15px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           전체 기록 보기
           <ChevronRight aria-hidden="true" className="h-5 w-5" />
         </Link>
       </div>
 
-      <div className="mt-3 overflow-hidden rounded-[12px] border border-[#dfe8f5]">
+      <ul className="mt-3 grid gap-2 sm:hidden">
+        {recentVisitHistory.map((record) => (
+          <li
+            key={record.id}
+            className="rounded-[12px] border border-[#dfe8f5] bg-white px-3 py-3"
+          >
+            <div className="flex items-center gap-2 text-[14px] font-black leading-tight text-[#3d4b68]">
+              <CalendarDays
+                aria-hidden="true"
+                className="h-4 w-4 text-[#52627f]"
+              />
+              <span>{record.date}</span>
+              <span>{record.time}</span>
+            </div>
+            <p className="mt-2 text-[15px] font-bold leading-snug text-[#111827]">
+              {record.content}
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-2 hidden overflow-hidden rounded-[12px] border border-[#dfe8f5] sm:block">
         <table className="w-full border-collapse text-left">
           <caption className="sr-only">김영자님 최근 방문 기록</caption>
-          <tbody className="divide-y divide-[#dfe8f5] text-[16px] font-bold leading-tight text-[#25314a]">
+          <tbody className="divide-y divide-[#dfe8f5] text-[14px] font-bold leading-tight text-[#25314a]">
             {recentVisitHistory.map((record) => (
               <tr key={record.id} className="bg-white">
-                <td className="w-[138px] px-4 py-3 text-[#3d4b68]">
+                <td className="w-[132px] px-4 py-2 text-[#3d4b68]">
                   <span className="inline-flex items-center gap-2">
                     <CalendarDays
                       aria-hidden="true"
-                      className="h-5 w-5 text-[#52627f]"
+                      className="h-4 w-4 text-[#52627f]"
                     />
                     {record.date}
                   </span>
                 </td>
-                <td className="w-[96px] px-3 py-3 text-[#25314a]">
+                <td className="w-[88px] px-3 py-2 text-[#25314a]">
                   {record.time}
                 </td>
-                <td className="px-4 py-3">{record.content}</td>
+                <td className="px-4 py-2">{record.content}</td>
               </tr>
             ))}
           </tbody>
@@ -679,7 +729,11 @@ function SafetyChecklistPanel() {
 
 export function WorkerElderDetailPage() {
   const { elderId } = useParams()
+  const location = useLocation()
   const navigate = useNavigate()
+  const viewRole: DetailViewRole = location.pathname.startsWith('/caregiver/')
+    ? 'caregiver'
+    : 'worker'
 
   const elder = useMemo(
     () => elderDetails.find((item) => item.id === elderId),
@@ -687,10 +741,15 @@ export function WorkerElderDetailPage() {
   )
 
   if (!elder) {
-    return <NotFoundState />
+    return <NotFoundState viewRole={viewRole} />
   }
 
   const openMemoCreate = () => {
+    if (viewRole === 'caregiver') {
+      navigate('/caregiver/records')
+      return
+    }
+
     navigate(`/worker/elders/${elder.id}/memo`, {
       state: { fromWorkerElderDetail: true },
     })
@@ -703,15 +762,21 @@ export function WorkerElderDetailPage() {
   const age = isKimYeongja ? 82 : elder.age
   const household = isKimYeongja ? '배우자와 거주' : elder.household
   const detailTitle = `${elder.name} 방문 전 확인`
+  const detailHref =
+    viewRole === 'caregiver'
+      ? `/caregiver/elders/${elder.id}`
+      : `/worker/elders/${elder.id}`
+  const recordsHref =
+    viewRole === 'caregiver' ? '/caregiver/records' : '/worker/reports'
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f6f9fd] text-[#071747]">
-      <WorkerDetailTopBar />
+      <WorkerDetailTopBar viewRole={viewRole} />
 
-      <div className="mx-auto w-full max-w-[1618px] px-5 pb-9 pt-8 lg:px-8">
-        <div className="grid gap-x-10 gap-y-6 xl:grid-cols-[302px_minmax(0,1fr)_386px] 2xl:grid-cols-[302px_846px_386px]">
+      <div className="mx-auto w-full max-w-[1618px] px-5 pb-9 pt-[22px] lg:px-0">
+        <div className="grid gap-x-[40px] gap-y-[18px] xl:grid-cols-[302px_minmax(0,1fr)_386px] 2xl:grid-cols-[302px_846px_386px]">
           <section
-            className="xl:col-span-2"
+            className="order-1 xl:order-none xl:col-span-2"
             aria-labelledby="elder-detail-title"
           >
             <h1
@@ -726,7 +791,7 @@ export function WorkerElderDetailPage() {
           </section>
 
           <aside
-            className="grid gap-4 xl:col-start-3 xl:row-span-2 xl:row-start-1 xl:mt-4"
+            className="order-4 grid gap-4 xl:order-none xl:col-start-3 xl:row-span-2 xl:row-start-1 xl:mt-[20px]"
             aria-label="연락처와 오늘 방문 정보"
           >
             <FamilyContactsPanel />
@@ -734,14 +799,17 @@ export function WorkerElderDetailPage() {
             <SafetyChecklistPanel />
           </aside>
 
-          <ProfileSummaryCard
-            age={age}
-            avatarSrc={avatarSrc}
-            household={household}
-            name={elder.name}
-          />
+          <div className="order-2 xl:order-none">
+            <ProfileSummaryCard
+              age={age}
+              avatarSrc={avatarSrc}
+              detailHref={detailHref}
+              household={household}
+              name={elder.name}
+            />
+          </div>
 
-          <div className="min-w-0">
+          <div className="order-3 min-w-0 xl:order-none">
             <section
               className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
               aria-label="오늘 주요 상태"
@@ -756,7 +824,7 @@ export function WorkerElderDetailPage() {
             </div>
 
             <div className="mt-4">
-              <RecentVisitHistoryPanel />
+              <RecentVisitHistoryPanel recordsHref={recordsHref} />
             </div>
 
             <div className="mt-4">

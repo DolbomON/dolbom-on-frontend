@@ -163,6 +163,10 @@ export const router = createBrowserRouter([
     element: <CaregiverVisitRecordsPage />,
   },
   {
+    path: '/caregiver/elders/:elderId',
+    element: <WorkerElderDetailPage />,
+  },
+  {
     path: '/worker',
     element: <WorkerDashboardPage />,
   },
@@ -211,7 +215,7 @@ export const router = createBrowserRouter([
     element: <WorkerSchedulesPage />,
   },
   {
-    path: '/worker/portfolio',
+    path: '/caregiver/portfolio',
     element: <WorkerPortfolioPage />,
   },
   {

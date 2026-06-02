@@ -15,7 +15,6 @@ import {
   MessageCircle,
   Pencil,
   Plus,
-  Settings,
   Star,
   UploadCloud,
   Users,
@@ -23,7 +22,6 @@ import {
 } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { WorkerBottomNav } from '../../components/worker/WorkerBottomNav'
 import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
 import { cn } from '../../lib/utils'
 
@@ -71,17 +69,24 @@ type ActivityPhoto = {
 
 const sidebarItems: SidebarItem[] = [
   { href: '/caregiver', icon: Home, label: '대시보드' },
-  { href: '/worker/elders', icon: Users, label: '담당 어르신' },
+  { href: '/caregiver/elders/kim-yeongja', icon: Users, label: '담당 어르신' },
   {
     active: true,
-    href: '/worker/portfolio',
+    href: '/caregiver/portfolio',
     icon: BriefcaseBusiness,
     label: '포트폴리오',
   },
-  { href: '/worker/schedules', icon: CalendarDays, label: '일정 관리' },
-  { href: '/worker/reports', icon: ClipboardList, label: '상담 및 기록' },
-  { href: '/worker/community', icon: MessageCircle, label: '커뮤니티' },
-  { href: '/worker/mypage', icon: Settings, label: '설정' },
+  { href: '/caregiver/schedules', icon: CalendarDays, label: '일정 관리' },
+  { href: '/caregiver/records', icon: ClipboardList, label: '방문 기록' },
+  { href: '/caregiver#family-memo', icon: MessageCircle, label: '전달사항' },
+]
+
+const mobileNavItems: SidebarItem[] = [
+  { href: '/caregiver', icon: Home, label: '대시보드' },
+  { href: '/caregiver/schedules', icon: CalendarDays, label: '일정' },
+  { href: '/caregiver/elders/kim-yeongja', icon: Users, label: '상세' },
+  { href: '/caregiver/records', icon: ClipboardList, label: '기록' },
+  { href: '/caregiver#family-memo', icon: MessageCircle, label: '전달' },
 ]
 
 const specialties: Specialty[] = [
@@ -192,7 +197,7 @@ function WorkerPortfolioTopBar() {
           </button>
 
           <Link
-            to="/worker/portfolio"
+            to="/caregiver/portfolio"
             className="inline-flex min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
             aria-label="김영자님 요양사 프로필 보기"
           >
@@ -219,6 +224,30 @@ function WorkerPortfolioTopBar() {
         </div>
       </div>
     </header>
+  )
+}
+
+function CaregiverPortfolioBottomNav() {
+  return (
+    <nav
+      className="fixed bottom-0 left-1/2 z-30 grid h-[78px] w-full max-w-[480px] -translate-x-1/2 grid-cols-5 border-t border-[#e2eaf5] bg-white pb-[max(8px,env(safe-area-inset-bottom))] pt-1 shadow-[0_-10px_24px_rgba(40,91,172,0.1)]"
+      aria-label="하단 메뉴"
+    >
+      {mobileNavItems.map((item) => {
+        const Icon = item.icon
+
+        return (
+          <Link
+            key={item.label}
+            to={item.href}
+            className="relative flex min-h-[62px] flex-col items-center justify-center gap-1 text-[13px] font-extrabold leading-tight text-[#6f7786] transition hover:text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff]"
+          >
+            <Icon aria-hidden="true" className="h-8 w-8" strokeWidth={2.4} />
+            <span>{item.label}</span>
+          </Link>
+        )
+      })}
+    </nav>
   )
 }
 
@@ -681,7 +710,7 @@ export function WorkerPortfolioPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <section aria-labelledby="worker-portfolio-title">
                   <Link
-                    to="/worker/mypage"
+                    to="/caregiver"
                     className="inline-flex min-h-9 items-center gap-1 rounded-lg text-[14px] font-black text-[#0867f2] transition hover:bg-[#edf6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
                   >
                     <ChevronLeft
@@ -853,7 +882,7 @@ export function WorkerPortfolioPage() {
       </div>
 
       <div className="lg:hidden">
-        <WorkerBottomNav />
+        <CaregiverPortfolioBottomNav />
       </div>
 
       <p className="sr-only" aria-live="polite">

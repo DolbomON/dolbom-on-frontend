@@ -6,7 +6,7 @@ import { WorkerPortfolioPage } from './WorkerPortfolioPage'
 
 function renderWorkerPortfolioPage() {
   return render(
-    <MemoryRouter initialEntries={['/worker/portfolio']}>
+    <MemoryRouter initialEntries={['/caregiver/portfolio']}>
       <WorkerPortfolioPage />
     </MemoryRouter>,
   )
@@ -35,7 +35,7 @@ describe('WorkerPortfolioPage', () => {
     ).toHaveAttribute('href', '/caregiver/schedules')
     expect(
       within(topMenu).getByRole('link', { name: '담당어르신' }),
-    ).toHaveAttribute('href', '/worker/elders/kim-yeongja')
+    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
     expect(
       within(topMenu).getByRole('link', { name: '방문기록' }),
     ).toHaveAttribute('href', '/caregiver/records')
@@ -58,8 +58,14 @@ describe('WorkerPortfolioPage', () => {
       within(sideMenu).getByRole('link', { name: '대시보드' }),
     ).toHaveAttribute('href', '/caregiver')
     expect(
+      within(sideMenu).getByRole('link', { name: '담당 어르신' }),
+    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
+    expect(
       within(sideMenu).getByRole('link', { name: '포트폴리오' }),
     ).toHaveAttribute('aria-current', 'page')
+    expect(
+      within(sideMenu).getByRole('link', { name: '포트폴리오' }),
+    ).toHaveAttribute('href', '/caregiver/portfolio')
     expect(
       within(bottomMenu).getByRole('link', { name: '대시보드' }),
     ).toHaveAttribute('href', '/caregiver')

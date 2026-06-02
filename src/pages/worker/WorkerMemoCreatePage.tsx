@@ -233,7 +233,7 @@ function WorkerMemoTopBar() {
           </button>
 
           <Link
-            to="/worker/mypage"
+            to="/caregiver"
             className="hidden min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[540px]:inline-flex"
             aria-label="김민수 요양사 프로필 보기"
           >
