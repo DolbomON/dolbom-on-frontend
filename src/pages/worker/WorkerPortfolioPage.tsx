@@ -69,16 +69,12 @@ type ActivityPhoto = {
 }
 
 const topNavigationItems: NavigationItem[] = [
-  { href: '/worker', label: '홈' },
-  { href: '/worker/alerts', label: '안부현황' },
-  { href: '/worker/reports', label: '기록' },
-  { href: '/worker#schedule', label: '일정' },
-  { href: '/worker#family-memo', label: '가족메모' },
-  { href: '/worker/mypage', label: '설정' },
+  { href: '/caregiver', label: '홈' },
+  { href: '/worker/portfolio', label: '포트폴리오' },
 ]
 
 const sidebarItems: SidebarItem[] = [
-  { href: '/worker', icon: Home, label: '대시보드' },
+  { href: '/caregiver', icon: Home, label: '대시보드' },
   { href: '/worker/elders', icon: Users, label: '담당 어르신' },
   {
     active: true,

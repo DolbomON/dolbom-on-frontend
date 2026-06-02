@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
@@ -19,10 +19,35 @@ describe('WorkerPortfolioPage', () => {
     expect(
       screen.getByRole('heading', { name: '포트폴리오 등록' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: '포트폴리오' })).toHaveAttribute(
-      'aria-current',
-      'page',
+    const topMenu = screen.getByRole('navigation', {
+      name: '요양사 상단 메뉴',
+    })
+    const sideMenu = screen.getByRole('navigation', {
+      name: '요양사 좌측 메뉴',
+    })
+    const bottomMenu = screen.getByRole('navigation', { name: '하단 메뉴' })
+
+    expect(within(topMenu).getByRole('link', { name: '홈' })).toHaveAttribute(
+      'href',
+      '/caregiver',
     )
+    expect(
+      within(topMenu).getByRole('link', { name: '포트폴리오' }),
+    ).toHaveAttribute('href', '/worker/portfolio')
+    expect(within(topMenu).queryByRole('link', { name: '안부현황' })).toBeNull()
+    expect(within(topMenu).queryByRole('link', { name: '기록' })).toBeNull()
+    expect(within(topMenu).queryByRole('link', { name: '일정' })).toBeNull()
+    expect(within(topMenu).queryByRole('link', { name: '가족메모' })).toBeNull()
+    expect(within(topMenu).queryByRole('link', { name: '설정' })).toBeNull()
+    expect(
+      within(sideMenu).getByRole('link', { name: '대시보드' }),
+    ).toHaveAttribute('href', '/caregiver')
+    expect(
+      within(sideMenu).getByRole('link', { name: '포트폴리오' }),
+    ).toHaveAttribute('aria-current', 'page')
+    expect(
+      within(bottomMenu).getByRole('link', { name: '대시보드' }),
+    ).toHaveAttribute('href', '/caregiver')
     expect(screen.getByText('1. 자기소개')).toBeInTheDocument()
     expect(screen.getByText('2. 전문 분야')).toBeInTheDocument()
     expect(screen.getByText('3. 주요 경력')).toBeInTheDocument()

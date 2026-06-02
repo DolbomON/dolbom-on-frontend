@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
@@ -41,6 +41,31 @@ describe('CaregiverDashboardPage', () => {
     expect(
       screen.getByRole('heading', { name: '최근 방문 기록' }),
     ).toBeInTheDocument()
+    const caregiverMenu = screen.getByRole('navigation', {
+      name: '요양사 메뉴',
+    })
+
+    expect(
+      within(caregiverMenu).getByRole('link', { name: '홈' }),
+    ).toHaveAttribute('href', '/caregiver')
+    expect(
+      within(caregiverMenu).getByRole('link', { name: '포트폴리오' }),
+    ).toHaveAttribute('href', '/worker/portfolio')
+    expect(
+      within(caregiverMenu).queryByRole('link', { name: '안부현황' }),
+    ).toBeNull()
+    expect(
+      within(caregiverMenu).queryByRole('link', { name: '기록' }),
+    ).toBeNull()
+    expect(
+      within(caregiverMenu).queryByRole('link', { name: '일정' }),
+    ).toBeNull()
+    expect(
+      within(caregiverMenu).queryByRole('link', { name: '가족메모' }),
+    ).toBeNull()
+    expect(
+      within(caregiverMenu).queryByRole('link', { name: '설정' }),
+    ).toBeNull()
     expect(screen.queryByRole('navigation', { name: '하단 메뉴' })).toBeNull()
   })
 

@@ -20,7 +20,7 @@ type WorkerNavItem = {
 
 const workerNavItems: WorkerNavItem[] = [
   {
-    href: '/worker',
+    href: '/caregiver',
     icon: LayoutDashboard,
     id: 'dashboard',
     label: '대시보드',
@@ -64,7 +64,7 @@ export function WorkerBottomNav() {
           <NavLink
             key={item.id}
             to={item.href}
-            end={item.href === '/worker'}
+            end={item.href === '/caregiver'}
             className={({ isActive }) =>
               cn(
                 'relative flex min-h-[62px] flex-col items-center justify-center gap-1 text-[13px] font-extrabold leading-tight transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff]',

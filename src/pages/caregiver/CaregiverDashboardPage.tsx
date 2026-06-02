@@ -60,11 +60,7 @@ type ScheduleItem = {
 
 const navItems = [
   { href: '/caregiver', label: '홈' },
-  { href: '/worker/alerts', label: '안부현황' },
-  { href: '/worker/reports', label: '기록' },
-  { href: '/caregiver#schedule', label: '일정' },
-  { href: '/caregiver#family-memo', label: '가족메모' },
-  { href: '/worker/mypage', label: '설정' },
+  { href: '/worker/portfolio', label: '포트폴리오' },
 ]
 
 const metricCards: MetricCard[] = [

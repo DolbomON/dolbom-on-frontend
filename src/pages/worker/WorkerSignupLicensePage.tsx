@@ -17,7 +17,7 @@ import { cn } from '../../lib/utils'
 const workerAvatarSrc = '/assets/dolbomon/role-select/role-worker.png'
 
 const signupNavItems = [
-  { href: '/worker', label: '홈' },
+  { href: '/caregiver', label: '홈' },
   { href: '/worker/alerts', label: '안부현황' },
   { href: '/worker/reports', label: '기록' },
   { href: '/worker#schedule', label: '일정' },

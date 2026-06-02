@@ -25,7 +25,7 @@ const memoAssetBase = '/assets/dolbomon/worker-memo'
 const dayLabels = ['일', '월', '화', '수', '목', '금', '토']
 
 const navItems = [
-  { href: '/worker', label: '홈' },
+  { href: '/caregiver', label: '홈' },
   { href: '/worker/alerts', label: '안부현황' },
   { href: '/worker/elders/kim-yeongja', label: '방문 기록' },
   { href: '/worker#schedule', label: '일정' },
