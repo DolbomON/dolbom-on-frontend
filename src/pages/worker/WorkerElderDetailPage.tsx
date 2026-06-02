@@ -8,6 +8,7 @@ import {
   Info,
   Pencil,
   Phone,
+  PlayCircle,
   PlusCircle,
   RefreshCw,
   UserRound,
@@ -15,20 +16,12 @@ import {
 } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
 import { elderDetails } from '../../features/worker/workerElderDetailData'
 import { cn } from '../../lib/utils'
 
 const workerAssetBase = '/assets/dolbomon/worker'
 const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
-
-const navItems = [
-  { href: '/caregiver', label: '홈' },
-  { href: '/worker/alerts', label: '안부현황' },
-  { href: '/worker/elders/kim-yeongja', label: '방문 기록' },
-  { href: '/worker#schedule', label: '일정' },
-  { href: '/worker#family-memo', label: '가족메모' },
-  { href: '/worker/mypage', label: '설정' },
-]
 
 const statusCards = [
   {
@@ -123,9 +116,9 @@ const familyContacts = [
 ] as const
 
 const welfareRequests = [
-  '식사량 감소 원인과 식사 태도를 관찰해 주세요.',
-  '아침 복약 여부와 복약 시간이 지연된 이유를 확인해 주세요.',
-  '가족에게 저녁 복약 시간과 식사량 변화를 인계해 주세요.',
+  '식사량 감소 원인을 확인해주세요.',
+  '저녁 약 복용 여부를 확인해주세요.',
+  '수면 중 자주 깨는지 물어봐주세요.',
 ] as const
 
 const todayRecords = [
@@ -246,8 +239,8 @@ function WorkerDetailTopBar() {
           className="col-span-2 row-start-2 flex min-w-0 justify-start gap-2 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-7"
           aria-label="요양사 메뉴"
         >
-          {navItems.map((item) => {
-            const isActive = item.label === '방문 기록'
+          {caregiverTopNavItems.map((item) => {
+            const isActive = item.label === '방문기록'
 
             return (
               <Link
@@ -486,7 +479,7 @@ function AiSummaryPanel() {
               id="ai-summary-title"
               className="text-[18px] font-black leading-tight text-[#071747]"
             >
-              AI 생활 상태 요약
+              방문 전 참고 요약
             </h2>
             <div className="flex items-center gap-2 text-[14px] font-bold text-[#697895]">
               <span>오늘 09:30 기준</span>
@@ -663,7 +656,13 @@ function FamilyContactsPanel() {
   )
 }
 
-function WelfareRequestPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
+function WelfareRequestPanel({
+  onMemoCreate,
+  onVisitStart,
+}: {
+  onMemoCreate: () => void
+  onVisitStart: () => void
+}) {
   return (
     <section
       className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
@@ -694,14 +693,28 @@ function WelfareRequestPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
         ))}
       </ul>
 
-      <button
-        type="button"
-        className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#0867f2] px-4 text-[15px] font-black text-white shadow-[0_12px_22px_rgba(8,103,242,0.24)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-        onClick={onMemoCreate}
-      >
-        <Pencil aria-hidden="true" className="h-5 w-5" strokeWidth={2.7} />
-        방문 기록 작성
-      </button>
+      <div className="mt-3 grid gap-2 min-[390px]:grid-cols-2">
+        <button
+          type="button"
+          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#0867f2] px-3 text-[15px] font-black text-white shadow-[0_12px_22px_rgba(8,103,242,0.24)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+          onClick={onVisitStart}
+        >
+          <PlayCircle
+            aria-hidden="true"
+            className="h-5 w-5"
+            strokeWidth={2.7}
+          />
+          방문 시작
+        </button>
+        <button
+          type="button"
+          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#c8d8ef] bg-white px-3 text-[15px] font-black text-[#0867f2] shadow-[0_10px_20px_rgba(47,86,145,0.08)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+          onClick={onMemoCreate}
+        >
+          <Pencil aria-hidden="true" className="h-5 w-5" strokeWidth={2.7} />
+          방문 기록 작성
+        </button>
+      </div>
     </section>
   )
 }
@@ -875,7 +888,7 @@ export function WorkerElderDetailPage() {
 
   const household =
     elder.id === 'kim-yeongja' ? '배우자와 거주' : elder.household
-  const detailTitle = `${elder.name} 상태 상세`
+  const detailTitle = `${elder.name} 방문 전 확인`
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
@@ -946,7 +959,10 @@ export function WorkerElderDetailPage() {
             className="grid gap-3 xl:-mt-5"
             aria-label="연락처 및 방문 기록 정보"
           >
-            <WelfareRequestPanel onMemoCreate={openMemoCreate} />
+            <WelfareRequestPanel
+              onMemoCreate={openMemoCreate}
+              onVisitStart={openMemoCreate}
+            />
             <FamilyContactsPanel />
             <RecentMemoPanel onMemoCreate={openMemoCreate} />
             <WeeklyTrendPanel />

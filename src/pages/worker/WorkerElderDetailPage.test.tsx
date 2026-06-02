@@ -24,13 +24,13 @@ describe('WorkerElderDetailPage', () => {
     renderWorkerElderDetailPage()
 
     expect(
-      screen.getByRole('heading', { name: '김영자님 상태 상세' }),
+      screen.getByRole('heading', { name: '김영자님 방문 전 확인' }),
     ).toBeInTheDocument()
     expect(screen.getByText('84세 · 배우자와 거주')).toBeInTheDocument()
     expect(
       within(screen.getByRole('navigation', { name: '요양사 메뉴' })).getByRole(
         'link',
-        { name: '방문 기록' },
+        { name: '방문기록' },
       ),
     ).toHaveAttribute('aria-current', 'page')
 
@@ -54,7 +54,7 @@ describe('WorkerElderDetailPage', () => {
     expect(within(statusRegion).getByText('잘 잠')).toBeInTheDocument()
 
     expect(
-      screen.getByRole('heading', { name: 'AI 생활 상태 요약' }),
+      screen.getByRole('heading', { name: '방문 전 참고 요약' }),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: '오늘 방문 기록' }),
@@ -66,6 +66,15 @@ describe('WorkerElderDetailPage', () => {
       screen.getByRole('heading', { name: '복지사 요청사항' }),
     ).toBeInTheDocument()
     expect(
+      screen.getByText('식사량 감소 원인을 확인해주세요.'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('저녁 약 복용 여부를 확인해주세요.'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('수면 중 자주 깨는지 물어봐주세요.'),
+    ).toBeInTheDocument()
+    expect(
       screen.getByRole('heading', { name: '최근 방문 기록' }),
     ).toBeInTheDocument()
     expect(
@@ -73,6 +82,9 @@ describe('WorkerElderDetailPage', () => {
     ).toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: '방문 기록 추가' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: '방문 시작' }),
     ).toBeInTheDocument()
     expect(
       screen.getAllByRole('button', { name: '방문 기록 작성' }).length,
@@ -84,7 +96,7 @@ describe('WorkerElderDetailPage', () => {
     renderWorkerElderDetailPage('/worker/elders/lee-sunja')
 
     expect(
-      screen.getByRole('heading', { name: '이순자님 상태 상세' }),
+      screen.getByRole('heading', { name: '이순자님 방문 전 확인' }),
     ).toBeInTheDocument()
     expect(screen.getByAltText('이순자님 프로필')).toBeInTheDocument()
     expect(screen.getByText('82세 · 독거')).toBeInTheDocument()

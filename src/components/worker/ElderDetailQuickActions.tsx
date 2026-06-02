@@ -39,7 +39,7 @@ export function ElderDetailQuickActions({
             />
           </span>
           <span className="text-[17px] font-black leading-snug text-[#101827]">
-            상담 메모 작성
+            방문 기록 작성
           </span>
           <ChevronRight
             aria-hidden="true"
