@@ -513,7 +513,11 @@ function VisitScheduleRow({ visit }: { visit: VisitItem }) {
           전화하기
         </a>
         <Link
-          to="/caregiver/records"
+          to={
+            visit.status === 'completed'
+              ? '/caregiver/records'
+              : `/caregiver/elders/${visit.elderId}`
+          }
           className={cn(
             'inline-flex min-h-9 items-center justify-center rounded-lg px-4 text-[14px] font-black shadow-[0_10px_20px_rgba(8,103,242,0.24)] transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]',
             visit.status === 'completed'

@@ -64,5 +64,8 @@ describe('WorkerReportsPage', () => {
     expect(
       screen.getByRole('button', { name: '차트 기간 주간' }),
     ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'PDF 저장' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '인쇄' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '공유' })).toBeInTheDocument()
   })
 })

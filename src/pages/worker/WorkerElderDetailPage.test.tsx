@@ -20,11 +20,11 @@ function renderWorkerElderDetailPage(
 }
 
 describe('WorkerElderDetailPage', () => {
-  it('renders the redesigned elder status detail dashboard', () => {
+  it('renders the welfare worker elder management dashboard', () => {
     renderWorkerElderDetailPage()
 
     expect(
-      screen.getByRole('heading', { name: '김영자님 방문 전 확인' }),
+      screen.getByRole('heading', { name: '대상 어르신 상세 관리' }),
     ).toBeInTheDocument()
     expect(screen.getByText(/82세/)).toBeInTheDocument()
     expect(screen.getByText(/배우자와 거주/)).toBeInTheDocument()
@@ -35,6 +35,12 @@ describe('WorkerElderDetailPage', () => {
       ),
     ).toHaveAttribute('aria-current', 'page')
 
+    expect(
+      screen.getByRole('heading', { name: '기본 정보' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '오늘 상태' }),
+    ).toBeInTheDocument()
     const statusRegion = screen.getByLabelText('오늘 주요 상태')
     expect(
       within(statusRegion).getByRole('heading', { name: '식사' }),
@@ -55,36 +61,60 @@ describe('WorkerElderDetailPage', () => {
     expect(within(statusRegion).getByText('잘 잠')).toBeInTheDocument()
 
     expect(
-      screen.getByRole('heading', { name: '방문 전 참고 요약' }),
+      screen.getByRole('heading', { name: 'AI 생활 상태 요약' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '최근 방문 기록' }),
+      screen.getByRole('heading', { name: '최근 상담 메모' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '주간 변화 추이' }),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: '가족 연락처' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '오늘 방문 정보' }),
+      screen.getByRole('heading', { name: '복지사 조치' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '안전 체크리스트' }),
+      screen.getByRole('heading', { name: '대응 상태' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '복지사 요청사항' }),
+      screen.getByRole('link', { name: '상담 메모 작성' }),
+    ).toHaveAttribute('href', '/worker/elders/kim-yeongja/case-note')
+    expect(screen.getByRole('link', { name: '보고서 생성' })).toHaveAttribute(
+      'href',
+      '/worker/reports',
+    )
+    expect(screen.getByRole('link', { name: '요양사 배정' })).toHaveAttribute(
+      'href',
+      '/worker#risk-elder-panel',
+    )
+    expect(
+      screen.queryByRole('button', { name: '방문 시작' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: '방문 기록 작성' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('keeps the caregiver pre-visit detail screen on the caregiver route', () => {
+    render(
+      <MemoryRouter initialEntries={['/caregiver/elders/kim-yeongja']}>
+        <Routes>
+          <Route
+            path="/caregiver/elders/:elderId"
+            element={<WorkerElderDetailPage />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('heading', { name: '김영자님 방문 전 확인' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText('식사량 감소 원인을 확인해주세요.'),
+      screen.getByRole('heading', { name: '방문 전 참고 요약' }),
     ).toBeInTheDocument()
-    expect(
-      screen.getByText('저녁 약 복용 여부를 확인해주세요.'),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText('수면 중 자주 깨는지 물어봐주세요.'),
-    ).toBeInTheDocument()
-    expect(screen.getByText('10:30 ~ 11:10')).toBeInTheDocument()
-    expect(screen.getByText('식사량/복약 확인')).toBeInTheDocument()
-    expect(screen.getByText('신분 확인')).toBeInTheDocument()
-    expect(screen.getByText('손 위생')).toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: '방문 시작' }),
     ).toBeInTheDocument()
@@ -97,7 +127,7 @@ describe('WorkerElderDetailPage', () => {
     renderWorkerElderDetailPage('/worker/elders/lee-sunja')
 
     expect(
-      screen.getByRole('heading', { name: '이순자님 방문 전 확인' }),
+      screen.getByRole('heading', { name: '대상 어르신 상세 관리' }),
     ).toBeInTheDocument()
     expect(screen.getByAltText('이순자님 프로필')).toBeInTheDocument()
     expect(screen.getByText(/82세/)).toBeInTheDocument()
@@ -143,7 +173,7 @@ describe('WorkerElderDetailPage', () => {
     ).toHaveAttribute('href', '/worker/elders')
   })
 
-  it('navigates to memo creation from the memo action', async () => {
+  it('navigates to case note creation from the case note action', async () => {
     const user = userEvent.setup()
 
     render(
@@ -154,17 +184,15 @@ describe('WorkerElderDetailPage', () => {
             element={<WorkerElderDetailPage />}
           />
           <Route
-            path="/worker/elders/:elderId/memo"
-            element={<div>방문 기록 작성 화면</div>}
+            path="/worker/elders/:elderId/case-note"
+            element={<div>사례관리 메모 작성 화면</div>}
           />
         </Routes>
       </MemoryRouter>,
     )
 
-    await user.click(
-      screen.getAllByRole('button', { name: '방문 기록 작성' })[0],
-    )
+    await user.click(screen.getByRole('link', { name: '상담 메모 작성' }))
 
-    expect(screen.getByText('방문 기록 작성 화면')).toBeInTheDocument()
+    expect(screen.getByText('사례관리 메모 작성 화면')).toBeInTheDocument()
   })
 })

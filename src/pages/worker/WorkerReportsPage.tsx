@@ -3,7 +3,10 @@ import {
   CalendarDays,
   ChevronDown,
   ChevronRight,
+  Download,
   Info,
+  Printer,
+  Share2,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { cn } from '../../lib/utils'
@@ -205,6 +208,12 @@ const regionStats: RegionStat[] = [
   { count: 2, label: '서부동', position: 'left-[20%] top-[58%]' },
   { count: 1, label: '남부동', position: 'left-[52%] top-[66%]' },
 ]
+
+const reportActionButtons = [
+  { icon: Download, label: 'PDF 저장' },
+  { icon: Printer, label: '인쇄' },
+  { icon: Share2, label: '공유' },
+] as const
 
 function WorkerReportTopBar() {
   return (
@@ -834,25 +843,48 @@ export function WorkerReportsPage() {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="inline-flex min-h-12 w-full min-w-0 items-center justify-center gap-3 rounded-[10px] border border-[#dfe8f5] bg-white px-5 text-[15px] font-black text-[#17264a] shadow-[0_8px_18px_rgba(37,72,125,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] md:w-auto"
-            aria-label="보고서 기간 2024년 5월 13일 월요일부터 2024년 5월 19일 일요일까지"
-          >
-            <CalendarDays
-              aria-hidden="true"
-              className="h-5 w-5 text-[#40557d]"
-              strokeWidth={2.5}
-            />
-            <span className="min-w-0 truncate">
-              2024.05.13 (월) ~ 2024.05.19 (일)
-            </span>
-            <ChevronDown
-              aria-hidden="true"
-              className="h-4 w-4 text-[#40557d]"
-              strokeWidth={2.8}
-            />
-          </button>
+          <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] md:justify-end">
+            <button
+              type="button"
+              className="inline-flex min-h-12 w-full min-w-0 items-center justify-center gap-3 rounded-[10px] border border-[#dfe8f5] bg-white px-5 text-[15px] font-black text-[#17264a] shadow-[0_8px_18px_rgba(37,72,125,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] md:w-auto"
+              aria-label="보고서 기간 2024년 5월 13일 월요일부터 2024년 5월 19일 일요일까지"
+            >
+              <CalendarDays
+                aria-hidden="true"
+                className="h-5 w-5 text-[#40557d]"
+                strokeWidth={2.5}
+              />
+              <span className="min-w-0 truncate">
+                2024.05.13 (월) ~ 2024.05.19 (일)
+              </span>
+              <ChevronDown
+                aria-hidden="true"
+                className="h-4 w-4 text-[#40557d]"
+                strokeWidth={2.8}
+              />
+            </button>
+
+            <div className="grid grid-cols-3 gap-2">
+              {reportActionButtons.map((action) => {
+                const Icon = action.icon
+
+                return (
+                  <button
+                    key={action.label}
+                    type="button"
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[10px] border border-[#dfe8f5] bg-white px-3 text-[14px] font-black text-[#17264a] shadow-[0_8px_18px_rgba(37,72,125,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+                  >
+                    <Icon
+                      aria-hidden="true"
+                      className="h-5 w-5 text-[#40557d]"
+                      strokeWidth={2.5}
+                    />
+                    <span className="whitespace-nowrap">{action.label}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
         </section>
 
         <section

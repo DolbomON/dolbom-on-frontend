@@ -44,7 +44,7 @@ describe('CaregiverDashboardPage', () => {
     )
     expect(
       screen.getAllByRole('link', { name: '방문 시작' })[0],
-    ).toHaveAttribute('href', '/caregiver/records')
+    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
     expect(
       screen.getByRole('heading', { name: '최근 방문 기록' }),
     ).toBeInTheDocument()
@@ -52,7 +52,7 @@ describe('CaregiverDashboardPage', () => {
 
     expect(
       within(quickMenu).getByRole('link', { name: '방문 시작' }),
-    ).toHaveAttribute('href', '/caregiver/records')
+    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
     expect(
       within(quickMenu).getByRole('link', { name: '방문 기록' }),
     ).toHaveAttribute('href', '/caregiver/records')
@@ -92,23 +92,23 @@ describe('CaregiverDashboardPage', () => {
       within(caregiverMenu).getByRole('link', { name: '전달사항' }),
     ).toHaveAttribute('href', '/caregiver#family-memo')
     expect(
-      within(caregiverMenu).getByRole('link', { name: '설정' }),
-    ).toHaveAttribute('href', '/worker/mypage')
+      within(caregiverMenu).queryAllByRole('link', { name: '설정' }),
+    ).toHaveLength(0)
     expect(
-      within(caregiverMenu).queryByRole('link', { name: '포트폴리오' }),
-    ).toBeNull()
+      within(caregiverMenu).queryAllByRole('link', { name: '포트폴리오' }),
+    ).toHaveLength(0)
     expect(
-      within(caregiverMenu).queryByRole('link', { name: '안부현황' }),
-    ).toBeNull()
+      within(caregiverMenu).queryAllByRole('link', { name: '안부현황' }),
+    ).toHaveLength(0)
     expect(
-      within(caregiverMenu).queryByRole('link', { name: '기록' }),
-    ).toBeNull()
+      within(caregiverMenu).queryAllByRole('link', { name: '기록' }),
+    ).toHaveLength(0)
     expect(
-      within(caregiverMenu).queryByRole('link', { name: '일정' }),
-    ).toBeNull()
+      within(caregiverMenu).queryAllByRole('link', { name: '일정' }),
+    ).toHaveLength(0)
     expect(
-      within(caregiverMenu).queryByRole('link', { name: '가족메모' }),
-    ).toBeNull()
+      within(caregiverMenu).queryAllByRole('link', { name: '가족메모' }),
+    ).toHaveLength(0)
     expect(screen.queryByRole('navigation', { name: '하단 메뉴' })).toBeNull()
   })
 

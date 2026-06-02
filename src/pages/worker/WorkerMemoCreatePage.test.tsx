@@ -5,20 +5,20 @@ import { describe, expect, it } from 'vitest'
 import { WorkerMemoCreatePage } from './WorkerMemoCreatePage'
 
 function renderWorkerMemoCreatePage(
-  initialPath = '/worker/elders/kim-yeongja/memo',
+  initialPath = '/caregiver/elders/kim-yeongja/visit-record',
 ) {
   return render(
     <MemoryRouter initialEntries={[initialPath]}>
       <Routes>
         <Route
-          path="/worker/elders/:elderId/memo"
+          path="/caregiver/elders/:elderId/visit-record"
           element={<WorkerMemoCreatePage />}
         />
         <Route
-          path="/worker/elders/:elderId"
+          path="/caregiver/elders/:elderId"
           element={<div>대상자 상세 화면</div>}
         />
-        <Route path="/worker/elders" element={<div>대상자 목록 화면</div>} />
+        <Route path="/caregiver" element={<div>요양사 홈 화면</div>} />
       </Routes>
     </MemoryRouter>,
   )
@@ -35,7 +35,7 @@ describe('WorkerMemoCreatePage', () => {
     expect(screen.getByText('84세 · 배우자와 거주')).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: '김영자님 상세 보기' }),
-    ).toHaveAttribute('href', '/worker/elders/kim-yeongja')
+    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
     expect(screen.getByText('2025.05.31 (토)')).toBeInTheDocument()
     expect(screen.getByText('10:30 ~ 11:10')).toBeInTheDocument()
     expect(screen.getAllByText('김민수 요양사').length).toBeGreaterThan(0)
@@ -78,13 +78,13 @@ describe('WorkerMemoCreatePage', () => {
   })
 
   it('renders detail data from the elderId URL param', () => {
-    renderWorkerMemoCreatePage('/worker/elders/lee-sunja/memo')
+    renderWorkerMemoCreatePage('/caregiver/elders/lee-sunja/visit-record')
 
     expect(screen.getByText('이순자님')).toBeInTheDocument()
     expect(screen.getByText('82세 · 독거')).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: '이순자님 상세 보기' }),
-    ).toHaveAttribute('href', '/worker/elders/lee-sunja')
+    ).toHaveAttribute('href', '/caregiver/elders/lee-sunja')
   })
 
   it('updates selected symptoms and audio memo state', async () => {
@@ -186,7 +186,7 @@ describe('WorkerMemoCreatePage', () => {
   })
 
   it('renders a friendly not-found state for an unknown elderId', () => {
-    renderWorkerMemoCreatePage('/worker/elders/unknown-elder/memo')
+    renderWorkerMemoCreatePage('/caregiver/elders/unknown-elder/visit-record')
 
     expect(
       screen.getByRole('heading', {
@@ -195,6 +195,6 @@ describe('WorkerMemoCreatePage', () => {
     ).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: '대상자 목록으로 돌아가기' }),
-    ).toHaveAttribute('href', '/worker/elders')
+    ).toHaveAttribute('href', '/caregiver')
   })
 })

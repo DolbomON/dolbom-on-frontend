@@ -509,10 +509,14 @@ function RecordStatusBadge({ status }: { status: RecordStatus }) {
 
 function RecordActionLink({ record }: { record: VisitRecord }) {
   const style = statusStyles[record.status]
+  const actionHref =
+    record.status === 'completed'
+      ? '/caregiver/records'
+      : `/caregiver/elders/${record.elderId}/visit-record`
 
   return (
     <Link
-      to="/caregiver/records"
+      to={actionHref}
       className={cn(
         'inline-flex min-h-10 items-center justify-center rounded-lg px-4 text-[15px] font-black shadow-[0_10px_20px_rgba(8,103,242,0.23)] transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]',
         style.action,

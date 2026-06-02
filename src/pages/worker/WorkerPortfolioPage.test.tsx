@@ -42,18 +42,27 @@ describe('WorkerPortfolioPage', () => {
     expect(
       within(topMenu).getByRole('link', { name: '전달사항' }),
     ).toHaveAttribute('href', '/caregiver#family-memo')
-    expect(within(topMenu).getByRole('link', { name: '설정' })).toHaveAttribute(
-      'href',
-      '/worker/mypage',
-    )
-    expect(within(topMenu).queryByRole('link', { name: '홈' })).toBeNull()
     expect(
-      within(topMenu).queryByRole('link', { name: '포트폴리오' }),
-    ).toBeNull()
-    expect(within(topMenu).queryByRole('link', { name: '안부현황' })).toBeNull()
-    expect(within(topMenu).queryByRole('link', { name: '기록' })).toBeNull()
-    expect(within(topMenu).queryByRole('link', { name: '일정' })).toBeNull()
-    expect(within(topMenu).queryByRole('link', { name: '가족메모' })).toBeNull()
+      within(topMenu).queryAllByRole('link', { name: '설정' }),
+    ).toHaveLength(0)
+    expect(within(topMenu).queryAllByRole('link', { name: '홈' })).toHaveLength(
+      0,
+    )
+    expect(
+      within(topMenu).queryAllByRole('link', { name: '포트폴리오' }),
+    ).toHaveLength(0)
+    expect(
+      within(topMenu).queryAllByRole('link', { name: '안부현황' }),
+    ).toHaveLength(0)
+    expect(
+      within(topMenu).queryAllByRole('link', { name: '기록' }),
+    ).toHaveLength(0)
+    expect(
+      within(topMenu).queryAllByRole('link', { name: '일정' }),
+    ).toHaveLength(0)
+    expect(
+      within(topMenu).queryAllByRole('link', { name: '가족메모' }),
+    ).toHaveLength(0)
     expect(
       within(sideMenu).getByRole('link', { name: '대시보드' }),
     ).toHaveAttribute('href', '/caregiver')

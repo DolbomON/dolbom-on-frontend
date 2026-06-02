@@ -263,7 +263,7 @@ function WorkerMemoTopBar() {
   )
 }
 
-function WorkerMemoNotFound() {
+function WorkerMemoNotFound({ backHref }: { backHref: string }) {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
       <WorkerMemoTopBar />
@@ -283,7 +283,7 @@ function WorkerMemoNotFound() {
             대상자 목록에서 다시 선택해 주세요.
           </p>
           <Link
-            to="/worker/elders"
+            to={backHref}
             className="mt-6 inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-5 text-[17px] font-black text-white shadow-[0_12px_22px_rgba(8,103,242,0.22)] transition hover:bg-[#075fe0] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
           >
             대상자 목록으로 돌아가기
@@ -316,11 +316,13 @@ function StatusBadge({
 }
 
 function VisitSummaryCard({
+  detailPath,
   elder,
   visitDate,
   visitEndTime,
   visitStartTime,
 }: {
+  detailPath: string
   elder: (typeof caseMemoElders)[number]
   visitDate: string
   visitEndTime: string
@@ -346,7 +348,7 @@ function VisitSummaryCard({
             {elder.age}세 · {elder.household}
           </p>
           <Link
-            to={`/worker/elders/${elder.id}`}
+            to={detailPath}
             className="mt-3 inline-flex min-h-9 items-center justify-center gap-1 rounded-full border border-[#dfe8f5] bg-white px-4 text-[15px] font-black text-[#0867f2] shadow-[0_8px_16px_rgba(47,86,145,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
             aria-label={`${elder.name} 상세 보기`}
           >
@@ -669,12 +671,19 @@ export function WorkerMemoCreatePage() {
     () => caseMemoElders.find((item) => item.id === elderId),
     [elderId],
   )
+  const isCaregiverRoute = location.pathname.startsWith('/caregiver/')
 
   if (!elder || !elderId) {
-    return <WorkerMemoNotFound />
+    return (
+      <WorkerMemoNotFound
+        backHref={isCaregiverRoute ? '/caregiver' : '/worker/elders'}
+      />
+    )
   }
 
-  const detailPath = `/worker/elders/${elderId}`
+  const detailPath = isCaregiverRoute
+    ? `/caregiver/elders/${elderId}`
+    : `/worker/elders/${elderId}`
   const availablePhotoCount = Math.max(
     0,
     localPhotoAttachments.length - photoAttachments.length,
@@ -820,6 +829,7 @@ export function WorkerMemoCreatePage() {
         <div className="mt-2 grid gap-5 xl:grid-cols-[minmax(0,1fr)_382px] xl:items-start">
           <div className="min-w-0">
             <VisitSummaryCard
+              detailPath={detailPath}
               elder={elder}
               visitDate={formState.visitDate}
               visitEndTime={formState.visitEndTime}

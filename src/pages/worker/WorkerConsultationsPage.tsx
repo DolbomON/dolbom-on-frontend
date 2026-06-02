@@ -602,7 +602,7 @@ function ConsultationRecordRow({ record }: { record: ConsultationRecord }) {
           상세 보기
         </Link>
         <Link
-          to={`/worker/elders/${record.elderId}/memo`}
+          to={`/worker/elders/${record.elderId}/case-note`}
           className="inline-flex min-h-9 items-center justify-center rounded-lg bg-[#0867f2] px-2 text-[13px] font-black text-white shadow-[0_9px_18px_rgba(8,103,242,0.25)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           상담 작성

@@ -174,10 +174,15 @@ const workerDetailTopNavItems = [
   { href: '/worker/mypage', label: '설정' },
 ] as const
 
+const caregiverDetailTopNavItems = [
+  ...caregiverTopNavItems,
+  { href: '/worker/mypage', label: '설정' },
+] as const
+
 function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
   const isCaregiverView = viewRole === 'caregiver'
   const navItems = isCaregiverView
-    ? caregiverTopNavItems
+    ? caregiverDetailTopNavItems
     : workerDetailTopNavItems
   const navLabel = isCaregiverView ? '요양사 메뉴' : '복지사 메뉴'
   const profileHref = isCaregiverView ? '/caregiver' : '/worker/mypage'
@@ -727,6 +732,344 @@ function SafetyChecklistPanel() {
   )
 }
 
+function formatWorkerElderDisplayName(name: string) {
+  return name.replace(/님$/, ' 어르신')
+}
+
+function WorkerBasicInfoPanel({
+  age,
+  avatarSrc,
+  elder,
+  household,
+}: {
+  age: number
+  avatarSrc: string
+  elder: (typeof elderDetails)[number]
+  household: string
+}) {
+  return (
+    <section
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      aria-labelledby="worker-basic-info-title"
+    >
+      <h2
+        id="worker-basic-info-title"
+        className="text-[23px] font-black leading-tight text-[#111827]"
+      >
+        기본 정보
+      </h2>
+      <div className="mt-5 flex items-center gap-4">
+        <img
+          src={avatarSrc}
+          alt={`${elder.name} 프로필`}
+          className="h-[92px] w-[92px] shrink-0 rounded-full bg-[#e8f3ff] object-cover shadow-[0_10px_24px_rgba(47,86,145,0.12)]"
+          draggable="false"
+        />
+        <div className="min-w-0">
+          <p className="truncate text-[26px] font-black leading-tight text-[#111827]">
+            {formatWorkerElderDisplayName(elder.name)}
+          </p>
+          <p className="mt-2 text-[17px] font-bold leading-tight text-[#3f5070]">
+            {age}세 · {household}
+          </p>
+          <p className="mt-2 text-[15px] font-bold leading-tight text-[#52627f]">
+            담당 요양사 · 김민수 요양사
+          </p>
+        </div>
+      </div>
+
+      <dl className="mt-5 grid gap-3 rounded-[14px] border border-[#e5edf8] bg-[#fbfdff] px-4 py-4 text-[15px]">
+        {[
+          ['성별', '여성'],
+          ['생년월일', '1943.05.12'],
+          ['주소', '서울특별시 강남구 도산대로 123, 101동 502호'],
+          ['관리 상태', elder.riskLabel],
+        ].map(([label, value]) => (
+          <div
+            key={label}
+            className="grid gap-1 sm:grid-cols-[92px_minmax(0,1fr)] sm:items-start"
+          >
+            <dt className="font-black text-[#52627f]">{label}</dt>
+            <dd className="font-black text-[#111827]">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )
+}
+
+function WorkerTodayStatusPanel() {
+  return (
+    <section
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      aria-labelledby="worker-today-status-title"
+    >
+      <h2
+        id="worker-today-status-title"
+        className="text-[23px] font-black leading-tight text-[#111827]"
+      >
+        오늘 상태
+      </h2>
+      <div
+        className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5"
+        aria-label="오늘 주요 상태"
+      >
+        {statusCards.map((card) => (
+          <StatusMetricCard key={card.id} card={card} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function WorkerAiSummaryPanel() {
+  return (
+    <section
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      aria-labelledby="worker-ai-summary-title"
+    >
+      <div className="flex items-center gap-3">
+        <FileText
+          aria-hidden="true"
+          className="h-7 w-7 text-[#0867f2]"
+          strokeWidth={2.6}
+        />
+        <h2
+          id="worker-ai-summary-title"
+          className="text-[23px] font-black leading-tight text-[#111827]"
+        >
+          AI 생활 상태 요약
+        </h2>
+      </div>
+      <p className="mt-4 break-keep text-[16px] font-bold leading-relaxed text-[#25314a]">
+        최근 7일간 식사량이 줄고 혈당 감소 기록이 반복되었습니다. 복약은 대부분
+        완료했으나 저녁 복약 시간이 흔들려 확인이 필요합니다.
+      </p>
+      <ul className="mt-4 grid gap-2 text-[15px] font-bold leading-snug text-[#52627f]">
+        <li>- 식사: 평소 대비 감소</li>
+        <li>- 복약: 완료 비율 높음, 저녁 시간 확인 필요</li>
+        <li>- 정서: 상담 시 피로감 표현</li>
+      </ul>
+    </section>
+  )
+}
+
+function WorkerRecentCaseMemoPanel() {
+  return (
+    <section
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      aria-labelledby="worker-recent-case-memo-title"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Clock
+            aria-hidden="true"
+            className="h-7 w-7 text-[#0867f2]"
+            strokeWidth={2.5}
+          />
+          <h2
+            id="worker-recent-case-memo-title"
+            className="text-[23px] font-black leading-tight text-[#111827]"
+          >
+            최근 상담 메모
+          </h2>
+        </div>
+        <Link
+          to="/worker/consultations"
+          className="inline-flex min-h-8 items-center gap-1 rounded-lg px-2 text-[15px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        >
+          전체 보기
+          <ChevronRight aria-hidden="true" className="h-5 w-5" />
+        </Link>
+      </div>
+
+      <div className="mt-4 overflow-hidden rounded-[12px] border border-[#dfe8f5]">
+        {[
+          ['2026.06.02', '식사량 감소 원인 확인 필요, 식단 조절 상담 예정'],
+          ['2026.05.30', '보호자에게 저녁 복약 시간 확인 요청'],
+          ['2026.05.27', '혈당 감소 기록 확인 후 요양사 관찰 요청'],
+        ].map(([date, content]) => (
+          <article
+            key={date}
+            className="grid gap-2 border-b border-[#e5edf8] bg-white px-4 py-3 last:border-b-0 sm:grid-cols-[120px_minmax(0,1fr)]"
+          >
+            <time className="text-[14px] font-black text-[#52627f]">
+              {date}
+            </time>
+            <p className="text-[15px] font-bold leading-snug text-[#111827]">
+              {content}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function WorkerWeeklyTrendPanel() {
+  const trendItems = [
+    { label: '식사 안정', value: '52%', width: '52%' },
+    { label: '복약 완료', value: '86%', width: '86%' },
+    { label: '수면 안정', value: '68%', width: '68%' },
+    { label: '위험 신호', value: '3건', width: '38%' },
+  ]
+
+  return (
+    <section
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      aria-labelledby="worker-weekly-trend-title"
+    >
+      <h2
+        id="worker-weekly-trend-title"
+        className="text-[23px] font-black leading-tight text-[#111827]"
+      >
+        주간 변화 추이
+      </h2>
+      <dl className="mt-5 grid gap-4">
+        {trendItems.map((item) => (
+          <div key={item.label} className="grid gap-2">
+            <div className="flex items-center justify-between gap-3">
+              <dt className="text-[15px] font-black text-[#25314a]">
+                {item.label}
+              </dt>
+              <dd className="text-[15px] font-black text-[#071747]">
+                {item.value}
+              </dd>
+            </div>
+            <div className="h-3 overflow-hidden rounded-full bg-[#e7eef8]">
+              <span
+                className="block h-full rounded-full bg-[#0867f2]"
+                style={{ width: item.width }}
+              />
+            </div>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )
+}
+
+function WorkerDetailActionsPanel({ elderId }: { elderId: string }) {
+  return (
+    <section
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+      aria-labelledby="worker-detail-actions-title"
+    >
+      <div className="flex items-center gap-3">
+        <ClipboardList
+          aria-hidden="true"
+          className="h-7 w-7 text-[#0867f2]"
+          strokeWidth={2.6}
+        />
+        <h2
+          id="worker-detail-actions-title"
+          className="text-[23px] font-black leading-tight text-[#111827]"
+        >
+          복지사 조치
+        </h2>
+      </div>
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <Link
+          to={`/worker/elders/${elderId}/case-note`}
+          className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-4 text-[16px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.24)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        >
+          상담 메모 작성
+        </Link>
+        <Link
+          to="/worker/reports"
+          className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[#dfe8f5] bg-white px-4 text-[16px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        >
+          보고서 생성
+        </Link>
+        <Link
+          to="/worker#risk-elder-panel"
+          className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[#bfd6fb] bg-[#edf6ff] px-4 text-[16px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.05)] transition hover:bg-[#e2f0ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        >
+          요양사 배정
+        </Link>
+      </div>
+    </section>
+  )
+}
+
+function WorkerElderManagementView({
+  age,
+  avatarSrc,
+  elder,
+  household,
+}: {
+  age: number
+  avatarSrc: string
+  elder: (typeof elderDetails)[number]
+  household: string
+}) {
+  return (
+    <main className="min-h-svh overflow-x-hidden bg-[#f6f9fd] text-[#071747]">
+      <WorkerDetailTopBar viewRole="worker" />
+
+      <div className="mx-auto grid w-full max-w-[1500px] gap-5 px-5 pb-9 pt-6 lg:px-8 xl:grid-cols-[minmax(0,1fr)_380px] xl:items-start">
+        <div className="grid min-w-0 gap-5">
+          <section aria-labelledby="elder-detail-title">
+            <h1
+              id="elder-detail-title"
+              className="text-[34px] font-black leading-tight text-[#111827] lg:text-[40px]"
+            >
+              대상 어르신 상세 관리
+            </h1>
+            <p className="mt-3 text-[18px] font-bold leading-snug text-[#25314a]">
+              {formatWorkerElderDisplayName(elder.name)}의 상태를 판단하고,
+              배정·대응·보고를 관리하세요.
+            </p>
+          </section>
+
+          <WorkerBasicInfoPanel
+            age={age}
+            avatarSrc={avatarSrc}
+            elder={elder}
+            household={household}
+          />
+          <WorkerTodayStatusPanel />
+          <WorkerAiSummaryPanel />
+          <WorkerRecentCaseMemoPanel />
+          <WorkerWeeklyTrendPanel />
+          <WorkerDetailActionsPanel elderId={elder.id} />
+        </div>
+
+        <aside className="grid gap-5" aria-label="가족 연락처와 대응 정보">
+          <FamilyContactsPanel />
+          <section
+            className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
+            aria-labelledby="worker-response-status-title"
+          >
+            <h2
+              id="worker-response-status-title"
+              className="text-[23px] font-black leading-tight text-[#111827]"
+            >
+              대응 상태
+            </h2>
+            <dl className="mt-5 grid gap-3 text-[15px]">
+              {[
+                ['위험 판단', elder.riskLabel],
+                ['처리 상태', '미처리'],
+                ['다음 확인', '오늘 15:00'],
+                ['보고서', '생성 가능'],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="grid grid-cols-[92px_minmax(0,1fr)] gap-3 rounded-[12px] border border-[#e5edf8] bg-[#fbfdff] px-4 py-3"
+                >
+                  <dt className="font-black text-[#52627f]">{label}</dt>
+                  <dd className="font-black text-[#071747]">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        </aside>
+      </div>
+    </main>
+  )
+}
+
 export function WorkerElderDetailPage() {
   const { elderId } = useParams()
   const location = useLocation()
@@ -746,11 +1089,11 @@ export function WorkerElderDetailPage() {
 
   const openMemoCreate = () => {
     if (viewRole === 'caregiver') {
-      navigate('/caregiver/records')
+      navigate(`/caregiver/elders/${elder.id}/visit-record`)
       return
     }
 
-    navigate(`/worker/elders/${elder.id}/memo`, {
+    navigate(`/worker/elders/${elder.id}/case-note`, {
       state: { fromWorkerElderDetail: true },
     })
   }
@@ -768,6 +1111,17 @@ export function WorkerElderDetailPage() {
       : `/worker/elders/${elder.id}`
   const recordsHref =
     viewRole === 'caregiver' ? '/caregiver/records' : '/worker/reports'
+
+  if (viewRole === 'worker') {
+    return (
+      <WorkerElderManagementView
+        age={age}
+        avatarSrc={avatarSrc}
+        elder={elder}
+        household={household}
+      />
+    )
+  }
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f6f9fd] text-[#071747]">

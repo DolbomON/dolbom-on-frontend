@@ -193,9 +193,9 @@ const quickMenus: QuickMenuItem[] = [
   },
   {
     description: '사례 관리 메모 작성',
-    href: '/worker/elders/kim-yeongja/memo',
+    href: '/worker/elders/kim-yeongja/case-note',
     iconSrc: `${welfareAssetBase}/채팅.png`,
-    title: '사례 메모',
+    title: '상담 작성',
   },
   {
     description: '서식 및 대응 보고',
@@ -301,8 +301,11 @@ const defaultAssignmentDraft: AssignmentDraft = {
   assignedCaregiver: '김민수 요양사',
   dueTime: '오늘 15:00',
   priority: '주의',
-  requestContent: '식사량과 복약 여부 확인',
+  requestContent:
+    '식사량 감소 원인을 확인하고\n저녁 약 복용 여부를 확인해주세요.',
 }
+
+const assignmentPriorityOptions: AssignmentPriority[] = ['일반', '주의', '긴급']
 
 const statusStyles: Record<
   ElderStatus,
@@ -356,7 +359,11 @@ function elderMatchesSearch(elder: ElderRow, searchQuery: string) {
     .includes(keyword)
 }
 
-function WorkerDashboardTopBar() {
+function WorkerDashboardTopBar({
+  onOpenRiskAlert,
+}: {
+  onOpenRiskAlert: () => void
+}) {
   return (
     <header className="sticky top-0 z-30 border-b border-[#dfe8f5] bg-white/96 shadow-[0_5px_18px_rgba(30,66,118,0.05)] backdrop-blur">
       <div className="mx-auto grid min-h-[68px] w-full max-w-[1600px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-1 px-5 py-1 lg:grid-cols-[210px_minmax(0,1fr)_auto] lg:px-8">
@@ -398,16 +405,17 @@ function WorkerDashboardTopBar() {
         </nav>
 
         <div className="col-start-2 row-start-1 flex items-center gap-3 justify-self-end lg:col-start-3">
-          <Link
-            to="/worker/alerts"
+          <button
+            type="button"
             className="relative inline-grid min-h-10 min-w-10 place-items-center rounded-lg text-[#3c4b67] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
             aria-label="알림 3건 확인"
+            onClick={onOpenRiskAlert}
           >
             <Bell aria-hidden="true" size={29} strokeWidth={2.4} />
             <span className="absolute right-0.5 top-0 grid h-[22px] min-w-[22px] place-items-center rounded-full bg-[#ff3648] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
               3
             </span>
-          </Link>
+          </button>
 
           <Link
             to="/worker/mypage"
@@ -615,7 +623,7 @@ function ElderDashboardRow({
           </button>
         ) : null}
         <Link
-          to={`/worker/elders/${elder.id}/memo`}
+          to={`/worker/elders/${elder.id}/case-note`}
           className="inline-flex min-h-9 whitespace-nowrap items-center justify-center gap-1 rounded-lg bg-[#0867f2] px-3 text-[13px] font-black text-white shadow-[0_9px_18px_rgba(8,103,242,0.25)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           <Pencil aria-hidden="true" className="h-4 w-4" strokeWidth={2.8} />
@@ -700,11 +708,13 @@ function CaregiverAssignmentModal({
   draft,
   elder,
   onClose,
+  onPriorityChange,
   onSubmit,
 }: {
   draft: AssignmentDraft
   elder: ElderRow | null
   onClose: () => void
+  onPriorityChange: (priority: AssignmentPriority) => void
   onSubmit: () => void
 }) {
   if (!elder) {
@@ -740,31 +750,192 @@ function CaregiverAssignmentModal({
         </div>
 
         <div className="grid gap-5 px-5 py-5">
-          <dl className="grid gap-3 rounded-[14px] bg-[#f8fbff] p-4 text-[16px] leading-snug">
-            {[
-              ['대상자:', elder.name],
-              ['요청 내용:', draft.requestContent],
-              ['우선순위:', draft.priority],
-              ['담당 요양사:', draft.assignedCaregiver],
-              ['마감:', draft.dueTime],
-            ].map(([label, value]) => (
-              <div
-                key={label}
-                className="grid gap-1 sm:grid-cols-[104px_1fr] sm:items-start"
+          <dl className="grid gap-4 rounded-[14px] bg-[#f8fbff] p-4 text-[16px] leading-snug">
+            <div className="grid gap-1 sm:grid-cols-[104px_1fr] sm:items-start">
+              <dt className="font-black text-[#425371]">대상자</dt>
+              <dd className="font-black text-[#071747]">{elder.name}</dd>
+            </div>
+            <div className="grid gap-1 sm:grid-cols-[104px_1fr] sm:items-start">
+              <dt className="font-black text-[#425371]">요청 내용</dt>
+              <dd className="whitespace-pre-line font-black text-[#071747]">
+                {draft.requestContent}
+              </dd>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-[104px_1fr] sm:items-start">
+              <dt className="font-black text-[#425371]">우선순위</dt>
+              <dd
+                className="flex flex-wrap gap-2"
+                role="group"
+                aria-label="요양사 업무 우선순위"
               >
-                <dt className="font-black text-[#425371]">{label}</dt>
-                <dd className="font-black text-[#071747]">{value}</dd>
-              </div>
-            ))}
+                {assignmentPriorityOptions.map((priority) => {
+                  const isSelected = draft.priority === priority
+
+                  return (
+                    <button
+                      key={priority}
+                      type="button"
+                      className={cn(
+                        'inline-flex min-h-9 items-center justify-center rounded-lg border px-3 text-[14px] font-black transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]',
+                        isSelected
+                          ? 'border-[#0867f2] bg-[#edf6ff] text-[#0867f2]'
+                          : 'border-[#dfe8f5] bg-white text-[#425371] hover:bg-[#f5f9ff]',
+                      )}
+                      aria-pressed={isSelected}
+                      onClick={() => onPriorityChange(priority)}
+                    >
+                      {priority}
+                    </button>
+                  )
+                })}
+              </dd>
+            </div>
+            <div className="grid gap-1 sm:grid-cols-[104px_1fr] sm:items-start">
+              <dt className="font-black text-[#425371]">담당 요양사</dt>
+              <dd className="font-black text-[#071747]">
+                {draft.assignedCaregiver}
+              </dd>
+            </div>
+            <div className="grid gap-1 sm:grid-cols-[104px_1fr] sm:items-start">
+              <dt className="font-black text-[#425371]">마감 시간</dt>
+              <dd className="font-black text-[#071747]">{draft.dueTime}</dd>
+            </div>
           </dl>
 
+          <div className="grid gap-3 sm:grid-cols-2">
+            <button
+              type="button"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[#dfe8f5] bg-white px-5 text-[17px] font-black text-[#253758] shadow-[0_8px_18px_rgba(37,72,125,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+              onClick={onClose}
+            >
+              취소
+            </button>
+            <button
+              type="button"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-5 text-[17px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+              onClick={onSubmit}
+            >
+              배정하기
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+function RiskResponseModal({
+  elder,
+  onAssignCaregiver,
+  onClose,
+  onComplete,
+}: {
+  elder: ElderRow | null
+  onAssignCaregiver: (elder: ElderRow) => void
+  onClose: () => void
+  onComplete: (elder: ElderRow) => void
+}) {
+  if (!elder) {
+    return null
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 grid place-items-center bg-[#071747]/50 px-4 py-6"
+      role="presentation"
+    >
+      <section
+        className="w-full max-w-[520px] rounded-[18px] border border-[#dfe8f5] bg-white shadow-[0_22px_60px_rgba(7,23,71,0.24)]"
+        role="dialog"
+        aria-labelledby="risk-response-title"
+        aria-modal="true"
+      >
+        <div className="flex items-start justify-between gap-3 border-b border-[#e5edf8] px-5 py-4">
+          <div className="min-w-0">
+            <h2
+              id="risk-response-title"
+              className="text-[22px] font-black leading-tight text-[#071747]"
+            >
+              위험 대응 상세
+            </h2>
+            <p className="mt-2 text-[15px] font-black leading-snug text-[#df1f32]">
+              {elder.name} · 위험 · 식사 거르심, 혈당 감소 지속
+            </p>
+          </div>
           <button
             type="button"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-5 text-[17px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            onClick={onSubmit}
+            className="inline-grid h-10 w-10 place-items-center rounded-lg text-[#60708e] transition hover:bg-[#f1f6ff] hover:text-[#071747] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            aria-label="위험 대응 상세 닫기"
+            onClick={onClose}
           >
-            배정하기
+            <X aria-hidden="true" className="h-6 w-6" />
           </button>
+        </div>
+
+        <div className="grid gap-5 px-5 py-5">
+          <section
+            className="rounded-[14px] border border-[#ffe0e4] bg-[#fff8f9] px-4 py-4"
+            aria-labelledby="risk-reason-title"
+          >
+            <h3
+              id="risk-reason-title"
+              className="text-[17px] font-black text-[#071747]"
+            >
+              위험 사유
+            </h3>
+            <ul className="mt-3 grid gap-2 text-[15px] font-bold leading-snug text-[#253758]">
+              <li>- 식사량 감소</li>
+              <li>- 혈당 감소 기록</li>
+              <li>- 최근 메모: 식단 조절 필요</li>
+            </ul>
+          </section>
+
+          <dl className="grid grid-cols-[104px_minmax(0,1fr)] items-center gap-3 rounded-[14px] bg-[#f8fbff] px-4 py-3 text-[15px]">
+            <dt className="font-black text-[#425371]">처리 상태</dt>
+            <dd className="font-black text-[#df1f32]">미처리</dd>
+          </dl>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <a
+              href="tel:01012345678"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#dfe8f5] bg-white px-4 text-[15px] font-black text-[#253758] shadow-[0_8px_18px_rgba(37,72,125,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            >
+              전화하기
+            </a>
+            <button
+              type="button"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#dfe8f5] bg-white px-4 text-[15px] font-black text-[#253758] shadow-[0_8px_18px_rgba(37,72,125,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            >
+              보호자 연락
+            </button>
+            <button
+              type="button"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#bfd6fb] bg-[#edf6ff] px-4 text-[15px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(37,72,125,0.05)] transition hover:bg-[#e2f0ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+              onClick={() => onAssignCaregiver(elder)}
+            >
+              요양사 배정
+            </button>
+            <Link
+              to={`/worker/elders/${elder.id}/case-note`}
+              className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#0867f2] px-4 text-[15px] font-black text-white shadow-[0_10px_20px_rgba(8,103,242,0.24)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            >
+              상담 메모 작성
+            </Link>
+            <button
+              type="button"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#169444] px-4 text-[15px] font-black text-white shadow-[0_10px_20px_rgba(22,148,68,0.22)] transition hover:bg-[#137d3a] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+              onClick={() => onComplete(elder)}
+            >
+              대응 완료
+            </button>
+            <button
+              type="button"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#dfe8f5] bg-white px-4 text-[15px] font-black text-[#425371] shadow-[0_8px_18px_rgba(37,72,125,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+              onClick={onClose}
+            >
+              보류
+            </button>
+          </div>
         </div>
       </section>
     </div>
@@ -1046,12 +1217,16 @@ function WeeklyReportPanel() {
 
 export function WorkerDashboardPage() {
   const [activeFilter, setActiveFilter] = useState<ElderStatus | 'all'>('all')
+  const [assignmentDraft, setAssignmentDraft] = useState<AssignmentDraft>(
+    defaultAssignmentDraft,
+  )
   const [assignmentMessage, setAssignmentMessage] = useState<string | null>(
     null,
   )
   const [assignmentTarget, setAssignmentTarget] = useState<ElderRow | null>(
     null,
   )
+  const [riskModalTarget, setRiskModalTarget] = useState<ElderRow | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
 
   const filteredElders = useMemo(() => {
@@ -1064,7 +1239,22 @@ export function WorkerDashboardPage() {
   }, [activeFilter, searchQuery])
 
   const openAssignmentModal = (elder: ElderRow) => {
+    setAssignmentDraft(defaultAssignmentDraft)
     setAssignmentTarget(elder)
+  }
+
+  const openRiskAlert = () => {
+    setRiskModalTarget(elderRows[0])
+  }
+
+  const openAssignmentFromRiskModal = (elder: ElderRow) => {
+    setRiskModalTarget(null)
+    openAssignmentModal(elder)
+  }
+
+  const completeRiskResponse = (elder: ElderRow) => {
+    setRiskModalTarget(null)
+    setAssignmentMessage(`${elder.name} 위험 대응을 완료 처리했습니다.`)
   }
 
   const submitAssignment = () => {
@@ -1073,13 +1263,13 @@ export function WorkerDashboardPage() {
     }
 
     const payload: CaregiverAssignment = {
-      assignedCaregiver: defaultAssignmentDraft.assignedCaregiver,
+      assignedCaregiver: assignmentDraft.assignedCaregiver,
       createdAt: new Date().toISOString(),
-      dueTime: defaultAssignmentDraft.dueTime,
+      dueTime: assignmentDraft.dueTime,
       elderId: assignmentTarget.id,
       elderName: assignmentTarget.name,
-      priority: defaultAssignmentDraft.priority,
-      requestContent: defaultAssignmentDraft.requestContent,
+      priority: assignmentDraft.priority,
+      requestContent: assignmentDraft.requestContent,
     }
 
     try {
@@ -1099,7 +1289,7 @@ export function WorkerDashboardPage() {
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <WorkerDashboardTopBar />
+      <WorkerDashboardTopBar onOpenRiskAlert={openRiskAlert} />
 
       <div className="mx-auto grid w-full max-w-[1600px] gap-6 px-5 py-7 lg:px-10 xl:grid-cols-[minmax(0,1054px)_456px] xl:items-start">
         <div className="grid min-w-0 gap-4">
@@ -1158,10 +1348,22 @@ export function WorkerDashboardPage() {
       </div>
 
       <CaregiverAssignmentModal
-        draft={defaultAssignmentDraft}
+        draft={assignmentDraft}
         elder={assignmentTarget}
         onClose={() => setAssignmentTarget(null)}
+        onPriorityChange={(priority) =>
+          setAssignmentDraft((current) => ({
+            ...current,
+            priority,
+          }))
+        }
         onSubmit={submitAssignment}
+      />
+      <RiskResponseModal
+        elder={riskModalTarget}
+        onAssignCaregiver={openAssignmentFromRiskModal}
+        onClose={() => setRiskModalTarget(null)}
+        onComplete={completeRiskResponse}
       />
     </main>
   )

@@ -140,7 +140,7 @@ const elderRows: ElderRow[] = [
 const quickMenus: QuickMenuItem[] = [
   {
     description: '오늘 방문 기록 작성',
-    href: '/caregiver/records',
+    href: '/caregiver/elders/kim-yeongja',
     iconSrc: `${dashboardAssetBase}/체크.png`,
     label: '방문 시작',
   },
@@ -550,7 +550,7 @@ function NextVisitPanel() {
           전화하기
         </a>
         <Link
-          to="/caregiver/records"
+          to="/caregiver/elders/kim-yeongja"
           className="inline-flex min-h-10 items-center justify-center gap-1 rounded-lg bg-[#0867f2] px-2 text-[13px] font-black text-white shadow-[0_10px_20px_rgba(8,103,242,0.24)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           <PlayCircle aria-hidden="true" className="h-4 w-4" />

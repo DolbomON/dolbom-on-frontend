@@ -38,7 +38,10 @@ describe('WorkerDashboardPage', () => {
       'page',
     )
     expect(screen.getAllByText('상세 보기')).toHaveLength(4)
-    expect(screen.getAllByRole('link', { name: '상담 작성' })).toHaveLength(4)
+    expect(screen.getAllByRole('link', { name: '상담 작성' })).toHaveLength(5)
+    expect(
+      screen.getAllByRole('link', { name: '상담 작성' })[0],
+    ).toHaveAttribute('href', '/worker/elders/kim-yeongja/case-note')
     expect(screen.getByRole('link', { name: '요양사 배정' })).toHaveAttribute(
       'href',
       '/worker#risk-elder-panel',
@@ -64,23 +67,51 @@ describe('WorkerDashboardPage', () => {
     expect(
       within(dialog).getByRole('heading', { name: '요양사 업무 배정' }),
     ).toBeInTheDocument()
-    expect(within(dialog).getByText('대상자:')).toBeInTheDocument()
+    expect(within(dialog).getByText('대상자')).toBeInTheDocument()
     expect(within(dialog).getByText('김영자 어르신')).toBeInTheDocument()
-    expect(within(dialog).getByText('요청 내용:')).toBeInTheDocument()
+    expect(within(dialog).getByText('요청 내용')).toBeInTheDocument()
     expect(
-      within(dialog).getByText('식사량과 복약 여부 확인'),
+      within(dialog).getByText(
+        /식사량 감소 원인을 확인하고\s*저녁 약 복용 여부/,
+      ),
     ).toBeInTheDocument()
-    expect(within(dialog).getByText('우선순위:')).toBeInTheDocument()
-    expect(within(dialog).getByText('주의')).toBeInTheDocument()
-    expect(within(dialog).getByText('담당 요양사:')).toBeInTheDocument()
+    expect(within(dialog).getByText('우선순위')).toBeInTheDocument()
+    expect(
+      within(dialog).getByRole('button', { name: '주의' }),
+    ).toHaveAttribute('aria-pressed', 'true')
+    expect(within(dialog).getByText('담당 요양사')).toBeInTheDocument()
     expect(within(dialog).getByText('김민수 요양사')).toBeInTheDocument()
-    expect(within(dialog).getByText('마감:')).toBeInTheDocument()
+    expect(within(dialog).getByText('마감 시간')).toBeInTheDocument()
     expect(within(dialog).getByText('오늘 15:00')).toBeInTheDocument()
+    expect(
+      within(dialog).getByRole('button', { name: '취소' }),
+    ).toBeInTheDocument()
 
     await user.click(within(dialog).getByRole('button', { name: '배정하기' }))
 
     expect(screen.getByRole('status')).toHaveTextContent(
       '김영자 어르신 새 배정 업무가 요양사 대시보드에 전달되었습니다.',
     )
+  })
+
+  it('opens the risk response modal from the alert button', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MemoryRouter initialEntries={['/worker']}>
+        <WorkerDashboardPage />
+      </MemoryRouter>,
+    )
+
+    await user.click(screen.getByRole('button', { name: '알림 3건 확인' }))
+
+    const dialog = screen.getByRole('dialog', { name: '위험 대응 상세' })
+
+    expect(within(dialog).getByText(/김영자 어르신 · 위험/)).toBeInTheDocument()
+    expect(within(dialog).getByText('위험 사유')).toBeInTheDocument()
+    expect(within(dialog).getByText('처리 상태')).toBeInTheDocument()
+    expect(
+      within(dialog).getByRole('link', { name: '상담 메모 작성' }),
+    ).toHaveAttribute('href', '/worker/elders/kim-yeongja/case-note')
   })
 })

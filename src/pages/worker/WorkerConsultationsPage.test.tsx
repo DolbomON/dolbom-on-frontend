@@ -38,6 +38,9 @@ describe('WorkerConsultationsPage', () => {
       'page',
     )
     expect(screen.getAllByRole('link', { name: '상담 작성' })).toHaveLength(5)
+    expect(
+      screen.getAllByRole('link', { name: '상담 작성' })[0],
+    ).toHaveAttribute('href', '/worker/elders/kim-yeongja/case-note')
   })
 
   it('filters consultation records by status and search text', async () => {

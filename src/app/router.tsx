@@ -32,6 +32,7 @@ import {
   WorkerAlertDetailPlaceholderPage,
   WorkerAlertsPage,
 } from '../pages/worker/WorkerAlertsPage'
+import { WorkerCaseNoteCreatePage } from '../pages/worker/WorkerCaseNoteCreatePage'
 import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
 import { WorkerElderDetailPage } from '../pages/worker/WorkerElderDetailPage'
 import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
@@ -167,6 +168,10 @@ export const router = createBrowserRouter([
     element: <WorkerElderDetailPage />,
   },
   {
+    path: '/caregiver/elders/:elderId/visit-record',
+    element: <WorkerMemoCreatePage />,
+  },
+  {
     path: '/worker',
     element: <WorkerDashboardPage />,
   },
@@ -200,7 +205,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/worker/elders/:elderId/memo',
-    element: <WorkerMemoCreatePage />,
+    element: <WorkerCaseNoteCreatePage />,
+  },
+  {
+    path: '/worker/elders/:elderId/case-note',
+    element: <WorkerCaseNoteCreatePage />,
   },
   {
     path: '/worker/elders/:elderId',
