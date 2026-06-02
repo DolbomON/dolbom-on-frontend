@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { useMemo, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
 import {
   caseMemoElders,
   defaultCaseMemoFormState,
@@ -23,15 +24,6 @@ const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
 const memoAssetBase = '/assets/dolbomon/worker-memo'
 
 const dayLabels = ['일', '월', '화', '수', '목', '금', '토']
-
-const navItems = [
-  { href: '/caregiver', label: '홈' },
-  { href: '/worker/alerts', label: '안부현황' },
-  { href: '/worker/elders/kim-yeongja', label: '방문 기록' },
-  { href: '/worker#schedule', label: '일정' },
-  { href: '/worker#family-memo', label: '가족메모' },
-  { href: '/worker/mypage', label: '설정' },
-]
 
 const purposeOptions = [
   '정기 방문 관찰',
@@ -202,8 +194,8 @@ function WorkerMemoTopBar() {
           className="col-span-2 row-start-2 flex min-w-0 justify-start gap-2 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-7"
           aria-label="요양사 메뉴"
         >
-          {navItems.map((item) => {
-            const isActive = item.label === '방문 기록'
+          {caregiverTopNavItems.map((item) => {
+            const isActive = item.label === '방문기록'
 
             return (
               <Link

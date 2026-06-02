@@ -71,7 +71,7 @@ describe('WorkerMemoCreatePage', () => {
     expect(
       screen.getByRole('button', { name: '방문 기록 저장' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: '방문 기록' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: '방문기록' })).toHaveAttribute(
       'aria-current',
       'page',
     )

@@ -18,6 +18,7 @@ import {
   caregiverNextVisit,
   type CaregiverAssignment,
 } from '../../features/caregiver/visitAssignments'
+import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
 import { cn } from '../../lib/utils'
 
 const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
@@ -57,11 +58,6 @@ type ScheduleItem = {
   time: string
   title: string
 }
-
-const navItems = [
-  { href: '/caregiver', label: '홈' },
-  { href: '/worker/portfolio', label: '포트폴리오' },
-]
 
 const metricCards: MetricCard[] = [
   {
@@ -143,16 +139,10 @@ const elderRows: ElderRow[] = [
 
 const quickMenus: QuickMenuItem[] = [
   {
-    description: '기본 정보 및 자격관리',
-    href: '/worker/signup',
-    iconSrc: `${dashboardAssetBase}/신분.png`,
-    label: '요양사 가입 정보',
-  },
-  {
-    description: '프로필 및 경력 관리',
-    href: '/worker/portfolio',
-    iconSrc: `${dashboardAssetBase}/가방.png`,
-    label: '포트폴리오',
+    description: '오늘 방문 기록 작성',
+    href: '/worker/elders/kim-yeongja/memo',
+    iconSrc: `${dashboardAssetBase}/체크.png`,
+    label: '방문 시작',
   },
   {
     description: '방문/관찰 기록 관리',
@@ -161,10 +151,16 @@ const quickMenus: QuickMenuItem[] = [
     label: '방문 기록',
   },
   {
-    description: '전체 목록 및 관리',
+    description: '방문 일정 확인',
+    href: '/worker/consultations',
+    iconSrc: `${dashboardAssetBase}/가방.png`,
+    label: '방문 일정',
+  },
+  {
+    description: '전체 목록 및 상태 확인',
     href: '/worker/elders',
     iconSrc: `${dashboardAssetBase}/체크2.png`,
-    label: '담당 어르신 목록',
+    label: '담당 어르신',
   },
 ]
 
@@ -276,7 +272,7 @@ function CaregiverDashboardTopBar() {
           className="col-span-2 row-start-2 flex min-w-0 gap-1 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-self-center lg:gap-4"
           aria-label="요양사 메뉴"
         >
-          {navItems.map((item) => {
+          {caregiverTopNavItems.map((item) => {
             const isActive = item.href === '/caregiver'
 
             return (
@@ -533,10 +529,8 @@ function NextVisitPanel() {
         {caregiverNextVisit.address}
       </p>
       <div className="mt-3 rounded-[14px] border border-[#e3eaf5] bg-[#fbfdff] px-3 py-3">
-        <p className="text-[13px] font-black text-[#071747]">
-          복지사 요청 요약
-        </p>
-        <p className="mt-2 text-[14px] font-bold leading-snug text-[#52627f]">
+        <p className="text-[14px] font-bold leading-snug text-[#52627f]">
+          <strong className="font-black text-[#071747]">복지사 요청:</strong>{' '}
           {caregiverNextVisit.workerRequestSummary}
         </p>
       </div>
@@ -633,6 +627,7 @@ function QuickMenuPanel() {
         {quickMenus.map((item) => (
           <Link
             key={item.label}
+            aria-label={item.label}
             to={item.href}
             className="flex min-h-[136px] flex-col items-center justify-center rounded-[16px] border border-[#e3eaf5] bg-white px-3 py-3 text-center shadow-[0_8px_18px_rgba(47,86,145,0.06)] transition hover:-translate-y-0.5 hover:border-[#bcd3fa] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
           >
@@ -809,10 +804,10 @@ export function CaregiverDashboardPage() {
                   id="caregiver-dashboard-title"
                   className="text-[32px] font-black leading-tight text-[#071747] lg:text-[38px]"
                 >
-                  담당 어르신 대시보드
+                  오늘 방문 업무
                 </h1>
                 <p className="mt-3 text-[17px] font-bold leading-snug text-[#50607f]">
-                  담당 어르신의 상태를 빠르게 확인하고 방문 업무를 기록해보세요.
+                  오늘 방문할 어르신과 복지사 요청사항을 확인해보세요.
                 </p>
               </div>
               <img

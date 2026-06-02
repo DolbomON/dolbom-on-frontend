@@ -18,19 +18,11 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
 import { cn } from '../../lib/utils'
 
 const workerAvatarSrc = '/assets/dolbomon/role-select/role-worker.png'
 const certificateAssetSrc = '/assets/dolbomon/worker/파일.png'
-
-const navItems = [
-  { href: '/caregiver', label: '홈' },
-  { href: '/worker/alerts', label: '안부현황' },
-  { href: '/worker/reports', label: '기록' },
-  { href: '/worker#schedule', label: '일정' },
-  { href: '/worker#family-memo', label: '가족메모' },
-  { href: '/worker/mypage', label: '설정' },
-]
 
 const steps = [
   { current: true, number: 1, subtitle: '현재 단계', title: '기본 정보' },
@@ -93,7 +85,7 @@ function TopBar() {
           className="order-3 flex w-full gap-2 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:order-none lg:w-auto lg:justify-center lg:gap-5"
           aria-label="요양사 메뉴"
         >
-          {navItems.map((item) => (
+          {caregiverTopNavItems.map((item) => (
             <Link
               key={item.label}
               to={item.href}

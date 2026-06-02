@@ -14,19 +14,11 @@ import {
   MapPin,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
 import { cn } from '../../lib/utils'
 
 const workerAvatarSrc = '/assets/dolbomon/role-select/role-worker.png'
 const documentAssetSrc = '/assets/dolbomon/worker/파일.png'
-
-const signupNavItems = [
-  { href: '/caregiver', label: '홈' },
-  { href: '/worker/alerts', label: '안부현황' },
-  { href: '/worker/reports', label: '기록' },
-  { href: '/worker#schedule', label: '일정' },
-  { href: '/worker#family-memo', label: '가족메모' },
-  { href: '/worker/mypage', label: '설정' },
-]
 
 const stepItems = [
   {
@@ -129,7 +121,7 @@ function WorkerSignupTopBar() {
           className="order-3 flex w-full gap-3 overflow-x-auto text-[16px] font-extrabold text-[#111a38] lg:order-none lg:w-auto lg:justify-center lg:gap-14"
           aria-label="요양사 메뉴"
         >
-          {signupNavItems.map((item) => (
+          {caregiverTopNavItems.map((item) => (
             <Link
               key={item.label}
               to={item.href}

@@ -24,6 +24,7 @@ import {
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { WorkerBottomNav } from '../../components/worker/WorkerBottomNav'
+import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
 import { cn } from '../../lib/utils'
 
 const portfolioAssetBase = '/assets/dolbomon/worker-portfolio'
@@ -68,11 +69,6 @@ type ActivityPhoto = {
   tone: string
 }
 
-const topNavigationItems: NavigationItem[] = [
-  { href: '/caregiver', label: '홈' },
-  { href: '/worker/portfolio', label: '포트폴리오' },
-]
-
 const sidebarItems: SidebarItem[] = [
   { href: '/caregiver', icon: Home, label: '대시보드' },
   { href: '/worker/elders', icon: Users, label: '담당 어르신' },
@@ -82,7 +78,7 @@ const sidebarItems: SidebarItem[] = [
     icon: BriefcaseBusiness,
     label: '포트폴리오',
   },
-  { href: '/worker#schedule', icon: CalendarDays, label: '일정 관리' },
+  { href: '/worker/schedules', icon: CalendarDays, label: '일정 관리' },
   { href: '/worker/reports', icon: ClipboardList, label: '상담 및 기록' },
   { href: '/worker/community', icon: MessageCircle, label: '커뮤니티' },
   { href: '/worker/mypage', icon: Settings, label: '설정' },
@@ -172,7 +168,7 @@ function WorkerPortfolioTopBar() {
           className="order-last flex min-w-0 basis-full gap-2 overflow-x-auto text-[15px] font-black text-[#101a3d] lg:order-none lg:basis-auto lg:flex-1 lg:justify-center lg:gap-5"
           aria-label="요양사 상단 메뉴"
         >
-          {topNavigationItems.map((item) => (
+          {caregiverTopNavItems.map((item) => (
             <Link
               key={item.label}
               to={item.href}
