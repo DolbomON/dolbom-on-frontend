@@ -26,6 +26,7 @@ import { ElderVoiceGuidePage } from '../pages/elder/ElderVoiceGuidePage'
 import { ElderVoiceListeningPage } from '../pages/elder/ElderVoiceListeningPage'
 import { FamilyAlertsPage } from '../pages/family/FamilyAlertsPage'
 import { FamilyChatPage } from '../pages/family/FamilyChatPage'
+import { FamilyConnectPage } from '../pages/family/FamilyConnectPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
 import { FamilyStatusPage } from '../pages/family/FamilyStatusPage'
 import {
@@ -151,6 +152,10 @@ export const router = createBrowserRouter([
   {
     path: '/family/chat',
     element: <FamilyChatPage />,
+  },
+  {
+    path: '/family/connect',
+    element: <FamilyConnectPage />,
   },
   {
     path: '/caregiver',
