@@ -71,6 +71,9 @@ describe('CaregiverDashboardPage', () => {
     expect(
       within(quickMenu).queryByRole('link', { name: '담당 어르신 목록' }),
     ).toBeNull()
+    expect(
+      screen.getByRole('link', { name: '새 배정 업무 보기' }),
+    ).toHaveAttribute('href', '/caregiver/assignments')
 
     const caregiverMenu = screen.getByRole('navigation', {
       name: '요양사 메뉴',

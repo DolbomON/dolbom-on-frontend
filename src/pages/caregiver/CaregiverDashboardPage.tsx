@@ -569,43 +569,52 @@ function AssignmentPanel({
   return (
     <section
       className={cn(
-        'rounded-[20px] border p-4 shadow-[0_14px_32px_rgba(47,86,145,0.08)]',
+        'rounded-[20px] border shadow-[0_14px_32px_rgba(47,86,145,0.08)]',
         assignment
           ? 'border-[#ffd89a] bg-[#fffaf0]'
           : 'border-[#e3eaf5] bg-white',
       )}
       aria-labelledby="assignment-title"
     >
-      <div className="flex items-center justify-between gap-3">
-        <h2
-          id="assignment-title"
-          className="text-[19px] font-black leading-tight text-[#071747]"
-        >
-          새 배정 업무
-        </h2>
-        {assignment ? (
-          <span className="rounded-lg bg-white px-3 py-2 text-[13px] font-black text-[#d77800]">
-            {assignment.priority}
+      <Link
+        to="/caregiver/assignments"
+        className="group block rounded-[20px] p-4 transition hover:bg-white/70 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        aria-label="새 배정 업무 보기"
+      >
+        <div className="flex items-center justify-between gap-3">
+          <h2
+            id="assignment-title"
+            className="text-[19px] font-black leading-tight text-[#071747]"
+          >
+            새 배정 업무
+          </h2>
+          <span className="inline-flex items-center gap-1 text-[13px] font-black text-[#0867f2]">
+            업무 보기
+            <ChevronRight
+              aria-hidden="true"
+              className="h-4 w-4 transition group-hover:translate-x-0.5"
+              strokeWidth={2.8}
+            />
           </span>
-        ) : null}
-      </div>
-      {assignment ? (
-        <>
-          <p className="mt-3 text-[17px] font-black text-[#071747]">
-            {assignment.elderName}
+        </div>
+        {assignment ? (
+          <>
+            <p className="mt-3 text-[17px] font-black text-[#071747]">
+              {assignment.elderName}
+            </p>
+            <p className="mt-2 text-[14px] font-bold leading-snug text-[#52627f]">
+              {assignment.requestContent}
+            </p>
+            <p className="mt-3 text-[13px] font-black text-[#4d5f7e]">
+              마감 {assignment.dueTime} · 담당 {assignment.assignedCaregiver}
+            </p>
+          </>
+        ) : (
+          <p className="mt-3 text-[14px] font-bold leading-snug text-[#667795]">
+            복지사가 배정한 방문 요청이 생기면 이 영역에 표시됩니다.
           </p>
-          <p className="mt-2 text-[14px] font-bold leading-snug text-[#52627f]">
-            {assignment.requestContent}
-          </p>
-          <p className="mt-3 text-[13px] font-black text-[#4d5f7e]">
-            마감 {assignment.dueTime} · 담당 {assignment.assignedCaregiver}
-          </p>
-        </>
-      ) : (
-        <p className="mt-3 text-[14px] font-bold leading-snug text-[#667795]">
-          복지사가 배정한 방문 요청이 생기면 이 영역에 표시됩니다.
-        </p>
-      )}
+        )}
+      </Link>
     </section>
   )
 }

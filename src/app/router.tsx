@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
+import { CaregiverAssignmentsPage } from '../pages/caregiver/CaregiverAssignmentsPage'
 import { CaregiverDashboardPage } from '../pages/caregiver/CaregiverDashboardPage'
 import { CaregiverVisitRecordsPage } from '../pages/caregiver/CaregiverVisitRecordsPage'
 import { CaregiverVisitSchedulePage } from '../pages/caregiver/CaregiverVisitSchedulePage'
@@ -165,6 +166,10 @@ export const router = createBrowserRouter([
   {
     path: '/caregiver',
     element: <CaregiverDashboardPage />,
+  },
+  {
+    path: '/caregiver/assignments',
+    element: <CaregiverAssignmentsPage />,
   },
   {
     path: '/caregiver/schedules',
