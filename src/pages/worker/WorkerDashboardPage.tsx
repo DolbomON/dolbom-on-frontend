@@ -94,7 +94,7 @@ const navItems = [
   { href: '/worker/elders', label: '복지 현황' },
   { href: '/worker/consultations', label: '상담 관리' },
   { href: '/worker/reports', label: '보고서' },
-  { href: '/worker#schedule', label: '기관 일정' },
+  { href: '/worker/schedules', label: '기관 일정' },
   { href: '/worker/mypage', label: '설정' },
 ]
 
@@ -831,7 +831,7 @@ function TodaySchedulePanel() {
           오늘 일정
         </h2>
         <Link
-          to="/worker#schedule"
+          to="/worker/schedules"
           className="inline-flex min-h-8 items-center gap-1 rounded-lg px-2 text-[13px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           전체 일정 보기

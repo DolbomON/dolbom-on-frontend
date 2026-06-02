@@ -38,6 +38,7 @@ import { WorkerMemoCreatePage } from '../pages/worker/WorkerMemoCreatePage'
 import { WorkerMypagePage } from '../pages/worker/WorkerMypagePage'
 import { WorkerPortfolioPage } from '../pages/worker/WorkerPortfolioPage'
 import { WorkerReportsPage } from '../pages/worker/WorkerReportsPage'
+import { WorkerSchedulesPage } from '../pages/worker/WorkerSchedulesPage'
 import { WorkerSignupBasicInfoPage } from '../pages/worker/WorkerSignupBasicInfoPage'
 import { WorkerSignupLicensePage } from '../pages/worker/WorkerSignupLicensePage'
 import { WorkerSignupPage } from '../pages/worker/WorkerSignupPage'
@@ -194,6 +195,10 @@ export const router = createBrowserRouter([
   {
     path: '/worker/reports',
     element: <WorkerReportsPage />,
+  },
+  {
+    path: '/worker/schedules',
+    element: <WorkerSchedulesPage />,
   },
   {
     path: '/worker/portfolio',
