@@ -45,6 +45,7 @@ import { WorkerSchedulesPage } from '../pages/worker/WorkerSchedulesPage'
 import { WorkerSignupBasicInfoPage } from '../pages/worker/WorkerSignupBasicInfoPage'
 import { WorkerSignupLicensePage } from '../pages/worker/WorkerSignupLicensePage'
 import { WorkerSignupPage } from '../pages/worker/WorkerSignupPage'
+import { WorkerWelfareConnectPage } from '../pages/worker/WorkerWelfareConnectPage'
 
 export const router = createBrowserRouter([
   {
@@ -174,6 +175,10 @@ export const router = createBrowserRouter([
   {
     path: '/worker',
     element: <WorkerDashboardPage />,
+  },
+  {
+    path: '/worker/welfare-connect',
+    element: <WorkerWelfareConnectPage />,
   },
   {
     path: '/worker/signup',
