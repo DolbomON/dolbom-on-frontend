@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { WorkerReportsPage } from './WorkerReportsPage'
@@ -13,74 +12,57 @@ function renderWorkerReportsPage() {
 }
 
 describe('WorkerReportsPage', () => {
-  it('renders the worker report overview screen', () => {
+  it('renders the welfare worker report dashboard', () => {
     renderWorkerReportsPage()
 
-    expect(screen.getByRole('heading', { name: '보고서' })).toBeInTheDocument()
     expect(
-      screen.getByText('담당 어르신의 상태를 한눈에 정리해드려요.'),
-    ).toBeInTheDocument()
-    expect(screen.getByText('오늘 기록률')).toBeInTheDocument()
-    expect(screen.getByText('주의/위험')).toBeInTheDocument()
-    expect(screen.getByText('AI 요약')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '오늘' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    )
-    expect(screen.getByRole('button', { name: '주간' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '월간' })).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: '오늘 요약' }),
+      screen.getByRole('heading', { name: '복지사 보고서' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '항목별 기록 현황' }),
+      screen.getByText(
+        '주간 및 월간 서비스와 상담 현황을 분석하여 제공합니다.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByText('총 관리 어르신')).toBeInTheDocument()
+    expect(screen.getByText('이번 주 상담 건수')).toBeInTheDocument()
+    expect(screen.getByText('서비스 연계 건수')).toBeInTheDocument()
+    expect(screen.getByText('위험 대응 건수')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '주간 상담 및 서비스 추이' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '주요 확인 대상' }),
-    ).toBeInTheDocument()
-    expect(screen.getByText('이순자님')).toBeInTheDocument()
-    expect(screen.getByText('김영자님')).toBeInTheDocument()
-    expect(screen.getByText('최복례님')).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: '빠른 작업' }),
+      screen.getByRole('heading', { name: '서비스 연계 비율' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: 'AI 요약 보기' }),
+      screen.getByRole('heading', { name: '서비스 연계 현황' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: '주간 보고서 생성' }),
+      screen.getByRole('heading', { name: '주간 리포트 요약' }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '기관별 / 지역별 현황' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', {
+        name: '지역별 서비스 연계 건수 (주간)',
+      }),
+    ).toBeInTheDocument()
+  })
+
+  it('marks the report navigation item and exposes the selected date range', () => {
+    renderWorkerReportsPage()
+
     expect(screen.getByRole('link', { name: '보고서' })).toHaveAttribute(
       'aria-current',
       'page',
     )
-  })
-
-  it('updates the active report period', async () => {
-    const user = userEvent.setup()
-
-    renderWorkerReportsPage()
-
-    await user.click(screen.getByRole('button', { name: '주간' }))
-
-    expect(screen.getByRole('button', { name: '오늘' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
-    )
-    expect(screen.getByRole('button', { name: '주간' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    )
-
-    await user.click(screen.getByRole('button', { name: '월간' }))
-
-    expect(screen.getByRole('button', { name: '주간' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
-    )
-    expect(screen.getByRole('button', { name: '월간' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    )
+    expect(
+      screen.getByRole('button', {
+        name: '보고서 기간 2024년 5월 13일 월요일부터 2024년 5월 19일 일요일까지',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: '차트 기간 주간' }),
+    ).toBeInTheDocument()
   })
 })
