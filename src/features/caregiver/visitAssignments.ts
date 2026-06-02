@@ -1,4 +1,4 @@
-export type AssignmentPriority = '긴급' | '높음' | '보통'
+export type AssignmentPriority = '긴급' | '주의' | '높음' | '보통'
 
 export type CaregiverAssignment = {
   assignedCaregiver: string

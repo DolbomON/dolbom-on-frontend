@@ -82,7 +82,7 @@ type MemoItem = {
   title: string
 }
 
-type AssignmentFormState = {
+type AssignmentDraft = {
   assignedCaregiver: string
   dueTime: string
   priority: AssignmentPriority
@@ -186,11 +186,10 @@ const elderRows: ElderRow[] = [
 
 const quickMenus: QuickMenuItem[] = [
   {
-    description: '알림 확인 및 설정',
-    href: '/worker/alerts',
-    iconSrc: `${welfareAssetBase}/알림.png`,
-    noticeCount: 3,
-    title: '알림 관리',
+    description: '위험 대상자 업무 배정',
+    href: '/worker#risk-elder-panel',
+    iconSrc: `${welfareAssetBase}/집.png`,
+    title: '요양사 배정',
   },
   {
     description: '사례 관리 메모 작성',
@@ -298,15 +297,11 @@ const statusFilters: Array<{ label: string; value: ElderStatus | 'all' }> = [
   { label: '안정', value: 'stable' },
 ]
 
-const caregiverOptions = ['김민수 요양사', '박지연 요양사', '최은주 요양사']
-
-const priorityOptions: AssignmentPriority[] = ['긴급', '높음', '보통']
-
-const defaultAssignmentForm: AssignmentFormState = {
-  assignedCaregiver: caregiverOptions[0],
-  dueTime: '13:00',
-  priority: '높음',
-  requestContent: '',
+const defaultAssignmentDraft: AssignmentDraft = {
+  assignedCaregiver: '김민수 요양사',
+  dueTime: '오늘 15:00',
+  priority: '주의',
+  requestContent: '식사량과 복약 여부 확인',
 }
 
 const statusStyles: Record<
@@ -359,10 +354,6 @@ function elderMatchesSearch(elder: ElderRow, searchQuery: string) {
     .map(normalizeSearchValue)
     .join(' ')
     .includes(keyword)
-}
-
-function buildDefaultRequest(elder: ElderRow) {
-  return `${elder.memo} 방문 확인 후 관찰 결과와 가족 인계 내용을 남겨 주세요.`
 }
 
 function WorkerDashboardTopBar() {
@@ -628,7 +619,7 @@ function ElderDashboardRow({
           className="inline-flex min-h-9 whitespace-nowrap items-center justify-center gap-1 rounded-lg bg-[#0867f2] px-3 text-[13px] font-black text-white shadow-[0_9px_18px_rgba(8,103,242,0.25)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           <Pencil aria-hidden="true" className="h-4 w-4" strokeWidth={2.8} />
-          사례 메모
+          상담 작성
         </Link>
       </div>
     </article>
@@ -652,6 +643,7 @@ function RiskElderPanel({
 }) {
   return (
     <section
+      id="risk-elder-panel"
       className="rounded-[15px] border border-[#dfe8f5] bg-white shadow-[0_12px_26px_rgba(37,72,125,0.07)]"
       aria-labelledby="risk-elder-title"
     >
@@ -705,16 +697,14 @@ function RiskElderPanel({
 }
 
 function CaregiverAssignmentModal({
+  draft,
   elder,
-  formState,
   onClose,
-  onFieldChange,
   onSubmit,
 }: {
+  draft: AssignmentDraft
   elder: ElderRow | null
-  formState: AssignmentFormState
   onClose: () => void
-  onFieldChange: (field: keyof AssignmentFormState, value: string) => void
   onSubmit: () => void
 }) {
   if (!elder) {
@@ -727,147 +717,55 @@ function CaregiverAssignmentModal({
       role="presentation"
     >
       <section
-        className="w-full max-w-[560px] rounded-[18px] border border-[#dfe8f5] bg-white shadow-[0_22px_60px_rgba(7,23,71,0.24)]"
+        className="w-full max-w-[430px] rounded-[18px] border border-[#dfe8f5] bg-white shadow-[0_22px_60px_rgba(7,23,71,0.24)]"
         role="dialog"
         aria-labelledby="caregiver-assignment-title"
         aria-modal="true"
       >
         <div className="flex items-start justify-between gap-3 border-b border-[#e5edf8] px-5 py-4">
-          <div>
-            <p className="text-[13px] font-black text-[#0867f2]">고위험 대응</p>
-            <h2
-              id="caregiver-assignment-title"
-              className="mt-1 text-[24px] font-black leading-tight text-[#071747]"
-            >
-              요양사 배정
-            </h2>
-          </div>
+          <h2
+            id="caregiver-assignment-title"
+            className="text-[22px] font-black leading-tight text-[#071747]"
+          >
+            요양사 업무 배정
+          </h2>
           <button
             type="button"
             className="inline-grid h-10 w-10 place-items-center rounded-lg text-[#60708e] transition hover:bg-[#f1f6ff] hover:text-[#071747] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="요양사 배정 닫기"
+            aria-label="요양사 업무 배정 닫기"
             onClick={onClose}
           >
             <X aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
 
-        <form
-          className="grid gap-4 px-5 py-5"
-          onSubmit={(event) => {
-            event.preventDefault()
-            onSubmit()
-          }}
-        >
-          <div>
-            <label
-              className="text-[15px] font-black leading-tight text-[#112250]"
-              htmlFor="assignment-elder"
-            >
-              어르신
-            </label>
-            <input
-              id="assignment-elder"
-              value={elder.name}
-              readOnly
-              className="mt-2 h-11 w-full rounded-lg border border-[#dbe3ef] bg-[#f8fbff] px-4 text-[16px] font-black text-[#10204a]"
-            />
-          </div>
-
-          <div>
-            <label
-              className="text-[15px] font-black leading-tight text-[#112250]"
-              htmlFor="assignment-request"
-            >
-              요청 내용
-            </label>
-            <textarea
-              id="assignment-request"
-              value={formState.requestContent}
-              rows={3}
-              onChange={(event) =>
-                onFieldChange('requestContent', event.target.value)
-              }
-              className="mt-2 min-h-[108px] w-full resize-none rounded-lg border border-[#dbe3ef] bg-white px-4 py-3 text-[16px] font-bold leading-snug text-[#10204a] outline-none transition placeholder:text-[#9aa8be] focus:border-[#0867f2] focus:ring-4 focus:ring-[#0867f2]/10"
-              placeholder="요양사에게 전달할 방문 요청을 입력하세요."
-              required
-            />
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div>
-              <label
-                className="text-[15px] font-black leading-tight text-[#112250]"
-                htmlFor="assignment-priority"
+        <div className="grid gap-5 px-5 py-5">
+          <dl className="grid gap-3 rounded-[14px] bg-[#f8fbff] p-4 text-[16px] leading-snug">
+            {[
+              ['대상자:', elder.name],
+              ['요청 내용:', draft.requestContent],
+              ['우선순위:', draft.priority],
+              ['담당 요양사:', draft.assignedCaregiver],
+              ['마감:', draft.dueTime],
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="grid gap-1 sm:grid-cols-[104px_1fr] sm:items-start"
               >
-                우선순위
-              </label>
-              <select
-                id="assignment-priority"
-                value={formState.priority}
-                onChange={(event) =>
-                  onFieldChange('priority', event.target.value)
-                }
-                className="mt-2 h-11 w-full rounded-lg border border-[#dbe3ef] bg-white px-3 text-[15px] font-black text-[#10204a] outline-none focus:border-[#0867f2] focus:ring-4 focus:ring-[#0867f2]/10"
-              >
-                {priorityOptions.map((priority) => (
-                  <option key={priority} value={priority}>
-                    {priority}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label
-                className="text-[15px] font-black leading-tight text-[#112250]"
-                htmlFor="assignment-caregiver"
-              >
-                배정 요양사
-              </label>
-              <select
-                id="assignment-caregiver"
-                value={formState.assignedCaregiver}
-                onChange={(event) =>
-                  onFieldChange('assignedCaregiver', event.target.value)
-                }
-                className="mt-2 h-11 w-full rounded-lg border border-[#dbe3ef] bg-white px-3 text-[15px] font-black text-[#10204a] outline-none focus:border-[#0867f2] focus:ring-4 focus:ring-[#0867f2]/10"
-              >
-                {caregiverOptions.map((caregiver) => (
-                  <option key={caregiver} value={caregiver}>
-                    {caregiver}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label
-                className="text-[15px] font-black leading-tight text-[#112250]"
-                htmlFor="assignment-due-time"
-              >
-                마감 시간
-              </label>
-              <input
-                id="assignment-due-time"
-                type="time"
-                value={formState.dueTime}
-                onChange={(event) =>
-                  onFieldChange('dueTime', event.target.value)
-                }
-                className="mt-2 h-11 w-full rounded-lg border border-[#dbe3ef] bg-white px-3 text-[15px] font-black text-[#10204a] outline-none focus:border-[#0867f2] focus:ring-4 focus:ring-[#0867f2]/10"
-                required
-              />
-            </div>
-          </div>
+                <dt className="font-black text-[#425371]">{label}</dt>
+                <dd className="font-black text-[#071747]">{value}</dd>
+              </div>
+            ))}
+          </dl>
 
           <button
-            type="submit"
-            className="mt-1 inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-5 text-[17px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            type="button"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-5 text-[17px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            onClick={onSubmit}
           >
             배정하기
           </button>
-        </form>
+        </div>
       </section>
     </div>
   )
@@ -890,6 +788,7 @@ function QuickMenuPanel() {
         {quickMenus.map((item) => (
           <Link
             key={item.title}
+            aria-label={item.title}
             to={item.href}
             className="relative flex min-h-[178px] flex-col items-center justify-center rounded-[12px] border border-[#dfe8f5] bg-white px-3 py-4 text-center shadow-[0_8px_16px_rgba(37,72,125,0.05)] transition hover:-translate-y-0.5 hover:border-[#bad2f8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
           >
@@ -1147,9 +1046,6 @@ function WeeklyReportPanel() {
 
 export function WorkerDashboardPage() {
   const [activeFilter, setActiveFilter] = useState<ElderStatus | 'all'>('all')
-  const [assignmentForm, setAssignmentForm] = useState<AssignmentFormState>(
-    defaultAssignmentForm,
-  )
   const [assignmentMessage, setAssignmentMessage] = useState<string | null>(
     null,
   )
@@ -1169,40 +1065,21 @@ export function WorkerDashboardPage() {
 
   const openAssignmentModal = (elder: ElderRow) => {
     setAssignmentTarget(elder)
-    setAssignmentForm({
-      assignedCaregiver: caregiverOptions[0],
-      dueTime: elder.status === 'danger' ? '12:00' : '15:00',
-      priority: elder.status === 'danger' ? '긴급' : '높음',
-      requestContent: buildDefaultRequest(elder),
-    })
-  }
-
-  const updateAssignmentField = (
-    field: keyof AssignmentFormState,
-    value: string,
-  ) => {
-    setAssignmentForm(
-      (current) =>
-        ({
-          ...current,
-          [field]: value,
-        }) as AssignmentFormState,
-    )
   }
 
   const submitAssignment = () => {
-    if (!assignmentTarget || !assignmentForm.requestContent.trim()) {
+    if (!assignmentTarget) {
       return
     }
 
     const payload: CaregiverAssignment = {
-      assignedCaregiver: assignmentForm.assignedCaregiver,
+      assignedCaregiver: defaultAssignmentDraft.assignedCaregiver,
       createdAt: new Date().toISOString(),
-      dueTime: assignmentForm.dueTime,
+      dueTime: defaultAssignmentDraft.dueTime,
       elderId: assignmentTarget.id,
       elderName: assignmentTarget.name,
-      priority: assignmentForm.priority,
-      requestContent: assignmentForm.requestContent.trim(),
+      priority: defaultAssignmentDraft.priority,
+      requestContent: defaultAssignmentDraft.requestContent,
     }
 
     try {
@@ -1281,10 +1158,9 @@ export function WorkerDashboardPage() {
       </div>
 
       <CaregiverAssignmentModal
+        draft={defaultAssignmentDraft}
         elder={assignmentTarget}
-        formState={assignmentForm}
         onClose={() => setAssignmentTarget(null)}
-        onFieldChange={updateAssignmentField}
         onSubmit={submitAssignment}
       />
     </main>

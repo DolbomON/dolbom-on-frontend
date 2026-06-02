@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
@@ -38,6 +38,11 @@ describe('WorkerDashboardPage', () => {
       'page',
     )
     expect(screen.getAllByText('상세 보기')).toHaveLength(4)
+    expect(screen.getAllByRole('link', { name: '상담 작성' })).toHaveLength(4)
+    expect(screen.getByRole('link', { name: '요양사 배정' })).toHaveAttribute(
+      'href',
+      '/worker#risk-elder-panel',
+    )
     expect(screen.getAllByRole('button', { name: '요양사 배정' })).toHaveLength(
       3,
     )
@@ -54,16 +59,25 @@ describe('WorkerDashboardPage', () => {
 
     await user.click(screen.getAllByRole('button', { name: '요양사 배정' })[0])
 
-    expect(
-      screen.getByRole('heading', { name: '요양사 배정' }),
-    ).toBeInTheDocument()
-    expect(screen.getByLabelText('어르신')).toHaveValue('김영자 어르신')
-    expect(screen.getByLabelText('요청 내용')).toHaveValue(
-      '식사 거르심,, 혈당 감소가 지속되고 있어요. 방문 확인 후 관찰 결과와 가족 인계 내용을 남겨 주세요.',
-    )
+    const dialog = screen.getByRole('dialog', { name: '요양사 업무 배정' })
 
-    await user.selectOptions(screen.getByLabelText('우선순위'), '긴급')
-    await user.click(screen.getByRole('button', { name: '배정하기' }))
+    expect(
+      within(dialog).getByRole('heading', { name: '요양사 업무 배정' }),
+    ).toBeInTheDocument()
+    expect(within(dialog).getByText('대상자:')).toBeInTheDocument()
+    expect(within(dialog).getByText('김영자 어르신')).toBeInTheDocument()
+    expect(within(dialog).getByText('요청 내용:')).toBeInTheDocument()
+    expect(
+      within(dialog).getByText('식사량과 복약 여부 확인'),
+    ).toBeInTheDocument()
+    expect(within(dialog).getByText('우선순위:')).toBeInTheDocument()
+    expect(within(dialog).getByText('주의')).toBeInTheDocument()
+    expect(within(dialog).getByText('담당 요양사:')).toBeInTheDocument()
+    expect(within(dialog).getByText('김민수 요양사')).toBeInTheDocument()
+    expect(within(dialog).getByText('마감:')).toBeInTheDocument()
+    expect(within(dialog).getByText('오늘 15:00')).toBeInTheDocument()
+
+    await user.click(within(dialog).getByRole('button', { name: '배정하기' }))
 
     expect(screen.getByRole('status')).toHaveTextContent(
       '김영자 어르신 새 배정 업무가 요양사 대시보드에 전달되었습니다.',
