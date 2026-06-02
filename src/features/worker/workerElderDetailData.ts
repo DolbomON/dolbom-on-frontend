@@ -96,6 +96,18 @@ export const elderDetails: ElderDetail[] = [
     riskStatus: 'stable',
     statusText: '오늘 상태 입력 완료 · 최근 입력 10:02',
   },
+  {
+    age: 77,
+    avatarSrc: '/assets/dolbomon/worker-dashboard/어르신1.png',
+    guardianName: '정유진',
+    household: '독거',
+    id: 'jung-mansu',
+    name: '정만수님',
+    phoneNumber: '010-0000-0000',
+    riskLabel: '위험',
+    riskStatus: 'danger',
+    statusText: '불안감 호소 · 수면 패턴 불안정',
+  },
 ]
 
 export const elderDetailMetrics: ElderMetric[] = [

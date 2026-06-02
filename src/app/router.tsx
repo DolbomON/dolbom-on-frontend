@@ -33,6 +33,7 @@ import {
 import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
 import { WorkerElderDetailPage } from '../pages/worker/WorkerElderDetailPage'
 import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
+import { WorkerConsultationsPage } from '../pages/worker/WorkerConsultationsPage'
 import { WorkerMemoCreatePage } from '../pages/worker/WorkerMemoCreatePage'
 import { WorkerMypagePage } from '../pages/worker/WorkerMypagePage'
 import { WorkerPortfolioPage } from '../pages/worker/WorkerPortfolioPage'
@@ -177,6 +178,10 @@ export const router = createBrowserRouter([
   {
     path: '/worker/elders',
     element: <WorkerEldersPage />,
+  },
+  {
+    path: '/worker/consultations',
+    element: <WorkerConsultationsPage />,
   },
   {
     path: '/worker/elders/:elderId/memo',

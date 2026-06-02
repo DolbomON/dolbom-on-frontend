@@ -66,6 +66,14 @@ export const caseMemoElders: WorkerElder[] = [
     id: 'choi-bokrye',
     name: '최복례님',
   },
+  {
+    age: 77,
+    assignedWorkerName: '김민수 요양사',
+    avatarSrc: '/assets/dolbomon/worker-dashboard/어르신1.png',
+    household: '독거',
+    id: 'jung-mansu',
+    name: '정만수님',
+  },
 ]
 
 export const defaultCaseMemoFormState: Omit<CaseMemoFormState, 'elderId'> = {

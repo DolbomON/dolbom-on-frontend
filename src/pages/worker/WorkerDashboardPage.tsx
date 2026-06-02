@@ -92,7 +92,7 @@ type AssignmentDraft = {
 const navItems = [
   { href: '/worker', label: '홈' },
   { href: '/worker/elders', label: '복지 현황' },
-  { href: '/worker/elders/kim-yeongja/memo', label: '사례 관리' },
+  { href: '/worker/consultations', label: '상담 관리' },
   { href: '/worker/reports', label: '보고서' },
   { href: '/worker#schedule', label: '기관 일정' },
   { href: '/worker/mypage', label: '설정' },
