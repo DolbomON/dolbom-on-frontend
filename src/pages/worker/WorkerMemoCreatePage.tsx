@@ -170,8 +170,8 @@ const requiredMemoFields: Array<keyof CaseMemoFormState> = [
 ]
 
 const fieldErrorMessages: Partial<Record<keyof CaseMemoFormState, string>> = {
-  consultationContent: '대화 및 반응을 입력해주세요.',
-  memoContent: '방문 기록 메모를 입력해주세요.',
+  consultationContent: '대화와 반응을 입력해주세요.',
+  memoContent: '방문 메모를 입력해주세요.',
   observationContent: '관찰 내용을 입력해주세요.',
   visitPurpose: '방문 목적을 선택해주세요.',
 }
@@ -821,7 +821,7 @@ export function WorkerMemoCreatePage() {
           </button>
 
           <h1 className="text-center text-[30px] font-black leading-tight text-[#071747] lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:text-[31px]">
-            방문 기록 작성
+            방문 관찰 기록
           </h1>
         </div>
 
@@ -924,7 +924,7 @@ export function WorkerMemoCreatePage() {
 
               <MemoTextareaRow
                 id="consultationContent"
-                label="대화 및 반응"
+                label="대화와 반응"
                 maxLength={1000}
                 value={formState.consultationContent}
                 onChange={(value) =>
@@ -937,7 +937,7 @@ export function WorkerMemoCreatePage() {
 
               <MemoTextareaRow
                 id="caregiverMessage"
-                label="보호자 전달 사항"
+                label="가족 전달사항"
                 maxLength={1000}
                 value={formState.caregiverMessage}
                 onChange={(value) => updateTextField('caregiverMessage', value)}
@@ -955,7 +955,7 @@ export function WorkerMemoCreatePage() {
 
               <MemoTextareaRow
                 id="memoContent"
-                label="방문 기록 메모"
+                label="방문 메모"
                 maxLength={1500}
                 value={formState.memoContent}
                 onChange={(value) => updateTextField('memoContent', value)}

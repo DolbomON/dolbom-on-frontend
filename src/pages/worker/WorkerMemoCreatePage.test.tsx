@@ -29,7 +29,7 @@ describe('WorkerMemoCreatePage', () => {
     renderWorkerMemoCreatePage()
 
     expect(
-      screen.getByRole('heading', { name: '방문 기록 작성' }),
+      screen.getByRole('heading', { name: '방문 관찰 기록' }),
     ).toBeInTheDocument()
     expect(screen.getByText('김영자님')).toBeInTheDocument()
     expect(screen.getByText('84세 · 배우자와 거주')).toBeInTheDocument()
@@ -54,10 +54,10 @@ describe('WorkerMemoCreatePage', () => {
       screen.getByRole('button', { name: '통증 호소' }),
     ).toBeInTheDocument()
     expect(screen.getByLabelText(/관찰 내용/)).toBeInTheDocument()
-    expect(screen.getByLabelText(/대화 및 반응/)).toBeInTheDocument()
-    expect(screen.getByLabelText('보호자 전달 사항')).toBeInTheDocument()
+    expect(screen.getByLabelText(/대화와 반응/)).toBeInTheDocument()
+    expect(screen.getByLabelText('가족 전달사항')).toBeInTheDocument()
     expect(screen.getByLabelText('후속 조치 / 계획')).toBeInTheDocument()
-    expect(screen.getByLabelText(/방문 기록 메모/)).toBeInTheDocument()
+    expect(screen.getByLabelText(/방문 메모/)).toBeInTheDocument()
     expect(screen.getAllByText('0/1000')).toHaveLength(4)
     expect(screen.getByText('0/1500')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: '음성 녹음' })).toHaveAttribute(
@@ -108,7 +108,7 @@ describe('WorkerMemoCreatePage', () => {
     renderWorkerMemoCreatePage()
 
     await user.type(screen.getByLabelText(/관찰 내용/), 'abc')
-    await user.type(screen.getByLabelText(/방문 기록 메모/), '방문 완료')
+    await user.type(screen.getByLabelText(/방문 메모/), '방문 완료')
 
     expect(screen.getByText('3/1000')).toBeInTheDocument()
     expect(screen.getByText('5/1500')).toBeInTheDocument()
@@ -145,10 +145,8 @@ describe('WorkerMemoCreatePage', () => {
 
     expect(screen.getByText('방문 목적을 선택해주세요.')).toBeInTheDocument()
     expect(screen.getByText('관찰 내용을 입력해주세요.')).toBeInTheDocument()
-    expect(screen.getByText('대화 및 반응을 입력해주세요.')).toBeInTheDocument()
-    expect(
-      screen.getByText('방문 기록 메모를 입력해주세요.'),
-    ).toBeInTheDocument()
+    expect(screen.getByText('대화와 반응을 입력해주세요.')).toBeInTheDocument()
+    expect(screen.getByText('방문 메모를 입력해주세요.')).toBeInTheDocument()
     expect(screen.queryByText('대상자 상세 화면')).not.toBeInTheDocument()
   })
 
@@ -166,13 +164,10 @@ describe('WorkerMemoCreatePage', () => {
       '식사량을 확인했습니다.',
     )
     await user.type(
-      screen.getByLabelText(/대화 및 반응/),
+      screen.getByLabelText(/대화와 반응/),
       '수면 상태를 상담했습니다.',
     )
-    await user.type(
-      screen.getByLabelText(/방문 기록 메모/),
-      '보호자에게 공유 예정',
-    )
+    await user.type(screen.getByLabelText(/방문 메모/), '보호자에게 공유 예정')
     await user.click(screen.getByRole('button', { name: '방문 기록 저장' }))
 
     expect(screen.getByText('대상자 상세 화면')).toBeInTheDocument()
