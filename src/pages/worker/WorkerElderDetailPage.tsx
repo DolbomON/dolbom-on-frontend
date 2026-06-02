@@ -4,15 +4,17 @@ import {
   ChevronDown,
   ChevronRight,
   ClipboardList,
-  Home,
-  Info,
+  Clock,
+  FileText,
+  MapPin,
+  Navigation,
   Pencil,
   Phone,
-  PlayCircle,
-  PlusCircle,
-  RefreshCw,
+  Play,
+  ShieldCheck,
   UserRound,
   Users,
+  type LucideIcon,
 } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -25,43 +27,48 @@ const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
 
 const statusCards = [
   {
-    id: 'meal',
     iconSrc: `${workerAssetBase}/식사.png`,
+    id: 'meal',
     label: '식사',
-    tone: 'amber',
+    tone: 'blue',
     value: '조금',
   },
   {
-    id: 'medicine',
     iconSrc: `${workerAssetBase}/복약.png`,
+    id: 'medicine',
     label: '복약',
     tone: 'green',
     value: '먹음',
   },
   {
-    id: 'pain',
     iconSrc: `${workerAssetBase}/통증.png`,
+    id: 'pain',
     label: '통증',
-    tone: 'gray',
+    tone: 'orange',
     value: '보통',
   },
   {
-    id: 'mood',
     iconSrc: `${workerAssetBase}/기분.png`,
+    id: 'mood',
     label: '기분',
-    tone: 'gray',
+    tone: 'orange',
     value: '보통',
   },
   {
-    id: 'sleep',
     iconSrc: `${workerAssetBase}/수면.png`,
+    id: 'sleep',
     label: '수면',
     tone: 'blue',
     value: '잘 잠',
   },
 ] as const
 
-const profileInfoRows = [
+const profileRows: Array<{
+  icon: LucideIcon
+  id: string
+  label: string
+  value: string
+}> = [
   {
     icon: UserRound,
     id: 'gender',
@@ -72,13 +79,7 @@ const profileInfoRows = [
     icon: CalendarDays,
     id: 'birth',
     label: '생년월일',
-    value: '1941.05.12',
-  },
-  {
-    icon: Home,
-    id: 'household',
-    label: '거주 형태',
-    value: '배우자와 거주',
+    value: '1943.05.12',
   },
   {
     icon: UserRound,
@@ -87,33 +88,12 @@ const profileInfoRows = [
     value: '김민수 요양사',
   },
   {
-    iconSrc: `${workerAssetBase}/달력2.png`,
-    id: 'start',
-    label: '관리 시작일',
-    value: '2024.02.01',
+    icon: MapPin,
+    id: 'address',
+    label: '주소',
+    value: '서울특별시 강남구\n도산대로 123,\n101동 502호',
   },
-] as const
-
-const familyContacts = [
-  {
-    avatarSrc: `${workerAssetBase}/딸.png`,
-    id: 'lee-soonja',
-    name: '이순자 (딸)',
-    phone: '010-1234-5678',
-  },
-  {
-    avatarSrc: `${workerAssetBase}/아들.png`,
-    id: 'park-cheolsu',
-    name: '박철수 (아들)',
-    phone: '010-9876-5432',
-  },
-  {
-    avatarSrc: `${workerAssetBase}/딸.png`,
-    id: 'choi-bokrye',
-    name: '최복례 (며느리)',
-    phone: '010-2222-3333',
-  },
-] as const
+]
 
 const welfareRequests = [
   '식사량 감소 원인을 확인해주세요.',
@@ -121,141 +101,100 @@ const welfareRequests = [
   '수면 중 자주 깨는지 물어봐주세요.',
 ] as const
 
-const todayRecords = [
+const referenceSummaries = [
+  '최근 식사량이 다소 감소했고 복약 시간이 불규칙했습니다.',
+  '통증과 기분은 보통 수준이며 수면은 대체로 안정적입니다.',
+  '오늘은 식사 여부와 복약 상태를 중점 확인해주세요.',
+] as const
+
+const recentVisitHistory = [
   {
-    author: '김민수 요양사',
-    content: '기상 시간 07:50',
-    id: 'wake',
-    item: '기상/수면',
-    status: '잘 잠',
-    tone: 'blue',
-    time: '07:50',
+    content: '아침 식사량 70%, 복약 완료',
+    date: '2025.05.30',
+    id: 'visit-2025-05-30',
+    time: '10:20',
   },
   {
-    author: '김민수 요양사',
-    content: '아침 식사량 평소의 60%',
-    id: 'breakfast',
-    item: '식사',
-    status: '조금',
-    tone: 'amber',
-    time: '08:15',
+    content: '낮잠 증가, 저녁 식사량 감소',
+    date: '2025.05.29',
+    id: 'visit-2025-05-29',
+    time: '14:00',
   },
   {
-    author: '김민수 요양사',
-    content: '아침 약 2종 복용',
-    id: 'medicine-morning',
-    item: '복약',
-    status: '먹음',
-    tone: 'green',
+    content: '수면 중 2회 각성',
+    date: '2025.05.28',
+    id: 'visit-2025-05-28',
     time: '09:30',
   },
+] as const
+
+const familyContacts = [
   {
-    author: '이순자 가족',
-    content: '점심 식사량 평소의 70%',
-    id: 'lunch',
-    item: '식사',
-    status: '조금',
-    tone: 'amber',
-    time: '12:10',
+    avatarSrc: `${workerAssetBase}/딸.png`,
+    id: 'lee-soonja',
+    name: '이순자',
+    phone: '010-1234-5678',
+    relation: '딸',
   },
   {
-    author: '김민수 요양사',
-    content: '가벼운 산책 후 편안해하심',
-    id: 'activity',
-    item: '활동/기분',
-    status: '보통',
-    tone: 'gray',
-    time: '15:30',
+    avatarSrc: `${workerAssetBase}/아들.png`,
+    id: 'park-cheolsu',
+    name: '박철수',
+    phone: '010-2345-6789',
+    relation: '아들',
   },
   {
-    author: '김민수 요양사',
-    content: '저녁 식사량 평소의 80%',
-    id: 'dinner',
-    item: '식사',
-    status: '보통',
-    tone: 'gray',
-    time: '19:00',
-  },
-  {
-    author: '김민수 요양사',
-    content: '저녁 약 2종 복용 (10분 지연)',
-    id: 'medicine-evening',
-    item: '복약',
-    status: '조금 지연',
-    tone: 'orange',
-    time: '21:30',
-  },
-  {
-    author: '김민수 요양사',
-    content: '취침 시간 22:00',
-    id: 'sleep',
-    item: '취침/수면',
-    status: '잘 잠',
-    tone: 'blue',
-    time: '22:00',
+    avatarSrc: `${workerAssetBase}/딸.png`,
+    id: 'choi-bokrye',
+    name: '최복례',
+    phone: '010-3456-7890',
+    relation: '며느리',
   },
 ] as const
 
-const weeklyTrend = [
-  { date: '5/25', label: '안정', tone: 'green', x: 16, y: 64 },
-  { date: '5/26', label: '주의', tone: 'amber', x: 64, y: 48 },
-  { date: '5/27', label: '주의', tone: 'amber', x: 112, y: 48 },
-  { date: '5/28', label: '위험', tone: 'red', x: 160, y: 70 },
-  { date: '5/29', label: '주의', tone: 'amber', x: 208, y: 52 },
-  { date: '5/30', label: '주의', tone: 'amber', x: 256, y: 52 },
-  { date: '5/31', label: '주의', tone: 'amber', x: 304, y: 52 },
-] as const
+const safetyChecklist = ['신분 확인', '손 위생', '복약 확인 도구 준비'] as const
 
 const statusPillClasses = {
-  amber: 'bg-[#ffe6ad] text-[#d77800]',
-  blue: 'bg-[#d8eaff] text-[#0068f4]',
-  gray: 'bg-[#edf0f4] text-[#1d2b4f]',
-  green: 'bg-[#cbefd7] text-[#1f8a40]',
-  orange: 'bg-[#ffe1d6] text-[#f05a1a]',
-} as const
-
-const trendToneClasses = {
-  amber: 'fill-[#f4a100] text-[#e19100]',
-  green: 'fill-[#18a957] text-[#179049]',
-  red: 'fill-[#ff1d25] text-[#ef1119]',
+  blue: 'bg-[#e8f1ff] text-[#0867f2]',
+  green: 'bg-[#dff4e6] text-[#13a044]',
+  orange: 'bg-[#fff0d8] text-[#ff6b00]',
 } as const
 
 type StatusTone = keyof typeof statusPillClasses
-type ProfileInfoRow = (typeof profileInfoRows)[number]
 
 function WorkerDetailTopBar() {
   return (
-    <header className="sticky top-0 z-30 border-b border-[#e3ebf7] bg-white/96 shadow-[0_6px_20px_rgba(35,73,128,0.07)] backdrop-blur">
-      <div className="mx-auto grid min-h-[82px] w-full max-w-[1640px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-2 lg:h-[72px] lg:min-h-[72px] lg:grid-cols-[190px_minmax(0,1fr)_auto] lg:px-10 lg:py-0">
+    <header className="sticky top-0 z-30 border-b border-[#dde7f4] bg-white/95 shadow-[0_5px_18px_rgba(35,73,128,0.07)] backdrop-blur">
+      <div className="mx-auto grid min-h-[82px] w-full grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-2 lg:h-[72px] lg:min-h-[72px] lg:grid-cols-[214px_minmax(0,1fr)_auto] lg:px-8 lg:py-0">
         <Link
           to="/"
-          className="inline-flex min-h-11 items-center text-[29px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.18)] focus-visible:rounded-lg lg:text-[34px]"
+          className="inline-flex min-h-11 items-center text-[29px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.16)] focus-visible:rounded-lg lg:text-[34px]"
           aria-label="돌봄ON 홈"
         >
           돌봄ON
         </Link>
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-2 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-7"
+          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-3 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-12"
           aria-label="요양사 메뉴"
         >
           {caregiverTopNavItems.map((item) => {
-            const isActive = item.label === '방문기록'
+            const isActive = item.label === '담당어르신'
 
             return (
               <Link
                 key={item.label}
                 to={item.href}
                 className={cn(
-                  'relative inline-flex min-h-11 shrink-0 items-center justify-center px-3 transition hover:text-[#0867f2] focus-visible:rounded-lg',
-                  isActive ? 'text-[#0867f2]' : 'text-[#101a3d]',
+                  'relative inline-flex min-h-11 shrink-0 items-center justify-center px-2 transition hover:text-[#0867f2] focus-visible:rounded-lg',
+                  isActive ? 'text-[#0867f2]' : 'text-[#111827]',
                 )}
                 aria-current={isActive ? 'page' : undefined}
               >
                 {item.label}
                 <span
                   className={cn(
-                    'absolute bottom-0 left-3 right-3 h-[3px] rounded-full bg-[#0867f2]',
+                    'absolute bottom-0 left-0 right-0 h-1 rounded-full bg-[#0867f2]',
                     !isActive && 'hidden',
                   )}
                   aria-hidden="true"
@@ -268,12 +207,12 @@ function WorkerDetailTopBar() {
         <div className="col-start-2 row-start-1 flex items-center gap-3 justify-self-end lg:col-start-3">
           <button
             type="button"
-            className="relative inline-grid min-h-11 min-w-11 place-items-center rounded-lg text-[#60708e] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="알림 2건 확인"
+            className="relative inline-grid min-h-11 min-w-11 place-items-center rounded-lg text-[#33415c] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            aria-label="알림 3건 확인"
           >
-            <Bell aria-hidden="true" size={28} strokeWidth={2.5} />
-            <span className="absolute right-1 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#f43f3f] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
-              2
+            <Bell aria-hidden="true" size={27} strokeWidth={2.4} />
+            <span className="absolute right-1 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ef3b43] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
+              3
             </span>
           </button>
 
@@ -285,21 +224,16 @@ function WorkerDetailTopBar() {
             <img
               src={`${dashboardAssetBase}/요양사.png`}
               alt=""
-              className="h-11 w-11 rounded-full object-cover shadow-[0_6px_14px_rgba(42,96,184,0.16)]"
+              className="h-11 w-11 rounded-full bg-[#f0f5ff] object-cover shadow-[0_6px_14px_rgba(42,96,184,0.16)]"
               draggable="false"
             />
-            <span className="hidden text-left sm:block">
-              <strong className="block text-[15px] font-black leading-tight text-[#071747]">
-                김민수 요양사
-              </strong>
-              <span className="block text-[13px] font-bold leading-tight text-[#60708e]">
-                요양사
-              </span>
-            </span>
+            <strong className="hidden text-[15px] font-black leading-tight text-[#111827] sm:block">
+              김민수 요양사
+            </strong>
             <ChevronDown
               aria-hidden="true"
-              className="hidden h-4 w-4 text-[#60708e] sm:block"
-              strokeWidth={2.8}
+              className="hidden h-5 w-5 text-[#25324a] sm:block"
+              strokeWidth={2.7}
             />
           </Link>
         </div>
@@ -310,7 +244,7 @@ function WorkerDetailTopBar() {
 
 function NotFoundState() {
   return (
-    <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
+    <main className="min-h-svh overflow-x-hidden bg-[#f6f9fd] text-[#071747]">
       <WorkerDetailTopBar />
 
       <div className="mx-auto w-full max-w-[760px] px-5 py-16">
@@ -339,23 +273,6 @@ function NotFoundState() {
   )
 }
 
-function ProfileInfoIcon({ row }: { row: ProfileInfoRow }) {
-  if ('iconSrc' in row) {
-    return (
-      <img
-        src={row.iconSrc}
-        alt=""
-        className="h-6 w-6 object-contain"
-        draggable="false"
-      />
-    )
-  }
-
-  const Icon = row.icon
-
-  return <Icon aria-hidden="true" size={22} strokeWidth={2.5} />
-}
-
 function ProfileSummaryCard({
   age,
   avatarSrc,
@@ -369,68 +286,57 @@ function ProfileSummaryCard({
 }) {
   return (
     <aside
-      className="rounded-[18px] border border-[#dfe8f5] bg-white px-4 py-4 shadow-[0_18px_42px_rgba(47,86,145,0.09)]"
+      className="flex flex-col rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_18px_42px_rgba(47,86,145,0.09)] xl:h-[705px]"
       aria-label={`${name} 기본 정보`}
     >
       <div className="flex flex-col items-center text-center">
         <img
           src={avatarSrc}
           alt={`${name} 프로필`}
-          className="h-[132px] w-[132px] rounded-full bg-[#f2f6ff] object-cover shadow-[0_12px_28px_rgba(47,86,145,0.13)]"
+          className="h-[188px] w-[218px] object-contain"
           draggable="false"
         />
-        <h2 className="mt-4 text-[26px] font-black leading-tight text-[#071747]">
+        <h2 className="mt-4 text-[28px] font-black leading-tight text-[#111827]">
           {name}
         </h2>
-        <p className="mt-2 text-[16px] font-bold leading-tight text-[#546384]">
-          {age}세 · {household}
+        <p className="mt-3 text-[17px] font-bold leading-tight text-[#3f5070]">
+          {age}세&nbsp;&nbsp;|&nbsp;&nbsp;{household}
         </p>
       </div>
 
-      <section className="mt-6 rounded-[16px] border border-[#e3ebf7] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(47,86,145,0.05)]">
-        <div className="flex items-center justify-between gap-3">
-          <h3 className="text-[18px] font-black leading-tight text-[#071747]">
-            오늘 상태 요약
-          </h3>
-          <span className="inline-flex min-h-7 items-center rounded-full bg-[#fff1bd] px-4 text-[15px] font-black text-[#e68900]">
-            주의
-          </span>
-        </div>
+      <div className="my-7 h-px bg-[#d9e2ef]" aria-hidden="true" />
 
-        <p className="mt-4 text-[15px] font-bold leading-[1.55] text-[#4c5d7c]">
-          식사량이 평소보다 낮고, 복약 시간이 불규칙했습니다.
-        </p>
+      <dl className="grid gap-5">
+        {profileRows.map((row) => {
+          const Icon = row.icon
 
-        <div className="my-3 h-px bg-[#e6eef8]" aria-hidden="true" />
-
-        <dl className="grid gap-3">
-          {profileInfoRows.map((row) => {
-            return (
-              <div
-                key={row.id}
-                className="grid grid-cols-[32px_minmax(84px,1fr)_auto] items-center gap-2"
-              >
-                <span className="inline-grid h-7 w-7 place-items-center text-[#0867f2]">
-                  <ProfileInfoIcon row={row} />
-                </span>
-                <dt className="text-[14px] font-bold leading-tight text-[#75819a]">
-                  {row.label}
-                </dt>
-                <dd className="text-right text-[14px] font-black leading-tight text-[#071747]">
-                  {row.id === 'household' ? household : row.value}
-                </dd>
-              </div>
-            )
-          })}
-        </dl>
-      </section>
+          return (
+            <div
+              key={row.id}
+              className="grid grid-cols-[30px_100px_minmax(0,1fr)] items-start gap-3"
+            >
+              <Icon
+                aria-hidden="true"
+                className="mt-0.5 h-6 w-6 text-[#384969]"
+                strokeWidth={2.2}
+              />
+              <dt className="text-[17px] font-bold leading-snug text-[#52627f]">
+                {row.label}
+              </dt>
+              <dd className="whitespace-pre-line text-[17px] font-bold leading-[1.45] text-[#111827]">
+                {row.value}
+              </dd>
+            </div>
+          )
+        })}
+      </dl>
 
       <Link
         to="/worker/elders/kim-yeongja"
-        className="mx-auto mt-4 inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-4 text-[16px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        className="mt-8 inline-flex min-h-[58px] w-full items-center justify-center gap-2 rounded-lg border border-[#d5e0ee] bg-white px-4 text-[18px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] xl:mt-auto"
       >
+        <FileText aria-hidden="true" className="h-6 w-6" strokeWidth={2.6} />
         어르신 정보 보기
-        <ChevronRight aria-hidden="true" className="h-5 w-5" />
       </Link>
     </aside>
   )
@@ -438,20 +344,20 @@ function ProfileSummaryCard({
 
 function StatusMetricCard({ card }: { card: (typeof statusCards)[number] }) {
   return (
-    <article className="flex min-h-[156px] flex-col items-center justify-center rounded-[16px] border border-[#e2eaf6] bg-white px-3 py-3 text-center shadow-[0_14px_32px_rgba(47,86,145,0.08)]">
+    <article className="grid min-h-[148px] grid-cols-[72px_minmax(0,1fr)] items-center gap-x-2 rounded-[16px] border border-[#dfe8f5] bg-white px-4 py-4 shadow-[0_14px_32px_rgba(47,86,145,0.08)]">
       <img
         src={card.iconSrc}
         alt=""
-        className="h-[74px] w-[88px] object-contain"
+        className="row-span-2 h-[86px] w-[86px] max-w-none object-contain"
         draggable="false"
       />
-      <h3 className="text-[16px] font-black leading-tight text-[#071747]">
+      <h3 className="self-end text-right text-[18px] font-black leading-tight text-[#111827]">
         {card.label}
       </h3>
       <span
         className={cn(
-          'mt-2 inline-flex min-h-7 min-w-[74px] items-center justify-center rounded-full px-4 text-[14px] font-black leading-none shadow-[0_8px_16px_rgba(47,86,145,0.08)]',
-          statusPillClasses[card.tone],
+          'mt-3 inline-flex min-h-8 min-w-[82px] items-center justify-center justify-self-end rounded-full px-4 text-[16px] font-black leading-none',
+          statusPillClasses[card.tone as StatusTone],
         )}
       >
         {card.value}
@@ -460,131 +366,123 @@ function StatusMetricCard({ card }: { card: (typeof statusCards)[number] }) {
   )
 }
 
-function AiSummaryPanel() {
+function RequestSummaryPanel() {
   return (
     <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
-      aria-labelledby="ai-summary-title"
+      className="grid gap-5 rounded-[18px] border border-[#dfe8f5] bg-white p-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)] lg:grid-cols-[1.1fr_1fr] lg:gap-0 xl:h-[260px]"
+      aria-label="방문 전 요청사항과 참고 요약"
     >
-      <div className="flex items-start gap-4 px-5 py-3.5">
-        <img
-          src={`${workerAssetBase}/ai.png`}
-          alt=""
-          className="h-[42px] w-[42px] shrink-0 object-contain"
-          draggable="false"
-        />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2
-              id="ai-summary-title"
-              className="text-[18px] font-black leading-tight text-[#071747]"
-            >
-              방문 전 참고 요약
-            </h2>
-            <div className="flex items-center gap-2 text-[14px] font-bold text-[#697895]">
-              <span>오늘 09:30 기준</span>
-              <button
-                type="button"
-                className="inline-grid h-8 w-8 place-items-center rounded-lg text-[#657695] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-                aria-label="AI 요약 새로고침"
-              >
-                <RefreshCw aria-hidden="true" className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
+      <div className="min-w-0 lg:border-r lg:border-[#dfe6f1] lg:pr-7">
+        <div className="flex items-center gap-3">
+          <span className="inline-grid h-10 w-10 place-items-center rounded-lg bg-[#fff0f2] text-[#f05261]">
+            <ClipboardList aria-hidden="true" className="h-6 w-6" />
+          </span>
+          <h2 className="text-[23px] font-black leading-tight text-[#111827]">
+            복지사 요청사항
+          </h2>
+        </div>
 
-          <p className="mt-2 text-[15px] font-bold leading-[1.45] text-[#314263]">
-            식사량이 평소 대비 감소하였고, 복약 시간이 다소 지연되었습니다.
-            <br />
-            통증과 기분은 보통 수준이며, 수면은 안정적으로 유지되었습니다.
-            <br />
-            수분 섭취와 규칙적인 복약 시간을 재확인하고 권장드립니다.
-          </p>
+        <div className="mt-5 grid gap-5 sm:grid-cols-[142px_minmax(0,1fr)] sm:items-center">
+          <img
+            src={`${workerAssetBase}/체크.png`}
+            alt=""
+            className="mx-auto h-[132px] w-[132px] object-contain sm:mx-0"
+            draggable="false"
+          />
+          <ul className="grid gap-4">
+            {welfareRequests.map((request) => (
+              <li
+                key={request}
+                className="flex items-start gap-3 text-[17px] font-bold leading-snug text-[#172033]"
+              >
+                <span
+                  className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ff4c5c]"
+                  aria-hidden="true"
+                />
+                <span>{request}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 border-t border-[#e6eef8] px-5 py-2 text-[13px] font-bold text-[#7a86a0]">
-        <Info
-          aria-hidden="true"
-          className="h-5 w-5 shrink-0 text-[#7b8aa7]"
-          strokeWidth={2.5}
-        />
-        <p>AI 요약은 참고용으로 제공되며, 현장 판단을 대체하지 않습니다.</p>
+      <div className="min-w-0 lg:pl-7">
+        <div className="flex items-center gap-3">
+          <span className="inline-grid h-10 w-10 place-items-center rounded-lg bg-[#ecf4ff] text-[#0867f2]">
+            <FileText aria-hidden="true" className="h-6 w-6" />
+          </span>
+          <h2 className="text-[23px] font-black leading-tight text-[#111827]">
+            방문 전 참고 요약
+          </h2>
+        </div>
+
+        <ul className="mt-6 grid gap-4">
+          {referenceSummaries.map((summary) => (
+            <li
+              key={summary}
+              className="flex items-start gap-3 text-[17px] font-bold leading-[1.5] text-[#172033]"
+            >
+              <span
+                className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#b8c1d0]"
+                aria-hidden="true"
+              />
+              <span>{summary}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )
 }
 
-function StatusBadge({ status, tone }: { status: string; tone: StatusTone }) {
-  return (
-    <span
-      className={cn(
-        'inline-flex min-h-5 min-w-[56px] items-center justify-center rounded-full px-3 text-[12px] font-black leading-none',
-        statusPillClasses[tone],
-      )}
-    >
-      {status}
-    </span>
-  )
-}
-
-function TodayRecordsPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
+function RecentVisitHistoryPanel() {
   return (
     <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
-      aria-labelledby="today-records-title"
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-4 shadow-[0_16px_36px_rgba(47,86,145,0.08)] xl:h-[192px]"
+      aria-labelledby="recent-visit-history-title"
     >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2
-          id="today-records-title"
-          className="text-[19px] font-black leading-tight text-[#071747]"
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Clock
+            aria-hidden="true"
+            className="h-7 w-7 text-[#0867f2]"
+            strokeWidth={2.5}
+          />
+          <h2
+            id="recent-visit-history-title"
+            className="text-[23px] font-black leading-tight text-[#111827]"
+          >
+            최근 방문 기록
+          </h2>
+        </div>
+        <Link
+          to="/caregiver/records"
+          className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-[16px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
-          오늘 방문 기록
-        </h2>
-        <button
-          type="button"
-          className="inline-flex min-h-9 items-center justify-center gap-2 rounded-lg border border-[#dfe8f5] bg-white px-3 text-[15px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.07)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-          onClick={onMemoCreate}
-        >
-          <PlusCircle aria-hidden="true" className="h-5 w-5" />
-          방문 기록 추가
-        </button>
+          전체 기록 보기
+          <ChevronRight aria-hidden="true" className="h-5 w-5" />
+        </Link>
       </div>
 
-      <div className="mt-3 overflow-x-auto rounded-[14px] border border-[#e3ebf7]">
-        <table className="w-full min-w-[680px] border-collapse text-left">
-          <caption className="sr-only">김영자님 오늘 방문 기록</caption>
-          <thead className="bg-[#fbfdff] text-[13px] font-black leading-tight text-[#687792]">
-            <tr>
-              <th className="w-[96px] px-4 py-1" scope="col">
-                시간
-              </th>
-              <th className="w-[130px] px-4 py-1" scope="col">
-                항목
-              </th>
-              <th className="px-4 py-1" scope="col">
-                내용
-              </th>
-              <th className="w-[128px] px-4 py-1" scope="col">
-                상태
-              </th>
-              <th className="w-[150px] px-4 py-1" scope="col">
-                기록자
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[#e7eef8] text-[12px] font-bold leading-tight text-[#253758]">
-            {todayRecords.map((record) => (
+      <div className="mt-3 overflow-hidden rounded-[12px] border border-[#dfe8f5]">
+        <table className="w-full border-collapse text-left">
+          <caption className="sr-only">김영자님 최근 방문 기록</caption>
+          <tbody className="divide-y divide-[#dfe8f5] text-[16px] font-bold leading-tight text-[#25314a]">
+            {recentVisitHistory.map((record) => (
               <tr key={record.id} className="bg-white">
-                <td className="px-4 py-1 font-black text-[#1e3a66]">
+                <td className="w-[138px] px-4 py-3 text-[#3d4b68]">
+                  <span className="inline-flex items-center gap-2">
+                    <CalendarDays
+                      aria-hidden="true"
+                      className="h-5 w-5 text-[#52627f]"
+                    />
+                    {record.date}
+                  </span>
+                </td>
+                <td className="w-[96px] px-3 py-3 text-[#25314a]">
                   {record.time}
                 </td>
-                <td className="px-4 py-1">{record.item}</td>
-                <td className="px-4 py-1">{record.content}</td>
-                <td className="px-4 py-1">
-                  <StatusBadge status={record.status} tone={record.tone} />
-                </td>
-                <td className="px-4 py-1">{record.author}</td>
+                <td className="px-4 py-3">{record.content}</td>
               </tr>
             ))}
           </tbody>
@@ -594,69 +492,7 @@ function TodayRecordsPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
   )
 }
 
-function FamilyContactsPanel() {
-  return (
-    <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
-      aria-labelledby="family-contacts-title"
-    >
-      <h2
-        id="family-contacts-title"
-        className="text-[19px] font-black leading-tight text-[#071747]"
-      >
-        가족 연락처
-      </h2>
-
-      <ul className="mt-3 divide-y divide-[#e6eef8]">
-        {familyContacts.map((contact) => (
-          <li
-            key={contact.id}
-            className="grid grid-cols-[44px_minmax(0,1fr)_auto_auto] items-center gap-3 py-2 first:pt-0"
-          >
-            <img
-              src={contact.avatarSrc}
-              alt=""
-              className="h-[40px] w-[40px] rounded-full bg-[#f2f6ff] object-cover shadow-[0_8px_18px_rgba(47,86,145,0.12)]"
-              draggable="false"
-            />
-            <div className="min-w-0">
-              <p className="truncate text-[14px] font-black leading-tight text-[#071747]">
-                {contact.name}
-              </p>
-              <p className="mt-1 text-[12px] font-bold leading-tight text-[#697895]">
-                가족
-              </p>
-            </div>
-            <a
-              href={`tel:${contact.phone.replaceAll('-', '')}`}
-              className="hidden whitespace-nowrap text-[13px] font-bold text-[#496186] transition hover:text-[#0867f2] min-[380px]:inline"
-            >
-              {contact.phone}
-            </a>
-            <a
-              href={`tel:${contact.phone.replaceAll('-', '')}`}
-              className="inline-grid h-9 w-9 place-items-center rounded-lg text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-              aria-label={`${contact.name}에게 전화하기`}
-            >
-              <Phone aria-hidden="true" className="h-5 w-5" strokeWidth={2.5} />
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <button
-        type="button"
-        className="mx-auto mt-1.5 inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-4 text-[15px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-      >
-        <Users aria-hidden="true" className="h-5 w-5" strokeWidth={2.5} />
-        전체 연락처 보기
-        <ChevronRight aria-hidden="true" className="h-5 w-5" />
-      </button>
-    </section>
-  )
-}
-
-function WelfareRequestPanel({
+function ActionButtons({
   onMemoCreate,
   onVisitStart,
 }: {
@@ -664,199 +500,179 @@ function WelfareRequestPanel({
   onVisitStart: () => void
 }) {
   return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      <button
+        type="button"
+        className="inline-flex min-h-[56px] items-center justify-center gap-3 rounded-lg bg-[#0867f2] px-5 text-[26px] font-black text-white shadow-[0_14px_26px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        onClick={onVisitStart}
+      >
+        <Play aria-hidden="true" className="h-7 w-7 fill-white" />
+        방문 시작
+      </button>
+      <button
+        type="button"
+        className="inline-flex min-h-[56px] items-center justify-center gap-3 rounded-lg border-2 border-[#0867f2] bg-white px-5 text-[24px] font-black text-[#0867f2] shadow-[0_12px_24px_rgba(47,86,145,0.08)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        onClick={onMemoCreate}
+      >
+        <Pencil aria-hidden="true" className="h-7 w-7" strokeWidth={2.7} />
+        방문 기록 작성
+      </button>
+    </div>
+  )
+}
+
+function FamilyContactsPanel() {
+  return (
     <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
-      aria-labelledby="welfare-request-title"
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-6 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)] xl:h-[318px]"
+      aria-labelledby="family-contacts-title"
     >
-      <div className="flex items-center gap-2">
-        <ClipboardList
+      <div className="flex items-center gap-3">
+        <Users
           aria-hidden="true"
-          className="h-6 w-6 text-[#0867f2]"
-          strokeWidth={2.7}
+          className="h-7 w-7 fill-[#dceaff] text-[#0867f2]"
+          strokeWidth={2.6}
         />
         <h2
-          id="welfare-request-title"
-          className="text-[19px] font-black leading-tight text-[#071747]"
+          id="family-contacts-title"
+          className="text-[23px] font-black leading-tight text-[#111827]"
         >
-          복지사 요청사항
+          가족 연락처
         </h2>
       </div>
 
-      <ul className="mt-3 grid gap-2">
-        {welfareRequests.map((request) => (
+      <ul className="mt-5 grid gap-5">
+        {familyContacts.map((contact) => (
           <li
-            key={request}
-            className="rounded-[12px] border border-[#e2eaf6] bg-[#fbfdff] px-3 py-2 text-[13px] font-bold leading-snug text-[#52627f]"
+            key={contact.id}
+            className="grid grid-cols-[58px_minmax(0,1fr)_58px] items-center gap-4"
           >
-            {request}
+            <img
+              src={contact.avatarSrc}
+              alt=""
+              className="h-[58px] w-[58px] rounded-full bg-[#f2f6ff] object-cover shadow-[0_8px_18px_rgba(47,86,145,0.12)]"
+              draggable="false"
+            />
+            <div className="min-w-0">
+              <p className="truncate text-[18px] font-black leading-tight text-[#111827]">
+                {contact.name} ({contact.relation})
+              </p>
+              <p className="mt-2 text-[17px] font-bold leading-tight text-[#344360]">
+                {contact.phone}
+              </p>
+            </div>
+            <a
+              href={`tel:${contact.phone.replaceAll('-', '')}`}
+              className="inline-grid h-[50px] w-[58px] place-items-center rounded-lg border border-[#d7e1ef] bg-white text-[#263553] shadow-[0_8px_18px_rgba(47,86,145,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+              aria-label={`${contact.name}에게 전화하기`}
+            >
+              <Phone aria-hidden="true" className="h-6 w-6" strokeWidth={2.8} />
+            </a>
           </li>
         ))}
       </ul>
-
-      <div className="mt-3 grid gap-2 min-[390px]:grid-cols-2">
-        <button
-          type="button"
-          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#0867f2] px-3 text-[15px] font-black text-white shadow-[0_12px_22px_rgba(8,103,242,0.24)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-          onClick={onVisitStart}
-        >
-          <PlayCircle
-            aria-hidden="true"
-            className="h-5 w-5"
-            strokeWidth={2.7}
-          />
-          방문 시작
-        </button>
-        <button
-          type="button"
-          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#c8d8ef] bg-white px-3 text-[15px] font-black text-[#0867f2] shadow-[0_10px_20px_rgba(47,86,145,0.08)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-          onClick={onMemoCreate}
-        >
-          <Pencil aria-hidden="true" className="h-5 w-5" strokeWidth={2.7} />
-          방문 기록 작성
-        </button>
-      </div>
     </section>
   )
 }
 
-function RecentMemoPanel({ onMemoCreate }: { onMemoCreate: () => void }) {
+function VisitInfoPanel() {
   return (
     <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
-      aria-labelledby="recent-memo-title"
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)] xl:h-[235px]"
+      aria-labelledby="today-visit-info-title"
     >
-      <div className="flex items-center justify-between gap-3">
-        <h2
-          id="recent-memo-title"
-          className="text-[19px] font-black leading-tight text-[#071747]"
-        >
-          최근 방문 기록
-        </h2>
-        <button
-          type="button"
-          className="inline-flex min-h-8 items-center gap-1 rounded-lg px-2 text-[14px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-        >
-          전체 보기
-          <ChevronRight aria-hidden="true" className="h-4 w-4" />
-        </button>
-      </div>
-
-      <article className="mt-2.5 rounded-[12px] border border-[#e2eaf6] bg-[#fbfdff] px-4 py-2.5">
-        <h3 className="text-[15px] font-black leading-tight text-[#071747]">
-          식사량 감소 관찰 기록
-        </h3>
-        <p className="mt-1.5 text-[13px] font-bold leading-[1.45] text-[#52627f]">
-          최근 식사량이 줄어든 원인을 관찰하고 소량씩 자주 드시도록 도왔습니다.
-        </p>
-        <p className="mt-2 text-[12px] font-bold text-[#6e7c98]">
-          김민수 요양사 · 2024.05.31 10:45
-        </p>
-      </article>
-
-      <button
-        type="button"
-        className="mt-2.5 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#0867f2] px-4 text-[16px] font-black text-white shadow-[0_14px_26px_rgba(8,103,242,0.28)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-        onClick={onMemoCreate}
-      >
-        <Pencil aria-hidden="true" className="h-6 w-6" strokeWidth={2.7} />
-        방문 기록 작성
-      </button>
-    </section>
-  )
-}
-
-function WeeklyTrendPanel() {
-  const linePoints = weeklyTrend
-    .map((point) => `${point.x},${point.y}`)
-    .join(' ')
-
-  return (
-    <section
-      className="rounded-[18px] border border-[#e0e8f5] bg-white px-5 py-3.5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
-      aria-labelledby="weekly-trend-title"
-    >
-      <div className="flex items-center justify-between gap-3">
-        <h2
-          id="weekly-trend-title"
-          className="text-[19px] font-black leading-tight text-[#071747]"
-        >
-          주간 변화 추이
-        </h2>
-        <button
-          type="button"
-          className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-[#dfe8f5] bg-white px-3 text-[14px] font-black text-[#223156] shadow-[0_8px_18px_rgba(47,86,145,0.07)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-        >
-          최근 7일
-          <ChevronDown aria-hidden="true" className="h-4 w-4 text-[#0867f2]" />
-        </button>
-      </div>
-
-      <div className="mt-3 overflow-hidden">
-        <svg
-          aria-label="5월 25일부터 5월 31일까지 주간 변화 추이"
-          className="h-[98px] w-full"
-          role="img"
-          viewBox="0 0 320 138"
-        >
-          <polyline
-            fill="none"
-            points={linePoints}
-            stroke="#ff8f00"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="3"
-          />
-          {weeklyTrend.map((point) => (
-            <g key={point.date}>
-              <text
-                className={cn(
-                  'text-[12px] font-black',
-                  trendToneClasses[point.tone],
-                )}
-                textAnchor="middle"
-                x={point.x}
-                y={point.y - 22}
-              >
-                {point.label}
-              </text>
-              <circle
-                className={trendToneClasses[point.tone]}
-                cx={point.x}
-                cy={point.y}
-                r="7"
-                stroke="#ffffff"
-                strokeWidth="3"
-              />
-              <text
-                fill="#496186"
-                fontSize="13"
-                fontWeight="800"
-                textAnchor="middle"
-                x={point.x}
-                y="124"
-              >
-                {point.date}
-              </text>
-            </g>
-          ))}
-        </svg>
-      </div>
-
-      <div className="mt-1 h-px bg-[#e6eef8]" aria-hidden="true" />
-
-      <button
-        type="button"
-        className="mx-auto mt-1.5 inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-4 text-[15px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-      >
-        <img
-          src={`${workerAssetBase}/파일.png`}
-          alt=""
-          className="h-5 w-5 object-contain"
-          draggable="false"
+      <div className="flex items-center gap-3">
+        <CalendarDays
+          aria-hidden="true"
+          className="h-7 w-7 text-[#0867f2]"
+          strokeWidth={2.6}
         />
-        변화 추이 자세히 보기
-        <ChevronRight aria-hidden="true" className="h-5 w-5" />
-      </button>
+        <h2
+          id="today-visit-info-title"
+          className="text-[23px] font-black leading-tight text-[#111827]"
+        >
+          오늘 방문 정보
+        </h2>
+      </div>
+
+      <dl className="mt-5 overflow-hidden rounded-[12px] border border-[#dfe8f5]">
+        <div className="grid grid-cols-[110px_minmax(0,1fr)] border-b border-[#dfe8f5]">
+          <dt className="bg-[#f7faff] px-4 py-3 text-center text-[17px] font-bold text-[#3f5070]">
+            방문 시간
+          </dt>
+          <dd className="px-6 py-3 text-[24px] font-black leading-tight text-[#111827]">
+            10:30 ~ 11:10
+          </dd>
+        </div>
+        <div className="grid grid-cols-[110px_minmax(0,1fr)]">
+          <dt className="bg-[#f7faff] px-4 py-3 text-center text-[17px] font-bold text-[#3f5070]">
+            방문 목적
+          </dt>
+          <dd className="px-6 py-3 text-[18px] font-black leading-tight text-[#111827]">
+            식사량/복약 확인
+          </dd>
+        </div>
+      </dl>
+
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <button
+          type="button"
+          className="inline-flex min-h-[50px] items-center justify-center gap-3 rounded-lg border border-[#d7e1ef] bg-white px-4 text-[18px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        >
+          <Navigation
+            aria-hidden="true"
+            className="h-6 w-6 fill-[#0867f2]"
+            strokeWidth={2.6}
+          />
+          길찾기
+        </button>
+        <a
+          href="tel:01012345678"
+          className="inline-flex min-h-[50px] items-center justify-center gap-3 rounded-lg border border-[#d7e1ef] bg-white px-4 text-[18px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.05)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+        >
+          <Phone aria-hidden="true" className="h-6 w-6" strokeWidth={2.7} />
+          전화하기
+        </a>
+      </div>
+    </section>
+  )
+}
+
+function SafetyChecklistPanel() {
+  return (
+    <section
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-6 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)] xl:h-[204px]"
+      aria-labelledby="safety-checklist-title"
+    >
+      <div className="flex items-center gap-3">
+        <ShieldCheck
+          aria-hidden="true"
+          className="h-7 w-7 fill-[#dceaff] text-[#0867f2]"
+          strokeWidth={2.6}
+        />
+        <h2
+          id="safety-checklist-title"
+          className="text-[23px] font-black leading-tight text-[#111827]"
+        >
+          안전 체크리스트
+        </h2>
+      </div>
+
+      <ul className="mt-5 grid gap-4">
+        {safetyChecklist.map((item) => (
+          <li key={item}>
+            <label className="flex items-center gap-4 text-[18px] font-bold leading-tight text-[#111827]">
+              <input
+                type="checkbox"
+                checked
+                readOnly
+                className="h-6 w-6 shrink-0 accent-[#0867f2]"
+              />
+              {item}
+            </label>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
@@ -880,43 +696,44 @@ export function WorkerElderDetailPage() {
     })
   }
 
-  const avatarSrc =
-    elder.id === 'kim-yeongja'
-      ? '/assets/dolbomon/worker-elders/elder-kim-yeongja.png'
-      : elder.avatarSrc
-  const age = elder.id === 'kim-yeongja' ? 84 : elder.age
-
-  const household =
-    elder.id === 'kim-yeongja' ? '배우자와 거주' : elder.household
+  const isKimYeongja = elder.id === 'kim-yeongja'
+  const avatarSrc = isKimYeongja
+    ? `${dashboardAssetBase}/elder-kim-yeongja.png`
+    : elder.avatarSrc
+  const age = isKimYeongja ? 82 : elder.age
+  const household = isKimYeongja ? '배우자와 거주' : elder.household
   const detailTitle = `${elder.name} 방문 전 확인`
 
   return (
-    <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
+    <main className="min-h-svh overflow-x-hidden bg-[#f6f9fd] text-[#071747]">
       <WorkerDetailTopBar />
 
-      <div className="mx-auto w-full max-w-[1600px] px-5 pb-10 pt-4 lg:px-11">
-        <nav
-          className="flex flex-wrap items-center gap-2 text-[15px] font-bold text-[#64738f]"
-          aria-label="현재 위치"
-        >
-          <Link
-            to="/worker/elders/kim-yeongja"
-            className="transition hover:text-[#0867f2] focus-visible:rounded-lg"
+      <div className="mx-auto w-full max-w-[1618px] px-5 pb-9 pt-8 lg:px-8">
+        <div className="grid gap-x-10 gap-y-6 xl:grid-cols-[302px_minmax(0,1fr)_386px] 2xl:grid-cols-[302px_846px_386px]">
+          <section
+            className="xl:col-span-2"
+            aria-labelledby="elder-detail-title"
           >
-            방문 기록
-          </Link>
-          <ChevronRight aria-hidden="true" className="h-4 w-4" />
-          <Link
-            to="/worker/elders"
-            className="transition hover:text-[#0867f2] focus-visible:rounded-lg"
-          >
-            담당 어르신 목록
-          </Link>
-          <ChevronRight aria-hidden="true" className="h-4 w-4" />
-          <span className="font-black text-[#071747]">{detailTitle}</span>
-        </nav>
+            <h1
+              id="elder-detail-title"
+              className="text-[34px] font-black leading-tight text-[#111827] lg:text-[40px]"
+            >
+              {detailTitle}
+            </h1>
+            <p className="mt-3 text-[18px] font-bold leading-snug text-[#25314a]">
+              방문 전 요청사항과 참고 내용을 확인하고 업무를 시작하세요.
+            </p>
+          </section>
 
-        <div className="mt-5 grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)_360px] xl:items-start">
+          <aside
+            className="grid gap-4 xl:col-start-3 xl:row-span-2 xl:row-start-1 xl:mt-4"
+            aria-label="연락처와 오늘 방문 정보"
+          >
+            <FamilyContactsPanel />
+            <VisitInfoPanel />
+            <SafetyChecklistPanel />
+          </aside>
+
           <ProfileSummaryCard
             age={age}
             avatarSrc={avatarSrc}
@@ -925,20 +742,8 @@ export function WorkerElderDetailPage() {
           />
 
           <div className="min-w-0">
-            <section aria-labelledby="elder-detail-title">
-              <h1
-                id="elder-detail-title"
-                className="text-[31px] font-black leading-tight text-[#071747] lg:text-[36px]"
-              >
-                {detailTitle}
-              </h1>
-              <p className="mt-1 text-[15px] font-bold leading-snug text-[#566784]">
-                오늘의 상태와 방문 기록을 확인하고 관리하세요.
-              </p>
-            </section>
-
             <section
-              className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
+              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
               aria-label="오늘 주요 상태"
             >
               {statusCards.map((card) => (
@@ -947,26 +752,20 @@ export function WorkerElderDetailPage() {
             </section>
 
             <div className="mt-4">
-              <AiSummaryPanel />
+              <RequestSummaryPanel />
             </div>
 
             <div className="mt-4">
-              <TodayRecordsPanel onMemoCreate={openMemoCreate} />
+              <RecentVisitHistoryPanel />
+            </div>
+
+            <div className="mt-4">
+              <ActionButtons
+                onMemoCreate={openMemoCreate}
+                onVisitStart={openMemoCreate}
+              />
             </div>
           </div>
-
-          <aside
-            className="grid gap-3 xl:-mt-5"
-            aria-label="연락처 및 방문 기록 정보"
-          >
-            <WelfareRequestPanel
-              onMemoCreate={openMemoCreate}
-              onVisitStart={openMemoCreate}
-            />
-            <FamilyContactsPanel />
-            <RecentMemoPanel onMemoCreate={openMemoCreate} />
-            <WeeklyTrendPanel />
-          </aside>
         </div>
       </div>
     </main>

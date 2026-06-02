@@ -32,13 +32,13 @@ describe('WorkerPortfolioPage', () => {
     ).toHaveAttribute('href', '/caregiver')
     expect(
       within(topMenu).getByRole('link', { name: '방문일정' }),
-    ).toHaveAttribute('href', '/caregiver#schedule')
+    ).toHaveAttribute('href', '/caregiver/schedules')
     expect(
       within(topMenu).getByRole('link', { name: '담당어르신' }),
-    ).toHaveAttribute('href', '/worker/elders')
+    ).toHaveAttribute('href', '/worker/elders/kim-yeongja')
     expect(
       within(topMenu).getByRole('link', { name: '방문기록' }),
-    ).toHaveAttribute('href', '/worker/reports')
+    ).toHaveAttribute('href', '/caregiver/records')
     expect(
       within(topMenu).getByRole('link', { name: '전달사항' }),
     ).toHaveAttribute('href', '/caregiver#family-memo')

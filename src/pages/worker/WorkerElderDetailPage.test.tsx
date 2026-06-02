@@ -26,11 +26,12 @@ describe('WorkerElderDetailPage', () => {
     expect(
       screen.getByRole('heading', { name: '김영자님 방문 전 확인' }),
     ).toBeInTheDocument()
-    expect(screen.getByText('84세 · 배우자와 거주')).toBeInTheDocument()
+    expect(screen.getByText(/82세/)).toBeInTheDocument()
+    expect(screen.getByText(/배우자와 거주/)).toBeInTheDocument()
     expect(
       within(screen.getByRole('navigation', { name: '요양사 메뉴' })).getByRole(
         'link',
-        { name: '방문기록' },
+        { name: '담당어르신' },
       ),
     ).toHaveAttribute('aria-current', 'page')
 
@@ -57,10 +58,16 @@ describe('WorkerElderDetailPage', () => {
       screen.getByRole('heading', { name: '방문 전 참고 요약' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: '오늘 방문 기록' }),
+      screen.getByRole('heading', { name: '최근 방문 기록' }),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: '가족 연락처' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '오늘 방문 정보' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: '안전 체크리스트' }),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: '복지사 요청사항' }),
@@ -74,22 +81,16 @@ describe('WorkerElderDetailPage', () => {
     expect(
       screen.getByText('수면 중 자주 깨는지 물어봐주세요.'),
     ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: '최근 방문 기록' }),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: '주간 변화 추이' }),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', { name: '방문 기록 추가' }),
-    ).toBeInTheDocument()
+    expect(screen.getByText('10:30 ~ 11:10')).toBeInTheDocument()
+    expect(screen.getByText('식사량/복약 확인')).toBeInTheDocument()
+    expect(screen.getByText('신분 확인')).toBeInTheDocument()
+    expect(screen.getByText('손 위생')).toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: '방문 시작' }),
     ).toBeInTheDocument()
     expect(
       screen.getAllByRole('button', { name: '방문 기록 작성' }).length,
     ).toBeGreaterThanOrEqual(1)
-    expect(screen.getByRole('button', { name: '최근 7일' })).toBeInTheDocument()
   })
 
   it('renders detail identity from the elderId URL param', () => {
@@ -99,7 +100,8 @@ describe('WorkerElderDetailPage', () => {
       screen.getByRole('heading', { name: '이순자님 방문 전 확인' }),
     ).toBeInTheDocument()
     expect(screen.getByAltText('이순자님 프로필')).toBeInTheDocument()
-    expect(screen.getByText('82세 · 독거')).toBeInTheDocument()
+    expect(screen.getByText(/82세/)).toBeInTheDocument()
+    expect(screen.getByText(/독거/)).toBeInTheDocument()
   })
 
   it('renders a friendly not-found state for an unknown elderId', () => {

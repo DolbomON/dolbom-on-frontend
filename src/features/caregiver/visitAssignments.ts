@@ -28,8 +28,7 @@ export const caregiverNextVisit: NextVisit = {
   elderName: '김영자님',
   phoneNumber: '010-1234-5678',
   visitTime: '10:30 ~ 11:10',
-  workerRequestSummary:
-    '식사량 감소 원인을 관찰하고 아침 복약 여부를 확인해 주세요.',
+  workerRequestSummary: '식사량과 복약 여부 확인',
 }
 
 export const caregiverTodayVisits = [

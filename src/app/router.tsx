@@ -3,6 +3,8 @@ import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
 import { CaregiverDashboardPage } from '../pages/caregiver/CaregiverDashboardPage'
+import { CaregiverVisitRecordsPage } from '../pages/caregiver/CaregiverVisitRecordsPage'
+import { CaregiverVisitSchedulePage } from '../pages/caregiver/CaregiverVisitSchedulePage'
 import { ElderChatPage } from '../pages/elder/ElderChatPage'
 import { ElderBasicInfoPage } from '../pages/elder/ElderBasicInfoPage'
 import { ElderCheckCompletePage } from '../pages/elder/ElderCheckCompletePage'
@@ -151,6 +153,14 @@ export const router = createBrowserRouter([
   {
     path: '/caregiver',
     element: <CaregiverDashboardPage />,
+  },
+  {
+    path: '/caregiver/schedules',
+    element: <CaregiverVisitSchedulePage />,
+  },
+  {
+    path: '/caregiver/records',
+    element: <CaregiverVisitRecordsPage />,
   },
   {
     path: '/worker',

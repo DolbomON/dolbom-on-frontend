@@ -146,13 +146,13 @@ const quickMenus: QuickMenuItem[] = [
   },
   {
     description: '방문/관찰 기록 관리',
-    href: '/worker/elders/kim-yeongja/memo',
+    href: '/caregiver/records',
     iconSrc: `${dashboardAssetBase}/채팅.png`,
     label: '방문 기록',
   },
   {
     description: '방문 일정 확인',
-    href: '/worker/consultations',
+    href: '/caregiver/schedules',
     iconSrc: `${dashboardAssetBase}/가방.png`,
     label: '방문 일정',
   },
@@ -665,7 +665,7 @@ function TodaySchedulePanel() {
           오늘 일정
         </h2>
         <Link
-          to="/caregiver#schedule"
+          to="/caregiver/schedules"
           className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-[#e0e8f5] px-3 text-[14px] font-black text-[#0867f2] shadow-[0_6px_14px_rgba(47,86,145,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           전체 일정 보기
@@ -763,7 +763,7 @@ function RecentMemoPanel() {
           30분 전
         </span>
         <Link
-          to="/worker/reports"
+          to="/caregiver/records"
           className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#dfe7f4] bg-white px-4 text-[16px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           전체 기록 보기

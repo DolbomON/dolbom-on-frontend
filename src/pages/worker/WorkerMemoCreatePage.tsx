@@ -546,7 +546,7 @@ function RecentMemoList() {
           최근 방문 기록 목록
         </h2>
         <Link
-          to="/worker/reports"
+          to="/caregiver/records"
           className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-[14px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           전체 보기
