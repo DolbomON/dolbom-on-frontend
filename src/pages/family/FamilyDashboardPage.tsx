@@ -12,6 +12,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { cn } from '../../lib/utils'
 
 const familyAssetBase = '/assets/dolbomon/familly'
+const workerAssetBase = '/assets/dolbomon/worker'
 
 const familyHeroImageSrc = `${familyAssetBase}/가족.png`
 const checklistImageSrc = `${familyAssetBase}/체크.png`
@@ -19,6 +20,7 @@ const phoneImageSrc = `${familyAssetBase}/전화.png`
 const aiImageSrc = `${familyAssetBase}/ai.png`
 const documentImageSrc = `${familyAssetBase}/문서.png`
 const penImageSrc = `${familyAssetBase}/펜.png`
+const connectImageSrc = `${workerAssetBase}/image-removebg-preview.png`
 
 type MainAction = {
   description: string
@@ -61,6 +63,12 @@ const mainActions: MainAction[] = [
     href: '/family/chat',
     imageSrc: aiImageSrc,
     title: 'AI 안부 요약',
+  },
+  {
+    description: '초대코드 입력',
+    href: '/family/connect',
+    imageSrc: connectImageSrc,
+    title: '어르신 연결',
   },
 ]
 
@@ -234,7 +242,7 @@ export function FamilyDashboardPage() {
         </section>
 
         <section
-          className="mt-5 grid grid-cols-3 gap-[18px]"
+          className="mt-5 grid grid-cols-2 gap-[18px]"
           aria-label="가족 주요 메뉴"
         >
           {mainActions.map((action) => (

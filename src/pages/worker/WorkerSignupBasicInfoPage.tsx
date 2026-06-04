@@ -82,7 +82,7 @@ function TopBar() {
         </Link>
 
         <nav
-          className="order-3 flex w-full gap-2 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:order-none lg:w-auto lg:justify-center lg:gap-5"
+          className="order-3 flex w-full flex-wrap gap-x-2 gap-y-1 overflow-visible pb-2 text-[15px] font-extrabold text-[#101a3d] lg:order-none lg:w-auto lg:flex-nowrap lg:justify-center lg:gap-5 lg:pb-0"
           aria-label="요양사 메뉴"
         >
           {caregiverTopNavItems.map((item) => (

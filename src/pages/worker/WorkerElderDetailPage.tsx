@@ -167,7 +167,7 @@ type DetailViewRole = 'caregiver' | 'worker'
 
 const workerDetailTopNavItems = [
   { href: '/worker', label: '홈' },
-  { href: '/worker/elders', label: '복지 현황' },
+  { href: '/worker/welfare-connect', label: '복지 현황' },
   { href: '/worker/consultations', label: '상담 관리' },
   { href: '/worker/reports', label: '보고서' },
   { href: '/worker/schedules', label: '기관 일정' },
@@ -203,13 +203,13 @@ function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
         </Link>
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-3 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-12"
+          className="col-span-2 row-start-2 flex min-w-0 flex-wrap justify-start gap-x-3 gap-y-1 overflow-visible pb-2 text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-center lg:gap-12 lg:pb-0"
           aria-label={navLabel}
         >
           {navItems.map((item) => {
             const isActive = isCaregiverView
               ? item.label === '담당어르신'
-              : item.href === '/worker/elders'
+              : item.href === '/worker/welfare-connect'
 
             return (
               <Link

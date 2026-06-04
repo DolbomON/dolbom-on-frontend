@@ -1,7 +1,7 @@
 import {
+  ArrowLeft,
   Bell,
   CheckCircle2,
-  ChevronDown,
   Copy,
   Eye,
   Heart,
@@ -15,8 +15,6 @@ import { cn } from '../../lib/utils'
 
 const welfareAssetBase = '/assets/dolbomon/welfare'
 const workerAssetBase = '/assets/dolbomon/worker'
-const elderProfileSrc =
-  '/assets/dolbomon/worker-dashboard/elder-kim-yeongja.png'
 
 const teamHeroSrc = `${welfareAssetBase}/6f29695f-1a78-453b-a8a0-b3caa432e8ab.png`
 const socialWorkerSrc = `${welfareAssetBase}/image-removebg-preview%20(1).png`
@@ -64,12 +62,7 @@ type InfoItem = {
 }
 
 const navItems: NavItem[] = [
-  { href: '/elder', label: '홈' },
-  { href: '/elder/check', label: '오늘기록' },
-  { href: '/elder/check/complete', label: '건강상태' },
   { active: true, href: '/elder/connect', label: '내 돌봄팀' },
-  { href: '#alerts', label: '알림' },
-  { href: '#settings', label: '설정' },
 ]
 
 const familyMembers: FamilyMember[] = [
@@ -160,7 +153,7 @@ function TopNavigation() {
         <Logo />
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-5 overflow-x-auto text-[16px] font-extrabold text-[#0c1531] [-ms-overflow-style:none] [scrollbar-width:none] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-14 [&::-webkit-scrollbar]:hidden"
+          className="col-span-2 row-start-2 flex min-w-0 justify-start overflow-visible pb-2 text-[16px] font-extrabold text-[#0c1531] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:pb-0"
           aria-label="어르신 돌봄 메뉴"
         >
           {navItems.map((item) => (
@@ -186,41 +179,17 @@ function TopNavigation() {
         </nav>
 
         <div className="col-start-2 row-start-1 flex items-center gap-4 justify-self-end lg:col-start-3">
-          <button
-            type="button"
-            className="relative inline-grid h-12 w-12 place-items-center rounded-full text-[#111827] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="읽지 않은 알림 3개"
-          >
-            <Bell aria-hidden="true" className="h-7 w-7" strokeWidth={2.5} />
-            <span className="absolute right-0.5 top-1 grid h-[22px] min-w-[22px] place-items-center rounded-full bg-[#ef3445] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
-              3
-            </span>
-          </button>
-
           <Link
-            to="#profile"
-            className="hidden min-h-14 items-center gap-3 rounded-full border border-[#dfe7f2] bg-white px-3 py-1 shadow-[0_8px_20px_rgba(48,82,132,0.08)] transition hover:bg-[#f8fbff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] sm:inline-flex"
-            aria-label="김영자 어르신 프로필"
+            to="/elder"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#dfe7f2] bg-white px-4 text-[15px] font-black text-[#071747] shadow-[0_8px_20px_rgba(48,82,132,0.08)] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] sm:min-h-12 sm:px-5 sm:text-[16px]"
+            aria-label="어르신 홈으로 되돌아가기"
           >
-            <img
-              src={elderProfileSrc}
-              alt=""
-              className="h-12 w-12 rounded-full bg-[#e9f4ff] object-cover"
-              draggable="false"
-            />
-            <span className="hidden text-left md:block">
-              <strong className="block whitespace-nowrap text-[17px] font-black leading-tight text-[#10172a]">
-                김영자
-              </strong>
-              <span className="mt-0.5 block whitespace-nowrap text-[15px] font-bold leading-tight text-[#5d697c]">
-                어르신
-              </span>
-            </span>
-            <ChevronDown
+            <ArrowLeft
               aria-hidden="true"
-              className="hidden h-5 w-5 text-[#25324a] md:block"
+              className="h-5 w-5"
               strokeWidth={2.7}
             />
+            되돌아가기
           </Link>
         </div>
       </div>
@@ -261,13 +230,13 @@ function HeroMetric({
 function PrivacyHero() {
   return (
     <section
-      className="relative min-h-[230px] overflow-hidden rounded-[14px] border border-[#cfe0f6] bg-[linear-gradient(105deg,#f9fcff_0%,#eef7ff_54%,#f8fbff_100%)] shadow-[0_14px_34px_rgba(44,91,157,0.09)] md:h-[230px]"
+      className="relative min-h-[230px] overflow-hidden rounded-[14px] border border-[#cfe0f6] bg-[linear-gradient(105deg,#f9fcff_0%,#eef7ff_54%,#f8fbff_100%)] shadow-[0_14px_34px_rgba(44,91,157,0.09)] md:h-[270px]"
       aria-labelledby="care-team-privacy-title"
     >
       <img
         src={teamHeroSrc}
         alt=""
-        className="pointer-events-none absolute bottom-0 left-[-22px] hidden h-full w-[590px] select-none object-cover object-left md:block"
+        className="pointer-events-none absolute bottom-0 left-0 hidden h-full w-[430px] select-none object-cover object-left-top md:block lg:w-[480px]"
         aria-hidden="true"
         draggable="false"
       />
@@ -494,7 +463,7 @@ function TeamRoleCard({ role }: { role: TeamRole }) {
 function InviteCodeCard() {
   return (
     <SectionCard
-      className="min-h-[360px] p-5 xl:h-[360px]"
+      className="min-h-[382px] p-5 xl:h-[382px]"
       titleId="family-invite-title"
     >
       <div className="flex items-center gap-3">
@@ -513,17 +482,17 @@ function InviteCodeCard() {
         </h2>
       </div>
 
-      <div className="mt-5 rounded-[12px] border border-[#bcd8ff] bg-[#f1f7ff] p-2 shadow-[inset_0_0_0_4px_rgba(255,255,255,0.55)]">
+      <div className="mt-4 rounded-[12px] border border-[#bcd8ff] bg-[#f1f7ff] p-2 shadow-[inset_0_0_0_4px_rgba(255,255,255,0.55)]">
         <p className="rounded-[10px] border-2 border-dashed border-[#c8ddff] bg-white/72 px-4 py-4 text-center text-[34px] font-black leading-none tracking-[0.05em] text-[#0867f2]">
           DOLBOM-3942
         </p>
       </div>
 
-      <p className="mx-auto mt-4 max-w-[300px] break-keep text-center text-[16px] font-bold leading-snug text-[#52617a]">
+      <p className="mx-auto mt-3 max-w-[300px] break-keep text-center text-[16px] font-bold leading-snug text-[#52617a]">
         가족이 이 코드를 입력하면 담당 복지사 승인 후 연결돼요.
       </p>
 
-      <div className="mt-4 grid gap-3">
+      <div className="mt-3 grid gap-3">
         <button
           type="button"
           className="inline-flex min-h-[52px] w-full items-center justify-center gap-3 rounded-[8px] bg-[#0867f2] px-4 text-[19px] font-black leading-none text-white shadow-[0_14px_28px_rgba(8,103,242,0.23)] transition hover:bg-[#005cdf] active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"

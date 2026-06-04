@@ -61,7 +61,7 @@ type UpcomingItem = {
 
 const navItems = [
   { href: '/worker', label: '홈' },
-  { href: '/worker/elders', label: '복지 현황' },
+  { href: '/worker/welfare-connect', label: '복지 현황' },
   { href: '/worker/consultations', label: '상담 관리' },
   { href: '/worker/reports', label: '보고서' },
   { href: '/worker/schedules', label: '기관 일정' },
@@ -340,7 +340,7 @@ function WorkerSchedulesTopBar() {
         </Link>
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 gap-3 overflow-x-auto text-[15px] font-black text-[#071747] [-ms-overflow-style:none] [scrollbar-width:none] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-self-center lg:gap-8 [&::-webkit-scrollbar]:hidden"
+          className="col-span-2 row-start-2 flex min-w-0 flex-wrap gap-x-3 gap-y-1 overflow-visible pb-2 text-[15px] font-black text-[#071747] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-self-center lg:gap-8 lg:overflow-x-visible lg:pb-0"
           aria-label="복지사 메뉴"
         >
           {navItems.map((item) => {

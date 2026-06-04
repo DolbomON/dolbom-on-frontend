@@ -118,7 +118,7 @@ function WorkerSignupTopBar() {
         </Link>
 
         <nav
-          className="order-3 flex w-full gap-3 overflow-x-auto text-[16px] font-extrabold text-[#111a38] lg:order-none lg:w-auto lg:justify-center lg:gap-14"
+          className="order-3 flex w-full flex-wrap gap-x-3 gap-y-1 overflow-visible pb-2 text-[16px] font-extrabold text-[#111a38] lg:order-none lg:w-auto lg:flex-nowrap lg:justify-center lg:gap-14 lg:pb-0"
           aria-label="요양사 메뉴"
         >
           {caregiverTopNavItems.map((item) => (

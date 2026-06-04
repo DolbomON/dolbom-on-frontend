@@ -95,7 +95,7 @@ function TopNavigation() {
         <FamilyLogo />
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 gap-4 overflow-x-auto text-[16px] font-bold text-[#11182f] [-ms-overflow-style:none] [scrollbar-width:none] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-14 [&::-webkit-scrollbar]:hidden"
+          className="col-span-2 row-start-2 flex min-w-0 flex-wrap gap-x-4 gap-y-1 overflow-visible pb-2 text-[16px] font-bold text-[#11182f] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-center lg:gap-14 lg:pb-0"
           aria-label="가족 화면 메뉴"
         >
           {navItems.map((item) => {

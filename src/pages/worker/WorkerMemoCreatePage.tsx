@@ -191,7 +191,7 @@ function WorkerMemoTopBar() {
         </Link>
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-2 overflow-x-auto text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-7"
+          className="col-span-2 row-start-2 flex min-w-0 flex-wrap justify-start gap-x-2 gap-y-1 overflow-visible pb-2 text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-center lg:gap-7 lg:pb-0"
           aria-label="요양사 메뉴"
         >
           {caregiverTopNavItems.map((item) => {

@@ -23,11 +23,11 @@ const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
 const workerProfileSrc = '/assets/dolbomon/worker-mypage/worker-lee-bokji.png'
 
 const navItems = [
-  { href: '/worker/welfare-connect', label: '홈' },
-  { href: '/worker/elders', label: '안부현황' },
-  { href: '/worker/reports', label: '기록' },
-  { href: '/worker/schedules', label: '일정' },
-  { href: '/worker/consultations', label: '가족메모' },
+  { href: '/worker', label: '홈' },
+  { href: '/worker/welfare-connect', label: '복지 현황' },
+  { href: '/worker/consultations', label: '상담 관리' },
+  { href: '/worker/reports', label: '보고서' },
+  { href: '/worker/schedules', label: '기관 일정' },
   { href: '/worker/mypage', label: '설정' },
 ] as const
 
@@ -138,7 +138,7 @@ function WelfareConnectTopBar() {
         </Link>
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 justify-start gap-4 overflow-x-auto text-[16px] font-extrabold text-[#101a3d] [-ms-overflow-style:none] [scrollbar-width:none] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-12 [&::-webkit-scrollbar]:hidden"
+          className="col-span-2 row-start-2 flex min-w-0 flex-wrap justify-start gap-x-4 gap-y-1 overflow-visible pb-2 text-[16px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-center lg:gap-12 lg:pb-0"
           aria-label="복지사 돌봄 연결 메뉴"
         >
           {navItems.map((item) => {

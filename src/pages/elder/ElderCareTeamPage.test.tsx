@@ -18,8 +18,9 @@ describe('ElderCareTeamPage', () => {
     expect(
       screen.getByRole('heading', { name: '내 돌봄팀' }),
     ).toBeInTheDocument()
-    expect(screen.getByText('김영자')).toBeInTheDocument()
-    expect(screen.getByText('어르신')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: '어르신 홈으로 되돌아가기' }),
+    ).toHaveAttribute('href', '/elder')
     expect(
       screen.getByRole('heading', {
         name: '내 정보는 연결된 가족과 담당자에게만 공유돼요.',
@@ -65,6 +66,7 @@ describe('ElderCareTeamPage', () => {
       'aria-current',
       'page',
     )
+    expect(screen.queryByRole('link', { name: '홈' })).not.toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: '정보 공유 안내' }),
     ).toBeInTheDocument()

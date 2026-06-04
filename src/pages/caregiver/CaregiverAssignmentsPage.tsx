@@ -345,7 +345,7 @@ function CaregiverAssignmentsTopBar() {
         </Link>
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 gap-2 overflow-x-auto text-[15px] font-black text-[#111827] [-ms-overflow-style:none] [scrollbar-width:none] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-self-center lg:gap-8 [&::-webkit-scrollbar]:hidden"
+          className="col-span-2 row-start-2 flex min-w-0 flex-wrap gap-x-2 gap-y-1 overflow-visible pb-2 text-[15px] font-black text-[#111827] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-self-center lg:gap-8 lg:pb-0"
           aria-label="요양사 메뉴"
         >
           {navItems.map((item) => {

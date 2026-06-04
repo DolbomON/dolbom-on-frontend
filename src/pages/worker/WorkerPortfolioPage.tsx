@@ -170,7 +170,7 @@ function WorkerPortfolioTopBar() {
         </Link>
 
         <nav
-          className="order-last flex min-w-0 basis-full gap-2 overflow-x-auto text-[15px] font-black text-[#101a3d] lg:order-none lg:basis-auto lg:flex-1 lg:justify-center lg:gap-5"
+          className="order-last flex min-w-0 basis-full flex-wrap gap-x-2 gap-y-1 overflow-visible pb-2 text-[15px] font-black text-[#101a3d] lg:order-none lg:basis-auto lg:flex-1 lg:flex-nowrap lg:justify-center lg:gap-5 lg:pb-0"
           aria-label="요양사 상단 메뉴"
         >
           {caregiverTopNavItems.map((item) => (

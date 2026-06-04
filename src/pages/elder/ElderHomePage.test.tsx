@@ -30,6 +30,10 @@ describe('ElderHomePage', () => {
       'href',
       '/elder/chat',
     )
+    expect(screen.getByRole('link', { name: /내 돌봄팀/ })).toHaveAttribute(
+      'href',
+      '/elder/connect',
+    )
   })
 
   it('starts the daily check from the primary action', async () => {

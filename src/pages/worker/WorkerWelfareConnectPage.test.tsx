@@ -58,7 +58,7 @@ describe('WorkerWelfareConnectPage', () => {
     expect(
       screen.getByRole('button', { name: '초대 링크 복사' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: '홈' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: '복지 현황' })).toHaveAttribute(
       'aria-current',
       'page',
     )

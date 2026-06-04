@@ -6,6 +6,7 @@ const recordCardBackgroundSrc = `${mainAssetBase}/배경.png`
 const penImageSrc = `${mainAssetBase}/펜.png`
 const microphoneImageSrc = `${mainAssetBase}/마이크.png`
 const chatImageSrc = `${mainAssetBase}/채팅.png`
+const careTeamImageSrc = '/assets/dolbomon/welfare/보안.png'
 
 function getTodayLabel() {
   return new Intl.DateTimeFormat('ko-KR', {
@@ -180,6 +181,29 @@ export function ElderHomePage() {
             </strong>
             <span className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none text-[#6a7280] min-[390px]:text-[20px]">
               AI 안부
+            </span>
+          </Link>
+
+          <Link
+            to="/elder/connect"
+            className="flex min-h-[162px] flex-col items-center justify-center rounded-[22px] border border-[#d8e2ee] bg-white px-2 py-4 text-center shadow-[0_12px_24px_rgba(31,74,128,0.1)] transition active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[178px] min-[390px]:rounded-[24px]"
+          >
+            <span className="grid h-[74px] w-[74px] place-items-center rounded-full bg-[#eaf6ff] shadow-[inset_0_0_0_2px_rgba(205,226,251,0.68)] min-[390px]:h-[82px] min-[390px]:w-[82px]">
+              <img
+                src={careTeamImageSrc}
+                alt=""
+                width="1024"
+                height="1024"
+                className="h-[56px] w-[56px] object-contain min-[390px]:h-[64px] min-[390px]:w-[64px]"
+                aria-hidden="true"
+                draggable="false"
+              />
+            </span>
+            <strong className="mt-4 whitespace-nowrap text-[26px] font-black leading-none text-[#061844] min-[390px]:text-[29px]">
+              내 돌봄팀
+            </strong>
+            <span className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none text-[#6a7280] min-[390px]:text-[20px]">
+              연결 정보
             </span>
           </Link>
         </section>

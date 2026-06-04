@@ -222,7 +222,7 @@ export function ElderLivingEnvironmentPage() {
               주거 형태
             </legend>
 
-            <div className="grid grid-cols-2 gap-3 min-[390px]:grid-cols-4 min-[390px]:gap-2 min-[430px]:gap-4">
+            <div className="grid grid-cols-2 gap-3 min-[390px]:gap-4">
               {housingOptions.map((option) => {
                 const selected = housingType === option.value
 
@@ -230,7 +230,7 @@ export function ElderLivingEnvironmentPage() {
                   <button
                     key={option.value}
                     className={cn(
-                      'min-h-[58px] rounded-[999px] border-2 px-3 font-black shadow-[0_10px_18px_rgba(23,48,85,0.09)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[64px] min-[390px]:px-1.5 min-[430px]:px-3',
+                      'min-h-[58px] rounded-[999px] border-2 px-3 font-black shadow-[0_10px_18px_rgba(23,48,85,0.09)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[64px] min-[390px]:px-4',
                       selected
                         ? 'border-[#0876ff] bg-gradient-to-br from-[#147cff] to-[#0066f5] text-white shadow-[0_16px_28px_rgba(2,92,221,0.24)]'
                         : 'border-[#d9e1ec] bg-white text-[#666666]',
@@ -239,7 +239,7 @@ export function ElderLivingEnvironmentPage() {
                     aria-pressed={selected}
                     onClick={() => setHousingType(option.value)}
                   >
-                    <span className="whitespace-nowrap text-[26px] font-black leading-none min-[390px]:text-[22px] min-[430px]:text-[30px]">
+                    <span className="whitespace-nowrap text-[26px] font-black leading-none min-[390px]:text-[30px]">
                       {option.label}
                     </span>
                   </button>
