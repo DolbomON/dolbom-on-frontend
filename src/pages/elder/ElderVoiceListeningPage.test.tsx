@@ -29,7 +29,7 @@ describe('ElderVoiceListeningPage', () => {
     ).toBeTruthy()
   })
 
-  it('moves to the completed check after speech is finished', async () => {
+  it('moves to the elder home after speech is finished', async () => {
     const user = userEvent.setup()
 
     render(
@@ -39,13 +39,13 @@ describe('ElderVoiceListeningPage', () => {
             path="/elder/voice/listening"
             element={<ElderVoiceListeningPage />}
           />
-          <Route path="/elder/check/complete" element={<p>완료 화면</p>} />
+          <Route path="/elder" element={<p>어르신 홈 화면</p>} />
         </Routes>
       </MemoryRouter>,
     )
 
     await user.click(screen.getByRole('button', { name: '말 끝났어요' }))
 
-    expect(await screen.findByText('완료 화면')).toBeTruthy()
+    expect(await screen.findByText('어르신 홈 화면')).toBeTruthy()
   })
 })

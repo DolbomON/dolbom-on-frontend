@@ -51,9 +51,11 @@ describe('ElderChatPage', () => {
     ).not.toBeInTheDocument()
 
     expect(screen.getByRole('button', { name: '알림 보기' })).toBeTruthy()
-    expect(screen.getByRole('link', { name: '안부대화' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
+    expect(
+      screen.getByRole('button', { name: '이전 화면으로 되돌아가기' }),
+    ).toBeTruthy()
+    expect(screen.getByText('되돌아가기')).toBeTruthy()
+    expect(screen.queryByRole('navigation', { name: '하단 메뉴' })).toBeNull()
+    expect(screen.queryByRole('link', { name: '안부대화' })).toBeNull()
   })
 })

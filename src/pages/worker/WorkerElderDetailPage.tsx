@@ -18,7 +18,7 @@ import {
 } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
+import { CaregiverTopBar } from '../../components/worker/CaregiverTopBar'
 import { elderDetails } from '../../features/worker/workerElderDetailData'
 import { cn } from '../../lib/utils'
 
@@ -174,22 +174,16 @@ const workerDetailTopNavItems = [
   { href: '/worker/mypage', label: '설정' },
 ] as const
 
-const caregiverDetailTopNavItems = [
-  ...caregiverTopNavItems,
-  { href: '/worker/mypage', label: '설정' },
-] as const
-
 function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
   const isCaregiverView = viewRole === 'caregiver'
-  const navItems = isCaregiverView
-    ? caregiverDetailTopNavItems
-    : workerDetailTopNavItems
-  const navLabel = isCaregiverView ? '요양사 메뉴' : '복지사 메뉴'
-  const profileHref = isCaregiverView ? '/caregiver' : '/worker/mypage'
-  const profileName = isCaregiverView ? '김민수 요양사' : '이수진 복지사'
-  const profileImageSrc = isCaregiverView
-    ? `${workerAssetBase}/아들.png`
-    : workerProfileSrc
+
+  if (isCaregiverView) {
+    return <CaregiverTopBar activeLabel="담당어르신" />
+  }
+
+  const profileHref = '/worker/mypage'
+  const profileName = '이수진 복지사'
+  const profileImageSrc = workerProfileSrc
 
   return (
     <header className="sticky top-0 z-30 border-b border-[#dde7f4] bg-white/95 shadow-[0_5px_18px_rgba(35,73,128,0.07)] backdrop-blur">
@@ -204,12 +198,10 @@ function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
 
         <nav
           className="col-span-2 row-start-2 flex min-w-0 flex-wrap justify-start gap-x-3 gap-y-1 overflow-visible pb-2 text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-center lg:gap-12 lg:pb-0"
-          aria-label={navLabel}
+          aria-label="복지사 메뉴"
         >
-          {navItems.map((item) => {
-            const isActive = isCaregiverView
-              ? item.label === '담당어르신'
-              : item.href === '/worker/welfare-connect'
+          {workerDetailTopNavItems.map((item) => {
+            const isActive = item.href === '/worker/welfare-connect'
 
             return (
               <Link
@@ -633,7 +625,7 @@ function FamilyContactsPanel() {
 function VisitInfoPanel() {
   return (
     <section
-      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)] xl:h-[235px]"
+      className="rounded-[18px] border border-[#dfe8f5] bg-white px-5 py-5 shadow-[0_16px_36px_rgba(47,86,145,0.08)]"
       aria-labelledby="today-visit-info-title"
     >
       <div className="flex items-center gap-3">

@@ -1,6 +1,6 @@
-import { Mic } from 'lucide-react'
+import { ArrowLeft, Mic } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { ElderCheckHeader } from '../../components/elder-check/ElderCheckHeader'
-import { ElderBottomNav } from '../../components/layout/ElderBottomNav'
 import { cn } from '../../lib/utils'
 
 type ChatRole = 'assistant' | 'user'
@@ -81,9 +81,22 @@ function ChatBubble({ message }: { message: ChatMessage }) {
 }
 
 export function ElderChatPage() {
+  const navigate = useNavigate()
+
   function handleNotificationClick() {
     // TODO: Open the notification center when notifications are implemented.
     console.info('Notifications are not implemented yet.')
+  }
+
+  function handleBack() {
+    const historyIndex = window.history.state?.idx
+
+    if (typeof historyIndex === 'number' && historyIndex > 0) {
+      navigate(-1)
+      return
+    }
+
+    navigate('/elder')
   }
 
   function handleQuickReply(reply: string) {
@@ -96,21 +109,26 @@ export function ElderChatPage() {
     console.info('Voice chat is not implemented yet.')
   }
 
-  function handleHelpClick() {
-    // TODO: Route to the senior help screen when that route is added.
-    console.info('Help is not implemented yet.')
-  }
-
   return (
     <main className="h-svh overflow-hidden bg-white text-[#061844]">
       <section
         className="mx-auto flex h-svh w-full max-w-[480px] flex-col overflow-hidden bg-white"
         aria-label="AI 안부 대화 화면"
       >
-        <div className="flex-1 px-4 pb-[calc(78px+env(safe-area-inset-bottom))] pt-[8px] min-[390px]:px-6 min-[390px]:pb-[calc(92px+env(safe-area-inset-bottom))] min-[390px]:pt-[10px]">
+        <div className="flex-1 overflow-y-auto px-4 pb-[max(18px,env(safe-area-inset-bottom))] pt-[8px] min-[390px]:px-6 min-[390px]:pb-[max(24px,env(safe-area-inset-bottom))] min-[390px]:pt-[10px]">
           <div className="-mx-[12px]">
             <ElderCheckHeader onNotificationClick={handleNotificationClick} />
           </div>
+
+          <button
+            className="mt-3 inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#b9d6ff] bg-white px-4 text-[17px] font-black tracking-[-0.045em] text-[#0867f2] shadow-[0_8px_20px_rgba(36,95,190,0.08)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:mt-4 min-[390px]:text-[18px]"
+            type="button"
+            aria-label="이전 화면으로 되돌아가기"
+            onClick={handleBack}
+          >
+            <ArrowLeft className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+            <span>되돌아가기</span>
+          </button>
 
           <section
             className="mt-[12px] min-[390px]:mt-[18px]"
@@ -188,8 +206,6 @@ export function ElderChatPage() {
             <span>음성으로 계속하기</span>
           </button>
         </div>
-
-        <ElderBottomNav activeItem="chat" onHelpClick={handleHelpClick} />
       </section>
     </main>
   )

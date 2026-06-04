@@ -1,10 +1,8 @@
 import {
-  Bell,
   BriefcaseBusiness,
   CalendarDays,
   Check,
   CheckCircle2,
-  ChevronDown,
   ChevronLeft,
   Circle,
   ClipboardList,
@@ -22,7 +20,7 @@ import {
 } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
+import { CaregiverTopBar } from '../../components/worker/CaregiverTopBar'
 import { cn } from '../../lib/utils'
 
 const portfolioAssetBase = '/assets/dolbomon/worker-portfolio'
@@ -156,76 +154,6 @@ const completionItems: CompletionItem[] = [
   { complete: true, label: '활동 사진' },
   { complete: false, label: '대표 사례' },
 ]
-
-function WorkerPortfolioTopBar() {
-  return (
-    <header className="sticky top-0 z-40 border-b border-[#e3eaf4] bg-white/95 shadow-[0_5px_20px_rgba(38,77,132,0.07)] backdrop-blur">
-      <div className="mx-auto flex min-h-[70px] w-full max-w-[1600px] flex-wrap items-center gap-x-5 gap-y-2 px-5 py-3 lg:flex-nowrap lg:px-8">
-        <Link
-          to="/"
-          className="inline-flex min-h-11 shrink-0 items-center text-[29px] font-black leading-none text-[#0867f2] drop-shadow-[0_4px_8px_rgba(8,103,242,0.14)] focus-visible:rounded-lg lg:text-[32px]"
-          aria-label="돌봄ON 홈"
-        >
-          돌봄ON
-        </Link>
-
-        <nav
-          className="order-last flex min-w-0 basis-full flex-wrap gap-x-2 gap-y-1 overflow-visible pb-2 text-[15px] font-black text-[#101a3d] lg:order-none lg:basis-auto lg:flex-1 lg:flex-nowrap lg:justify-center lg:gap-5 lg:pb-0"
-          aria-label="요양사 상단 메뉴"
-        >
-          {caregiverTopNavItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.href}
-              className="inline-flex min-h-10 shrink-0 items-center rounded-lg px-2 transition hover:bg-[#f1f6ff] hover:text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="ml-auto flex items-center gap-2 sm:gap-4">
-          <button
-            type="button"
-            className="relative inline-grid min-h-11 min-w-11 place-items-center rounded-lg text-[#566783] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="알림 2건 확인"
-          >
-            <Bell aria-hidden="true" size={28} strokeWidth={2.4} />
-            <span className="absolute right-1 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ef3d3d] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
-              2
-            </span>
-          </button>
-
-          <Link
-            to="/caregiver/portfolio"
-            className="inline-flex min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="김영자님 요양사 프로필 보기"
-          >
-            <img
-              src={`${elderAssetBase}/elder-kim-yeongja.png`}
-              alt=""
-              className="h-11 w-11 rounded-full object-cover shadow-[0_7px_16px_rgba(42,96,184,0.16)]"
-              draggable="false"
-            />
-            <span className="hidden text-left sm:block">
-              <strong className="block text-[15px] font-black leading-tight text-[#071747]">
-                김영자님
-              </strong>
-              <span className="block text-[13px] font-bold leading-tight text-[#60708e]">
-                요양사
-              </span>
-            </span>
-            <ChevronDown
-              aria-hidden="true"
-              className="hidden h-4 w-4 text-[#4d5b76] sm:block"
-              strokeWidth={2.8}
-            />
-          </Link>
-        </div>
-      </div>
-    </header>
-  )
-}
 
 function CaregiverPortfolioBottomNav() {
   return (
@@ -699,7 +627,7 @@ export function WorkerPortfolioPage() {
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <WorkerPortfolioTopBar />
+      <CaregiverTopBar />
 
       <div className="mx-auto flex w-full max-w-[1600px]">
         <WorkerPortfolioSidebar />

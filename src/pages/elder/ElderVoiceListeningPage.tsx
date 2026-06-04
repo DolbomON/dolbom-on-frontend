@@ -8,7 +8,7 @@ export function ElderVoiceListeningPage() {
 
   function handleDoneClick() {
     // TODO: Submit the recognized speech when the STT flow is connected.
-    navigate('/elder/check/complete')
+    navigate('/elder')
   }
 
   function handleRetryClick() {

@@ -1,5 +1,4 @@
 import {
-  Bell,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -11,7 +10,7 @@ import {
 } from 'lucide-react'
 import { useMemo, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
+import { CaregiverTopBar } from '../../components/worker/CaregiverTopBar'
 import {
   caseMemoElders,
   defaultCaseMemoFormState,
@@ -20,7 +19,6 @@ import {
 } from '../../features/worker/caseMemoData'
 import { cn } from '../../lib/utils'
 
-const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
 const memoAssetBase = '/assets/dolbomon/worker-memo'
 
 const dayLabels = ['일', '월', '화', '수', '목', '금', '토']
@@ -178,95 +176,10 @@ function formatDate(value: string) {
   return `${year}.${month}.${day}${dayLabel}`
 }
 
-function WorkerMemoTopBar() {
-  return (
-    <header className="sticky top-0 z-30 border-b border-[#e3ebf7] bg-white/96 shadow-[0_6px_20px_rgba(35,73,128,0.07)] backdrop-blur">
-      <div className="mx-auto grid min-h-[82px] w-full max-w-[1640px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-2 lg:h-[72px] lg:min-h-[72px] lg:grid-cols-[190px_minmax(0,1fr)_auto] lg:px-10 lg:py-0">
-        <Link
-          to="/"
-          className="inline-flex min-h-11 items-center text-[29px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.18)] focus-visible:rounded-lg lg:text-[34px]"
-          aria-label="돌봄ON 홈"
-        >
-          돌봄ON
-        </Link>
-
-        <nav
-          className="col-span-2 row-start-2 flex min-w-0 flex-wrap justify-start gap-x-2 gap-y-1 overflow-visible pb-2 text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-center lg:gap-7 lg:pb-0"
-          aria-label="요양사 메뉴"
-        >
-          {caregiverTopNavItems.map((item) => {
-            const isActive = item.label === '방문기록'
-
-            return (
-              <Link
-                key={item.label}
-                to={item.href}
-                className={cn(
-                  'relative inline-flex min-h-11 shrink-0 items-center justify-center px-3 transition hover:text-[#0867f2] focus-visible:rounded-lg',
-                  isActive ? 'text-[#0867f2]' : 'text-[#101a3d]',
-                )}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {item.label}
-                <span
-                  className={cn(
-                    'absolute bottom-0 left-3 right-3 h-[3px] rounded-full bg-[#0867f2]',
-                    !isActive && 'hidden',
-                  )}
-                  aria-hidden="true"
-                />
-              </Link>
-            )
-          })}
-        </nav>
-
-        <div className="col-start-2 row-start-1 flex items-center gap-3 justify-self-end lg:col-start-3">
-          <button
-            type="button"
-            className="relative inline-grid min-h-11 min-w-11 place-items-center rounded-lg text-[#60708e] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="알림 2건 확인"
-          >
-            <Bell aria-hidden="true" size={28} strokeWidth={2.5} />
-            <span className="absolute right-1 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#f43f3f] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
-              2
-            </span>
-          </button>
-
-          <Link
-            to="/caregiver"
-            className="hidden min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[540px]:inline-flex"
-            aria-label="김민수 요양사 프로필 보기"
-          >
-            <img
-              src={`${dashboardAssetBase}/요양사.png`}
-              alt=""
-              className="h-11 w-11 rounded-full object-cover shadow-[0_6px_14px_rgba(42,96,184,0.16)]"
-              draggable="false"
-            />
-            <span className="hidden text-left sm:block">
-              <strong className="block text-[15px] font-black leading-tight text-[#071747]">
-                김민수 요양사
-              </strong>
-              <span className="block text-[13px] font-bold leading-tight text-[#60708e]">
-                요양사
-              </span>
-            </span>
-            <ChevronDown
-              aria-hidden="true"
-              className="hidden h-4 w-4 text-[#60708e] sm:block"
-              strokeWidth={2.8}
-            />
-          </Link>
-        </div>
-      </div>
-    </header>
-  )
-}
-
 function WorkerMemoNotFound({ backHref }: { backHref: string }) {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <WorkerMemoTopBar />
+      <CaregiverTopBar activeLabel="방문기록" />
 
       <div className="mx-auto w-full max-w-[760px] px-5 py-16">
         <section
@@ -808,7 +721,7 @@ export function WorkerMemoCreatePage() {
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <WorkerMemoTopBar />
+      <CaregiverTopBar activeLabel="방문기록" />
 
       <div className="mx-auto w-full max-w-[1600px] px-5 pb-10 pt-3 lg:px-11">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">

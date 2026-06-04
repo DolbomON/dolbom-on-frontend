@@ -1,9 +1,5 @@
 import {
-  BarChart3,
-  Bell,
-  Home,
   Menu,
-  MessageCircleMore,
   Mic,
   Power,
   Share2,
@@ -14,6 +10,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
+import { FamilyBottomNav } from '../../components/layout/FamilyBottomNav'
 import { cn } from '../../lib/utils'
 
 const familyAiAssetBase = '/assets/dolbomon/familly-ai'
@@ -30,14 +27,6 @@ type ChatMessage = {
 type QuickReply = {
   icon: LucideIcon
   label: string
-}
-
-type BottomNavItem = {
-  active?: boolean
-  href: string
-  icon: LucideIcon
-  label: string
-  notice?: boolean
 }
 
 const chatMessages: ChatMessage[] = [
@@ -85,31 +74,6 @@ const quickReplies: QuickReply[] = [
   {
     icon: Smile,
     label: '기분 요약',
-  },
-]
-
-const bottomNavItems: BottomNavItem[] = [
-  {
-    href: '/family',
-    icon: Home,
-    label: '홈',
-  },
-  {
-    href: '/family/status',
-    icon: BarChart3,
-    label: '안부현황',
-  },
-  {
-    href: '/family/alerts',
-    icon: Bell,
-    label: '알림',
-    notice: true,
-  },
-  {
-    active: true,
-    href: '/family/chat',
-    icon: MessageCircleMore,
-    label: '대화',
   },
 ]
 
@@ -207,7 +171,7 @@ function SummaryCard() {
         alt=""
         width="640"
         height="420"
-        className="pointer-events-none absolute -bottom-1 left-0 h-[112px] w-[165px] max-w-none select-none object-cover object-[19%_56%] [mask-image:linear-gradient(90deg,#000_0%,#000_76%,transparent_100%)] min-[390px]:h-[124px] min-[390px]:w-[230px]"
+        className="pointer-events-none absolute bottom-[-6px] left-0 h-[122px] w-[165px] max-w-none select-none object-cover object-[19%_52%] [mask-image:linear-gradient(90deg,#000_0%,#000_76%,transparent_100%)] min-[390px]:bottom-[-4px] min-[390px]:h-[130px] min-[390px]:w-[230px]"
         aria-hidden="true"
         draggable="false"
       />
@@ -297,53 +261,6 @@ function ActionButtons() {
   )
 }
 
-function FamilyBottomNav() {
-  return (
-    <nav
-      className="mt-3 grid h-[58px] w-full grid-cols-4 rounded-[23px] border border-[#e1e7f0] bg-white shadow-[0_11px_27px_rgba(33,68,117,0.12)] min-[390px]:h-[62px]"
-      aria-label="가족 하단 메뉴"
-    >
-      {bottomNavItems.map((item) => {
-        const Icon = item.icon
-
-        return (
-          <Link
-            key={item.label}
-            to={item.href}
-            className={cn(
-              'relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-[20px] text-[12px] font-extrabold leading-tight transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff] min-[390px]:min-h-[60px] min-[390px]:text-[13px]',
-              item.active ? 'text-[#0a63ef]' : 'text-[#8b95a6]',
-            )}
-            aria-current={item.active ? 'page' : undefined}
-          >
-            <span className="relative">
-              <Icon
-                aria-hidden="true"
-                className="h-[25px] w-[25px] min-[390px]:h-[28px] min-[390px]:w-[28px]"
-                fill={item.active ? 'currentColor' : 'none'}
-                strokeWidth={item.active ? 2.7 : 2.35}
-              />
-              {item.notice ? (
-                <span
-                  className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#ff3449] ring-2 ring-white"
-                  aria-hidden="true"
-                />
-              ) : null}
-            </span>
-            <span>{item.label}</span>
-            {item.active ? (
-              <span
-                className="absolute bottom-1 h-1.5 w-5 rounded-full bg-[#0a63ef]"
-                aria-hidden="true"
-              />
-            ) : null}
-          </Link>
-        )
-      })}
-    </nav>
-  )
-}
-
 export function FamilyChatPage() {
   const navigate = useNavigate()
 
@@ -354,7 +271,7 @@ export function FamilyChatPage() {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#eef5ff] text-[#071747]">
       <section
-        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-[max(15px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)]"
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[calc(88px+env(safe-area-inset-bottom))] pt-[max(15px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)]"
         aria-label="가족 AI 안부 대화 화면"
       >
         <header className="flex min-h-11 items-start justify-between gap-4">
@@ -388,7 +305,7 @@ export function FamilyChatPage() {
         <SummaryCard />
         <ChatTranscriptCard />
         <ActionButtons />
-        <FamilyBottomNav />
+        <FamilyBottomNav activeItem="chat" />
       </section>
     </main>
   )

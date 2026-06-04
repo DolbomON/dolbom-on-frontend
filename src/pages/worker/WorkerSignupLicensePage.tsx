@@ -1,5 +1,4 @@
 import {
-  Bell,
   Briefcase,
   CalendarDays,
   Check,
@@ -12,7 +11,7 @@ import {
 } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { caregiverTopNavItems } from '../../components/worker/caregiverTopNavigation'
+import { CaregiverTopBar } from '../../components/worker/CaregiverTopBar'
 import { cn } from '../../lib/utils'
 
 const workerAvatarSrc = '/assets/dolbomon/role-select/role-worker.png'
@@ -59,7 +58,7 @@ const tipItems = [
   '보유 자격증과 경력을 정확하게 기재해 주세요.',
   '활동 가능 지역은 최대 3곳까지 선택할 수 있습니다.',
   '자기소개는 300자 이내로 작성해 주세요.',
-  '모든 정보는 설정에서 언제든 수정할 수 있습니다.',
+  '모든 정보는 가입 완료 후 프로필에서 수정할 수 있습니다.',
 ]
 
 const certificateOptions = [
@@ -98,76 +97,6 @@ const inputClass =
   'h-9 w-full rounded-md border border-[#d7dfeb] bg-white px-4 text-[14px] font-semibold text-[#17244d] shadow-[0_4px_12px_rgba(40,71,120,0.05)] transition placeholder:text-[#8390a6] focus:border-[#0867f2] focus:outline focus:outline-4 focus:outline-[#d7e8ff]'
 const compactInputClass =
   'h-9 w-full rounded-md border border-[#d7dfeb] bg-white px-0 text-center text-[12px] font-semibold text-[#17244d] shadow-[0_4px_12px_rgba(40,71,120,0.05)] transition focus:border-[#0867f2] focus:outline focus:outline-4 focus:outline-[#d7e8ff]'
-
-function WorkerSignupTopBar() {
-  return (
-    <header className="sticky top-0 z-30 border-b border-[#e5ecf7] bg-white/95 shadow-[0_4px_18px_rgba(32,70,130,0.06)] backdrop-blur">
-      <div className="flex min-h-[67px] w-full flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-1 lg:flex-nowrap lg:px-10">
-        <Link
-          to="/"
-          className="inline-flex min-h-11 items-center text-[30px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.16)] focus-visible:rounded-lg lg:text-[34px]"
-          aria-label="돌봄ON 홈"
-        >
-          돌봄ON
-        </Link>
-
-        <nav
-          className="order-3 flex w-full flex-wrap gap-x-3 gap-y-1 overflow-visible pb-2 text-[16px] font-extrabold text-[#111a38] lg:order-none lg:w-auto lg:flex-nowrap lg:justify-center lg:gap-14 lg:pb-0"
-          aria-label="요양사 메뉴"
-        >
-          {caregiverTopNavItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.href}
-              className="inline-flex min-h-10 shrink-0 items-center justify-center rounded-lg px-1 transition hover:bg-[#f1f6ff] hover:text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            className="relative inline-grid min-h-10 min-w-10 place-items-center rounded-lg text-[#60708e] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="알림 2건 확인"
-          >
-            <Bell aria-hidden="true" size={27} strokeWidth={2.4} />
-            <span className="absolute right-1 top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-[#ef2424] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
-              2
-            </span>
-          </button>
-
-          <Link
-            to="/caregiver"
-            className="inline-flex min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="김민수 요양사 프로필 보기"
-          >
-            <img
-              src={workerAvatarSrc}
-              alt=""
-              className="h-12 w-12 rounded-full bg-[#edf4ff] object-cover shadow-[0_6px_14px_rgba(42,96,184,0.16)]"
-              draggable="false"
-            />
-            <span className="hidden text-left sm:block">
-              <strong className="block text-[15px] font-black leading-tight text-[#071747]">
-                김민수 요양사
-              </strong>
-              <span className="block text-[13px] font-bold leading-tight text-[#60708e]">
-                요양사
-              </span>
-            </span>
-            <ChevronDown
-              aria-hidden="true"
-              className="hidden h-4 w-4 text-[#60708e] sm:block"
-              strokeWidth={2.8}
-            />
-          </Link>
-        </div>
-      </div>
-    </header>
-  )
-}
 
 function SignupStepProgress() {
   return (
@@ -789,7 +718,7 @@ function SignupTipsCard() {
 export function WorkerSignupLicensePage() {
   return (
     <main className="min-h-svh bg-[#f8fbff] text-[#071747]">
-      <WorkerSignupTopBar />
+      <CaregiverTopBar />
 
       <div className="mx-auto grid w-full max-w-[1608px] gap-6 px-4 py-4 md:px-6 xl:grid-cols-[minmax(0,1114px)_432px] xl:gap-14 xl:px-0">
         <div className="min-w-0">

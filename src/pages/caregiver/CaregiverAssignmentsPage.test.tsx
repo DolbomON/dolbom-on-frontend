@@ -63,8 +63,8 @@ describe('CaregiverAssignmentsPage', () => {
       within(caregiverMenu).getByRole('link', { name: '오늘업무' }),
     ).toHaveAttribute('href', '/caregiver')
     expect(
-      within(caregiverMenu).getByRole('link', { name: '설정' }),
-    ).toHaveAttribute('href', '/worker/mypage')
+      within(caregiverMenu).queryByRole('link', { name: '설정' }),
+    ).not.toBeInTheDocument()
   })
 
   it('uses the latest worker assignment when one exists', () => {

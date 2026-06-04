@@ -1,15 +1,7 @@
 import { useMemo, useState, type ComponentProps } from 'react'
-import {
-  BarChart3,
-  Bell,
-  ChevronRight,
-  Home,
-  Menu,
-  MessageCircle,
-  Power,
-  type LucideIcon,
-} from 'lucide-react'
+import { ChevronRight, Menu, Power } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
+import { FamilyBottomNav } from '../../components/layout/FamilyBottomNav'
 import { cn } from '../../lib/utils'
 
 const familyBellAssetBase = '/assets/dolbomon/familly-bell'
@@ -33,14 +25,6 @@ type FamilyAlert = {
   statusLabel: string
   time: string
   title: string
-}
-
-type FamilyNavItem = {
-  active?: boolean
-  href: string
-  icon: LucideIcon
-  label: string
-  notice?: boolean
 }
 
 const alertSummaries: AlertSummary[] = [
@@ -107,31 +91,6 @@ const familyAlerts: FamilyAlert[] = [
     statusLabel: '읽음',
     time: '어제',
     title: '오늘 상태 입력 완료',
-  },
-]
-
-const navItems: FamilyNavItem[] = [
-  {
-    href: '/family',
-    icon: Home,
-    label: '홈',
-  },
-  {
-    href: '/family/status',
-    icon: BarChart3,
-    label: '안부현황',
-  },
-  {
-    active: true,
-    href: '/family/alerts',
-    icon: Bell,
-    label: '알림',
-    notice: true,
-  },
-  {
-    href: '/family/chat',
-    icon: MessageCircle,
-    label: '대화',
   },
 ]
 
@@ -325,53 +284,6 @@ function NotificationSettingsCard() {
   )
 }
 
-function FamilyBottomNav() {
-  return (
-    <nav
-      className="mt-2 grid h-[60px] w-full grid-cols-4 rounded-[23px] border border-[#e1e7f0] bg-white shadow-[0_10px_24px_rgba(33,68,117,0.1)]"
-      aria-label="가족 하단 메뉴"
-    >
-      {navItems.map((item) => {
-        const Icon = item.icon
-
-        return (
-          <Link
-            key={item.label}
-            to={item.href}
-            className={cn(
-              'relative flex min-h-[58px] flex-col items-center justify-center gap-0.5 rounded-[20px] text-[12px] font-extrabold leading-tight transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff]',
-              item.active ? 'text-[#1765fb]' : 'text-[#68768a]',
-            )}
-            aria-current={item.active ? 'page' : undefined}
-          >
-            <span className="relative">
-              <Icon
-                aria-hidden="true"
-                className="h-[26px] w-[26px]"
-                fill={item.active ? 'currentColor' : 'none'}
-                strokeWidth={item.active ? 2.6 : 2.4}
-              />
-              {item.notice ? (
-                <span
-                  className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#ff3d4e] ring-2 ring-white"
-                  aria-hidden="true"
-                />
-              ) : null}
-            </span>
-            <span>{item.label}</span>
-            {item.active ? (
-              <span
-                className="absolute bottom-1 h-1 w-6 rounded-full bg-[#1765fb]"
-                aria-hidden="true"
-              />
-            ) : null}
-          </Link>
-        )
-      })}
-    </nav>
-  )
-}
-
 export function FamilyAlertsPage() {
   const [activeFilter, setActiveFilter] = useState<AlertFilter>('all')
   const navigate = useNavigate()
@@ -391,7 +303,7 @@ export function FamilyAlertsPage() {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#071747]">
       <section
-        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-[19px] pb-[max(10px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)]"
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-[19px] pb-[calc(88px+env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)]"
         aria-label="가족 알림 화면"
       >
         <header className="flex min-h-10 items-start justify-between gap-4">
@@ -459,7 +371,7 @@ export function FamilyAlertsPage() {
           <NotificationSettingsCard />
         </div>
 
-        <FamilyBottomNav />
+        <FamilyBottomNav activeItem="alerts" />
       </section>
     </main>
   )

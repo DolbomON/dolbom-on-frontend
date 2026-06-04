@@ -20,7 +20,7 @@ describe('WorkerPortfolioPage', () => {
       screen.getByRole('heading', { name: '포트폴리오 등록' }),
     ).toBeInTheDocument()
     const topMenu = screen.getByRole('navigation', {
-      name: '요양사 상단 메뉴',
+      name: '요양사 메뉴',
     })
     const sideMenu = screen.getByRole('navigation', {
       name: '요양사 좌측 메뉴',

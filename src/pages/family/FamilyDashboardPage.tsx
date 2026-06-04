@@ -1,14 +1,6 @@
-import {
-  BarChart3,
-  Bell,
-  ChevronRight,
-  Home,
-  Menu,
-  MessageCircle,
-  Power,
-  type LucideIcon,
-} from 'lucide-react'
+import { Bell, ChevronRight, Menu, Power } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
+import { FamilyBottomNav } from '../../components/layout/FamilyBottomNav'
 import { cn } from '../../lib/utils'
 
 const familyAssetBase = '/assets/dolbomon/familly'
@@ -33,14 +25,6 @@ type QuickAction = {
   href: string
   imageSrc: string
   title: string
-}
-
-type BottomNavItem = {
-  active?: boolean
-  href: string
-  icon: LucideIcon
-  label: string
-  notice?: boolean
 }
 
 const todayLabel = '5월 31일 토요일'
@@ -85,31 +69,6 @@ const quickActions: QuickAction[] = [
   },
 ]
 
-const bottomNavItems: BottomNavItem[] = [
-  {
-    active: true,
-    href: '/family',
-    icon: Home,
-    label: '홈',
-  },
-  {
-    href: '/family/status',
-    icon: BarChart3,
-    label: '안부현황',
-  },
-  {
-    href: '/family/alerts',
-    icon: Bell,
-    label: '알림',
-    notice: true,
-  },
-  {
-    href: '/family/chat',
-    icon: MessageCircle,
-    label: '대화',
-  },
-]
-
 const statusItems = ['식사', '복약', '통증', '기분', '수면']
 
 export function FamilyDashboardPage() {
@@ -122,7 +81,7 @@ export function FamilyDashboardPage() {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#eef6ff] text-[#071747]">
       <section
-        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-[22px] pb-[max(18px,env(safe-area-inset-bottom))] pt-[max(18px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)]"
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-[22px] pb-[calc(88px+env(safe-area-inset-bottom))] pt-[max(18px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)]"
         aria-label="가족 안부 홈"
       >
         <header className="flex min-h-10 items-start justify-between gap-4">
@@ -314,47 +273,7 @@ export function FamilyDashboardPage() {
           </div>
         </section>
 
-        <nav
-          className="mt-4 grid h-[66px] w-full grid-cols-4 rounded-[24px] border border-[#dfe7f2] bg-white shadow-[0_12px_34px_rgba(39,78,136,0.14)]"
-          aria-label="가족 하단 메뉴"
-        >
-          {bottomNavItems.map((item) => {
-            const Icon = item.icon
-
-            return (
-              <Link
-                key={item.label}
-                to={item.href}
-                className={cn(
-                  'relative flex min-h-[64px] flex-col items-center justify-center gap-0.5 rounded-[20px] text-[13px] font-extrabold leading-tight transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff]',
-                  item.active ? 'text-[#0a63ef]' : 'text-[#68758a]',
-                )}
-                aria-current={item.active ? 'page' : undefined}
-              >
-                <span className="relative">
-                  <Icon
-                    aria-hidden="true"
-                    className="h-[30px] w-[30px]"
-                    strokeWidth={item.active ? 3 : 2.5}
-                  />
-                  {item.notice ? (
-                    <span
-                      className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#ff4257]"
-                      aria-hidden="true"
-                    />
-                  ) : null}
-                </span>
-                <span>{item.label}</span>
-                {item.active ? (
-                  <span
-                    className="absolute bottom-1.5 h-1 w-4 rounded-full bg-[#0a63ef]"
-                    aria-hidden="true"
-                  />
-                ) : null}
-              </Link>
-            )
-          })}
-        </nav>
+        <FamilyBottomNav activeItem="home" />
       </section>
     </main>
   )

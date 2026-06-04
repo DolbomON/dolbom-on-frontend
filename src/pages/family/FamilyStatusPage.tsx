@@ -1,16 +1,6 @@
-import {
-  BarChart3,
-  Bell,
-  Check,
-  Home,
-  Info,
-  Menu,
-  MessageCircle,
-  Power,
-  Share2,
-  type LucideIcon,
-} from 'lucide-react'
+import { Check, Info, Menu, Power, Share2 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
+import { FamilyBottomNav } from '../../components/layout/FamilyBottomNav'
 import { cn } from '../../lib/utils'
 
 const familyTalkAssetBase = '/assets/dolbomon/familly-talk'
@@ -22,14 +12,6 @@ type HealthRecord = {
   label: string
   tone: HealthTone
   value: string
-}
-
-type NavItem = {
-  active?: boolean
-  href: string
-  icon: LucideIcon
-  label: string
-  notice?: boolean
 }
 
 const healthRecords: HealthRecord[] = [
@@ -62,31 +44,6 @@ const healthRecords: HealthRecord[] = [
     label: '수면',
     tone: 'caution',
     value: '자주 깨셨어요',
-  },
-]
-
-const navItems: NavItem[] = [
-  {
-    href: '/family',
-    icon: Home,
-    label: '홈',
-  },
-  {
-    active: true,
-    href: '/family/status',
-    icon: BarChart3,
-    label: '안부현황',
-  },
-  {
-    href: '/family/alerts',
-    icon: Bell,
-    label: '알림',
-    notice: true,
-  },
-  {
-    href: '/family/chat',
-    icon: MessageCircle,
-    label: '대화',
   },
 ]
 
@@ -278,53 +235,6 @@ function WeeklyChangeCard() {
   )
 }
 
-function FamilyBottomNav() {
-  return (
-    <nav
-      className="mt-5 grid h-[82px] w-full grid-cols-4 rounded-[22px] border border-[#e1e8f2] bg-white shadow-[0_10px_24px_rgba(33,68,117,0.1)]"
-      aria-label="가족 하단 메뉴"
-    >
-      {navItems.map((item) => {
-        const Icon = item.icon
-
-        return (
-          <Link
-            key={item.label}
-            to={item.href}
-            className={cn(
-              'relative flex min-h-[80px] flex-col items-center justify-center gap-1 rounded-[18px] text-[14px] font-bold leading-tight transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff]',
-              item.active ? 'text-[#1765fb]' : 'text-[#6e7a8d]',
-            )}
-            aria-current={item.active ? 'page' : undefined}
-          >
-            <span className="relative">
-              <Icon
-                aria-hidden="true"
-                className="h-8 w-8"
-                fill={item.active ? 'currentColor' : 'none'}
-                strokeWidth={item.active ? 2.8 : 2.4}
-              />
-              {item.notice ? (
-                <span
-                  className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#ff3449] ring-2 ring-white"
-                  aria-hidden="true"
-                />
-              ) : null}
-            </span>
-            <span>{item.label}</span>
-            {item.active ? (
-              <span
-                className="absolute bottom-1.5 h-2 w-2 rounded-full bg-[#1765fb]"
-                aria-hidden="true"
-              />
-            ) : null}
-          </Link>
-        )
-      })}
-    </nav>
-  )
-}
-
 export function FamilyStatusPage() {
   const navigate = useNavigate()
 
@@ -335,7 +245,7 @@ export function FamilyStatusPage() {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#eef5ff] text-[#071747]">
       <section
-        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-[max(18px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)] min-[390px]:px-6 min-[430px]:px-7"
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[calc(88px+env(safe-area-inset-bottom))] pt-[max(18px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)] min-[390px]:px-6 min-[430px]:px-7"
         aria-label="가족 안부 확인"
       >
         <header className="flex items-start justify-between gap-4">
@@ -384,7 +294,7 @@ export function FamilyStatusPage() {
           이상 징후 공유
         </button>
 
-        <FamilyBottomNav />
+        <FamilyBottomNav activeItem="status" />
       </section>
     </main>
   )
