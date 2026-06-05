@@ -551,16 +551,16 @@ function WorkerLicenseForm() {
         </div>
       </div>
 
-      <div className="mt-4 flex justify-end gap-4">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:flex sm:justify-end sm:gap-4">
         <Link
           to="/worker/signup"
-          className="inline-flex min-h-11 min-w-[142px] items-center justify-center rounded-lg border border-[#7aa8ff] bg-white px-6 text-[16px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.08)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+          className="inline-flex min-h-11 min-w-0 items-center justify-center whitespace-nowrap rounded-lg border border-[#7aa8ff] bg-white px-3 text-[15px] font-black text-[#0867f2] shadow-[0_8px_18px_rgba(47,86,145,0.08)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] sm:min-w-[142px] sm:px-6 sm:text-[16px]"
         >
           이전
         </Link>
         <Link
           to="/worker/signup/preview"
-          className="inline-flex min-h-11 min-w-[162px] items-center justify-center rounded-lg bg-[#0867f2] px-7 text-[16px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.26)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+          className="inline-flex min-h-11 min-w-0 items-center justify-center whitespace-nowrap rounded-lg bg-[#0867f2] px-3 text-[15px] font-black text-white shadow-[0_12px_24px_rgba(8,103,242,0.26)] transition hover:bg-[#0057d8] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] sm:min-w-[162px] sm:px-7 sm:text-[16px]"
         >
           저장하고 다음
         </Link>
@@ -717,8 +717,8 @@ function SignupTipsCard() {
 
 export function WorkerSignupLicensePage() {
   return (
-    <main className="min-h-svh bg-[#f8fbff] text-[#071747]">
-      <CaregiverTopBar />
+    <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
+      <CaregiverTopBar sticky={false} />
 
       <div className="mx-auto grid w-full max-w-[1608px] gap-6 px-4 py-4 md:px-6 xl:grid-cols-[minmax(0,1114px)_432px] xl:gap-14 xl:px-0">
         <div className="min-w-0">

@@ -583,7 +583,7 @@ function SubmissionChecklistCard() {
 export function WorkerSignupPage() {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <CaregiverTopBar />
+      <CaregiverTopBar sticky={false} />
 
       <div className="mx-4 box-border grid w-[calc(100vw-32px)] max-w-[1544px] gap-6 py-4 md:mx-auto md:w-full md:px-6 xl:grid-cols-[minmax(0,1040px)_432px] xl:gap-10 xl:px-4">
         <div className="min-w-0">

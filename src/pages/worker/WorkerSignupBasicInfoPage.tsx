@@ -534,7 +534,7 @@ function SignupTipsCard() {
 export function WorkerSignupBasicInfoPage() {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <CaregiverTopBar />
+      <CaregiverTopBar sticky={false} />
 
       <div className="mx-auto grid w-full max-w-[1400px] gap-6 px-4 py-4 md:px-6 xl:grid-cols-[minmax(0,970px)_360px] xl:gap-12 xl:px-5">
         <div className="min-w-0">
