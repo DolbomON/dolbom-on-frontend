@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { WorkerReportsPage } from './WorkerReportsPage'
 
 function renderWorkerReportsPage() {
@@ -70,5 +71,72 @@ describe('WorkerReportsPage', () => {
     expect(screen.getByRole('button', { name: 'PDF 저장' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: '인쇄' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: '공유' })).toBeInTheDocument()
+  })
+
+  it('downloads the weekly report as a PDF file', async () => {
+    const user = userEvent.setup()
+    const objectUrl = 'blob:worker-report-pdf'
+    const originalCreateObjectUrl = URL.createObjectURL
+    const originalRevokeObjectUrl = URL.revokeObjectURL
+    const createObjectURL = vi.fn<(blob: Blob) => string>(() => objectUrl)
+    const revokeObjectURL = vi.fn()
+    const clickedLinks: HTMLAnchorElement[] = []
+    const clickSpy = vi
+      .spyOn(HTMLAnchorElement.prototype, 'click')
+      .mockImplementation(function (this: HTMLAnchorElement) {
+        clickedLinks.push(this)
+      })
+
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      value: createObjectURL,
+    })
+    Object.defineProperty(URL, 'revokeObjectURL', {
+      configurable: true,
+      value: revokeObjectURL,
+    })
+
+    try {
+      renderWorkerReportsPage()
+
+      await user.click(screen.getByRole('button', { name: 'PDF 저장' }))
+
+      const downloadedBlob = createObjectURL.mock.calls[0]?.[0]
+
+      expect(downloadedBlob).toBeInstanceOf(Blob)
+      if (!downloadedBlob) {
+        throw new Error('PDF Blob was not created.')
+      }
+
+      expect(downloadedBlob.type).toBe('application/pdf')
+      await expect(downloadedBlob.text()).resolves.toContain('%PDF-1.7')
+      expect(clickedLinks[0]).toHaveAttribute(
+        'download',
+        'dolbom-on-worker-report-2024-05-13-2024-05-19.pdf',
+      )
+      expect(
+        screen.getByText('PDF 다운로드를 시작했습니다.'),
+      ).toBeInTheDocument()
+    } finally {
+      clickSpy.mockRestore()
+
+      if (originalCreateObjectUrl) {
+        Object.defineProperty(URL, 'createObjectURL', {
+          configurable: true,
+          value: originalCreateObjectUrl,
+        })
+      } else {
+        Reflect.deleteProperty(URL, 'createObjectURL')
+      }
+
+      if (originalRevokeObjectUrl) {
+        Object.defineProperty(URL, 'revokeObjectURL', {
+          configurable: true,
+          value: originalRevokeObjectUrl,
+        })
+      } else {
+        Reflect.deleteProperty(URL, 'revokeObjectURL')
+      }
+    }
   })
 })

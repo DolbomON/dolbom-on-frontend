@@ -7,12 +7,20 @@ import {
   Printer,
   Share2,
 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Map as LeafletMap } from 'leaflet'
 import { WorkerTopBar } from '../../components/worker/WorkerTopBar'
+import {
+  createWorkerReportPdf,
+  downloadPdfFile,
+} from '../../features/worker/workerReportPdf'
 
 const welfareAssetBase = '/assets/dolbomon/welfare'
+const reportDateRangeLabel = '2024.05.13 (월) ~ 2024.05.19 (일)'
+const reportDateRangeAriaLabel =
+  '보고서 기간 2024년 5월 13일 월요일부터 2024년 5월 19일 일요일까지'
+const reportPdfFileName = 'dolbom-on-worker-report-2024-05-13-2024-05-19.pdf'
 
 type MetricCard = {
   delta: string
@@ -229,10 +237,12 @@ const regionStats: RegionStat[] = [
 const regionMapCenter: [number, number] = [37.565, 126.986]
 
 const reportActionButtons = [
-  { icon: Download, label: 'PDF 저장' },
-  { icon: Printer, label: '인쇄' },
-  { icon: Share2, label: '공유' },
+  { icon: Download, id: 'pdf', label: 'PDF 저장' },
+  { icon: Printer, id: 'print', label: '인쇄' },
+  { icon: Share2, id: 'share', label: '공유' },
 ] as const
+
+type ReportActionId = (typeof reportActionButtons)[number]['id']
 
 function PanelHeader({
   actionLabel,
@@ -861,6 +871,83 @@ function RegionMapPanel() {
 }
 
 export function WorkerReportsPage() {
+  const [reportActionMessage, setReportActionMessage] = useState('')
+
+  function handleDownloadPdf() {
+    const pdfBytes = createWorkerReportPdf({
+      dateRangeLabel: reportDateRangeLabel,
+      generatedAt: new Date(),
+      institutionStats,
+      metricCards,
+      regionStats: regionStats.map((region) => ({
+        count: region.count,
+        label: region.label,
+      })),
+      reportSummaryRows: reportSummaryRows.map((row) => row.text),
+      serviceLinks: serviceLinks.map((service) => ({
+        count: service.count,
+        label: service.label,
+        percent: service.percent,
+      })),
+      title: '복지사 보고서',
+      trendLabels,
+      trendSeries: trendSeries.map((series) => ({
+        label: series.label,
+        values: series.values,
+      })),
+    })
+
+    downloadPdfFile(pdfBytes, reportPdfFileName)
+    setReportActionMessage('PDF 다운로드를 시작했습니다.')
+  }
+
+  async function handleShareReport() {
+    const shareUrl = window.location.href
+    const shareText = `복지사 보고서 ${reportDateRangeLabel}`
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          text: shareText,
+          title: '복지사 보고서',
+          url: shareUrl,
+        })
+        setReportActionMessage('보고서 공유 요청을 열었습니다.')
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return
+        }
+
+        setReportActionMessage('공유를 완료하지 못했습니다.')
+      }
+
+      return
+    }
+
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`)
+      setReportActionMessage('보고서 링크를 복사했습니다.')
+      return
+    }
+
+    setReportActionMessage('이 브라우저에서는 공유 기능을 사용할 수 없습니다.')
+  }
+
+  function handleReportAction(actionId: ReportActionId) {
+    if (actionId === 'pdf') {
+      handleDownloadPdf()
+      return
+    }
+
+    if (actionId === 'print') {
+      window.print()
+      setReportActionMessage('인쇄 창을 열었습니다.')
+      return
+    }
+
+    void handleShareReport()
+  }
+
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
       <WorkerTopBar activeHref="/worker/reports" />
@@ -886,16 +973,14 @@ export function WorkerReportsPage() {
             <button
               type="button"
               className="inline-flex min-h-12 w-full min-w-0 items-center justify-center gap-3 rounded-[10px] border border-[#dfe8f5] bg-white px-5 text-[15px] font-black text-[#17264a] shadow-[0_8px_18px_rgba(37,72,125,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] md:w-auto"
-              aria-label="보고서 기간 2024년 5월 13일 월요일부터 2024년 5월 19일 일요일까지"
+              aria-label={reportDateRangeAriaLabel}
             >
               <CalendarDays
                 aria-hidden="true"
                 className="h-5 w-5 text-[#40557d]"
                 strokeWidth={2.5}
               />
-              <span className="min-w-0 truncate">
-                2024.05.13 (월) ~ 2024.05.19 (일)
-              </span>
+              <span className="min-w-0 truncate">{reportDateRangeLabel}</span>
               <ChevronDown
                 aria-hidden="true"
                 className="h-4 w-4 text-[#40557d]"
@@ -912,6 +997,7 @@ export function WorkerReportsPage() {
                     key={action.label}
                     type="button"
                     className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[10px] border border-[#dfe8f5] bg-white px-3 text-[14px] font-black text-[#17264a] shadow-[0_8px_18px_rgba(37,72,125,0.06)] transition hover:bg-[#f5f9ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+                    onClick={() => handleReportAction(action.id)}
                   >
                     <Icon
                       aria-hidden="true"
@@ -923,6 +1009,15 @@ export function WorkerReportsPage() {
                 )
               })}
             </div>
+
+            {reportActionMessage ? (
+              <p
+                className="rounded-lg bg-[#edf5ff] px-3 py-2 text-[13px] font-black text-[#0b4fb3] sm:col-span-2"
+                role="status"
+              >
+                {reportActionMessage}
+              </p>
+            ) : null}
           </div>
         </section>
 
