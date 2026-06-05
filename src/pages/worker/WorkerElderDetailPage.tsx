@@ -23,6 +23,7 @@ import { cn } from '../../lib/utils'
 
 const workerAssetBase = '/assets/dolbomon/worker'
 const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
+const workerRiskPanelHref = '/worker#risk-elder-panel'
 
 const statusCards = [
   {
@@ -174,7 +175,7 @@ function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
 }
 
 function NotFoundState({ viewRole }: { viewRole: DetailViewRole }) {
-  const backHref = viewRole === 'caregiver' ? '/caregiver' : '/worker/elders'
+  const backHref = viewRole === 'caregiver' ? '/caregiver' : workerRiskPanelHref
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f6f9fd] text-[#071747]">

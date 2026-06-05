@@ -18,6 +18,7 @@ import { cn } from '../../lib/utils'
 
 const welfareAssetBase = '/assets/dolbomon/welfare'
 const elderAssetBase = '/assets/dolbomon/worker-elders'
+const workerRiskPanelHref = '/worker#risk-elder-panel'
 
 type ElderStatus = 'danger' | 'caution' | 'stable'
 
@@ -176,7 +177,7 @@ const elderRows: ElderRow[] = [
 const quickMenus: QuickMenuItem[] = [
   {
     description: '위험 대상자 업무 배정',
-    href: '/worker#risk-elder-panel',
+    href: workerRiskPanelHref,
     iconSrc: `${welfareAssetBase}/집.png`,
     title: '요양사 배정',
   },
@@ -194,7 +195,7 @@ const quickMenus: QuickMenuItem[] = [
   },
   {
     description: '대응 결과 확인',
-    href: '/worker/elders',
+    href: workerRiskPanelHref,
     iconSrc: `${welfareAssetBase}/연락.png`,
     title: '대응 완료',
   },
@@ -598,7 +599,7 @@ function RiskElderPanel({
 
       <div className="flex justify-end border-t border-[#e5edf8] px-5 py-0.5">
         <Link
-          to="/worker/elders"
+          to={workerRiskPanelHref}
           className="inline-flex min-h-8 items-center justify-center gap-1 rounded-lg px-3 text-[15px] font-black text-[#0867f2] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
         >
           전체 고위험 어르신 보기

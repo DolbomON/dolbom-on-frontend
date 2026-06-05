@@ -20,6 +20,7 @@ import {
 import { cn } from '../../lib/utils'
 
 const memoAssetBase = '/assets/dolbomon/worker-memo'
+const workerRiskPanelHref = '/worker#risk-elder-panel'
 
 const dayLabels = ['일', '월', '화', '수', '목', '금', '토']
 
@@ -589,7 +590,7 @@ export function WorkerMemoCreatePage() {
   if (!elder || !elderId) {
     return (
       <WorkerMemoNotFound
-        backHref={isCaregiverRoute ? '/caregiver' : '/worker/elders'}
+        backHref={isCaregiverRoute ? '/caregiver' : workerRiskPanelHref}
       />
     )
   }

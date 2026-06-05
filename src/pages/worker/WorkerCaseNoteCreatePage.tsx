@@ -11,6 +11,8 @@ import { WorkerTopBar } from '../../components/worker/WorkerTopBar'
 import { caseMemoElders } from '../../features/worker/caseMemoData'
 import { cn } from '../../lib/utils'
 
+const workerRiskPanelHref = '/worker#risk-elder-panel'
+
 type ConsultationMethod = 'guardian' | 'phone' | 'visit'
 type RiskJudgement = 'danger' | 'emergency' | 'normal' | 'watch'
 type AssignmentChoice = 'assign' | 'none'
@@ -136,7 +138,7 @@ function WorkerCaseNoteNotFound() {
             대상자 목록에서 다시 선택해 주세요.
           </p>
           <Link
-            to="/worker/elders"
+            to={workerRiskPanelHref}
             className="mt-6 inline-flex min-h-12 items-center justify-center rounded-lg bg-[#0867f2] px-5 text-[17px] font-black text-white shadow-[0_12px_22px_rgba(8,103,242,0.22)] transition hover:bg-[#075fe0] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
           >
             대상자 목록으로 돌아가기

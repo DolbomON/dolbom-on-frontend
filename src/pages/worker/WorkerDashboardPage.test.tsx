@@ -46,6 +46,10 @@ describe('WorkerDashboardPage', () => {
       'href',
       '/worker#risk-elder-panel',
     )
+    expect(screen.getByRole('link', { name: '대응 완료' })).toHaveAttribute(
+      'href',
+      '/worker#risk-elder-panel',
+    )
     expect(screen.getAllByRole('button', { name: '요양사 배정' })).toHaveLength(
       3,
     )

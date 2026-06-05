@@ -101,6 +101,6 @@ describe('WorkerCaseNoteCreatePage', () => {
       within(screen.getByRole('main')).getByRole('link', {
         name: '대상자 목록으로 돌아가기',
       }),
-    ).toHaveAttribute('href', '/worker/elders')
+    ).toHaveAttribute('href', '/worker#risk-elder-panel')
   })
 })

@@ -170,7 +170,7 @@ describe('WorkerElderDetailPage', () => {
     ).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: '대상자 목록으로 돌아가기' }),
-    ).toHaveAttribute('href', '/worker/elders')
+    ).toHaveAttribute('href', '/worker#risk-elder-panel')
   })
 
   it('navigates to case note creation from the case note action', async () => {

@@ -25,7 +25,7 @@ const workerNavItems: WorkerNavItem[] = [
     label: '대시보드',
   },
   {
-    href: '/worker/elders',
+    href: '/worker#risk-elder-panel',
     icon: Users,
     id: 'elders',
     label: '대상자',

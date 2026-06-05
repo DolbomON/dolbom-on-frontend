@@ -39,7 +39,6 @@ import {
 import { WorkerCaseNoteCreatePage } from '../pages/worker/WorkerCaseNoteCreatePage'
 import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
 import { WorkerElderDetailPage } from '../pages/worker/WorkerElderDetailPage'
-import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
 import { WorkerConsultationsPage } from '../pages/worker/WorkerConsultationsPage'
 import { WorkerMemoCreatePage } from '../pages/worker/WorkerMemoCreatePage'
 import { WorkerPortfolioPage } from '../pages/worker/WorkerPortfolioPage'
@@ -221,7 +220,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/worker/elders',
-    element: <WorkerEldersPage />,
+    element: <Navigate replace to="/worker#risk-elder-panel" />,
   },
   {
     path: '/worker/consultations',
