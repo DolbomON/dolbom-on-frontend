@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
+import { SignupPage } from '../pages/SignupPage'
 import { RoleMypagePage } from '../pages/RoleMypagePage'
 import { CaregiverAssignmentsPage } from '../pages/caregiver/CaregiverAssignmentsPage'
 import { CaregiverDashboardPage } from '../pages/caregiver/CaregiverDashboardPage'
@@ -25,6 +26,7 @@ import { ElderPainWalkingPage } from '../pages/elder/ElderPainWalkingPage'
 import { ElderSelfCarePage } from '../pages/elder/ElderSelfCarePage'
 import { ElderSleepHabitPage } from '../pages/elder/ElderSleepHabitPage'
 import { ElderSleepCheckPage } from '../pages/elder/ElderSleepCheckPage'
+import { ElderSosPage } from '../pages/elder/ElderSosPage'
 import { ElderVoiceGuidePage } from '../pages/elder/ElderVoiceGuidePage'
 import { ElderVoiceListeningPage } from '../pages/elder/ElderVoiceListeningPage'
 import { FamilyAlertsPage } from '../pages/family/FamilyAlertsPage'
@@ -61,6 +63,14 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
+    path: '/signup',
+    element: <SignupPage />,
+  },
+  {
+    path: '/register',
+    element: <Navigate replace to="/signup" />,
+  },
+  {
     path: '/select-role',
     element: <RoleSelectPage />,
   },
@@ -83,6 +93,10 @@ export const router = createBrowserRouter([
   {
     path: '/elder/voice/listening',
     element: <ElderVoiceListeningPage />,
+  },
+  {
+    path: '/elder/sos',
+    element: <ElderSosPage />,
   },
   {
     path: '/elder/check/medication-habit',
@@ -196,10 +210,7 @@ export const router = createBrowserRouter([
     path: '/caregiver/mypage',
     element: <RoleMypagePage role="caregiver" />,
   },
-  {
-    path: '/caregiver/connect',
-    element: <FamilyConnectPage topBarVariant="caregiver" />,
-  },
+
   {
     path: '/caregiver/elders/:elderId',
     element: <WorkerElderDetailPage />,

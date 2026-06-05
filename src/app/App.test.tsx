@@ -18,7 +18,7 @@ describe('LandingPage', () => {
     ).toBeTruthy()
     expect(
       screen.getByRole('link', { name: /오늘 상태 입력하기/ }),
-    ).toBeTruthy()
+    ).toHaveAttribute('href', '/login')
     expect(screen.getByRole('button', { name: '메뉴 열기' })).toBeTruthy()
   })
 })

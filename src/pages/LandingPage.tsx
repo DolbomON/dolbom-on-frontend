@@ -46,7 +46,7 @@ export function LandingPage() {
 
         <section className="relative z-10 -mt-8 grid justify-items-center gap-3 min-[390px]:-mt-10">
           <Link
-            to="/select-role"
+            to="/login"
             className="flex min-h-[72px] w-full items-center justify-center gap-4 rounded-[28px] bg-gradient-to-br from-[#0a75ff] to-[#005ee5] px-4 text-[24px] font-black text-white shadow-[0_16px_30px_rgba(2,92,221,0.24)] transition active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[78px] min-[390px]:text-[30px]"
           >
             <SquarePen aria-hidden="true" size={38} strokeWidth={3} />

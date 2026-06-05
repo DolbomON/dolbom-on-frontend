@@ -1,4 +1,4 @@
-import { Menu } from 'lucide-react'
+import { Menu, Siren } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const mainAssetBase = '/assets/dolbomon/main'
@@ -204,6 +204,24 @@ export function ElderHomePage() {
             </strong>
             <span className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none text-[#6a7280] min-[390px]:text-[20px]">
               연결 정보
+            </span>
+          </Link>
+          <Link
+            to="/elder/sos"
+            className="flex min-h-[162px] flex-col items-center justify-center rounded-[22px] border-2 border-[#fecdd3] bg-[#fff1f2] px-2 py-4 text-center shadow-[0_12px_24px_rgba(190,18,60,0.12)] transition active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#fda4af] min-[390px]:min-h-[178px] min-[390px]:rounded-[24px]"
+          >
+            <span className="grid h-[74px] w-[74px] place-items-center rounded-full bg-[#dc2626] text-white shadow-[0_12px_24px_rgba(190,18,60,0.22)] min-[390px]:h-[82px] min-[390px]:w-[82px]">
+              <Siren
+                aria-hidden="true"
+                className="h-[45px] w-[45px] min-[390px]:h-[52px] min-[390px]:w-[52px]"
+                strokeWidth={2.8}
+              />
+            </span>
+            <strong className="mt-4 whitespace-nowrap text-[26px] font-black leading-none text-[#9f1239] min-[390px]:text-[29px]">
+              긴급 SOS
+            </strong>
+            <span className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none text-[#6a2432] min-[390px]:text-[20px]">
+              도움 요청
             </span>
           </Link>
         </section>
