@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
@@ -30,6 +30,7 @@ import { FamilyAlertsPage } from '../pages/family/FamilyAlertsPage'
 import { FamilyChatPage } from '../pages/family/FamilyChatPage'
 import { FamilyConnectPage } from '../pages/family/FamilyConnectPage'
 import { FamilyDashboardPage } from '../pages/family/FamilyDashboardPage'
+import { FamilyMemoPage } from '../pages/family/FamilyMemoPage'
 import { FamilyStatusPage } from '../pages/family/FamilyStatusPage'
 import {
   WorkerAlertDetailPlaceholderPage,
@@ -41,7 +42,6 @@ import { WorkerElderDetailPage } from '../pages/worker/WorkerElderDetailPage'
 import { WorkerEldersPage } from '../pages/worker/WorkerEldersPage'
 import { WorkerConsultationsPage } from '../pages/worker/WorkerConsultationsPage'
 import { WorkerMemoCreatePage } from '../pages/worker/WorkerMemoCreatePage'
-import { WorkerMypagePage } from '../pages/worker/WorkerMypagePage'
 import { WorkerPortfolioPage } from '../pages/worker/WorkerPortfolioPage'
 import { WorkerReportsPage } from '../pages/worker/WorkerReportsPage'
 import { WorkerSchedulesPage } from '../pages/worker/WorkerSchedulesPage'
@@ -160,6 +160,10 @@ export const router = createBrowserRouter([
     element: <FamilyChatPage />,
   },
   {
+    path: '/family/memo',
+    element: <FamilyMemoPage />,
+  },
+  {
     path: '/family/connect',
     element: <FamilyConnectPage />,
   },
@@ -249,6 +253,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '/worker/mypage',
-    element: <WorkerMypagePage />,
+    element: <Navigate replace to="/worker" />,
   },
 ])

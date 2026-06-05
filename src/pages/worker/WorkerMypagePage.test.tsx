@@ -46,10 +46,7 @@ describe('WorkerMypagePage', () => {
     expect(
       screen.getByRole('button', { name: '설정 저장' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: '마이페이지' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
+    expect(screen.queryByRole('link', { name: '마이페이지' })).toBeNull()
   })
 
   it('keeps not-yet-implemented actions safe', async () => {

@@ -63,7 +63,7 @@ const quickActions: QuickAction[] = [
     title: '오늘 기록 보기',
   },
   {
-    href: '#family-memo',
+    href: '/family/memo',
     imageSrc: penImageSrc,
     title: '가족 메모 남기기',
   },

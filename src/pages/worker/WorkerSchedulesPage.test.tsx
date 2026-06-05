@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
@@ -32,6 +32,14 @@ describe('WorkerSchedulesPage', () => {
       'aria-current',
       'page',
     )
+    expect(
+      within(
+        screen.getByRole('navigation', { name: '복지사 메뉴' }),
+      ).queryByRole('link', { name: '설정' }),
+    ).toBeNull()
+    expect(
+      screen.queryByRole('link', { name: '이수진 복지사 프로필 보기' }),
+    ).toBeNull()
     expect(screen.getByText('2024년 5월 15일 (수) 일정')).toBeInTheDocument()
   })
 

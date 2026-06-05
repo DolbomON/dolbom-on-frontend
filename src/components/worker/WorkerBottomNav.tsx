@@ -2,14 +2,13 @@ import {
   Bell,
   FileText,
   LayoutDashboard,
-  UserRound,
   Users,
   type LucideIcon,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { cn } from '../../lib/utils'
 
-type WorkerNavItemId = 'alerts' | 'dashboard' | 'elders' | 'mypage' | 'reports'
+type WorkerNavItemId = 'alerts' | 'dashboard' | 'elders' | 'reports'
 
 type WorkerNavItem = {
   href: string
@@ -43,18 +42,12 @@ const workerNavItems: WorkerNavItem[] = [
     id: 'reports',
     label: '보고서',
   },
-  {
-    href: '/worker/mypage',
-    icon: UserRound,
-    id: 'mypage',
-    label: '마이페이지',
-  },
 ]
 
 export function WorkerBottomNav() {
   return (
     <nav
-      className="fixed bottom-0 left-1/2 z-30 grid h-[78px] w-full max-w-[480px] -translate-x-1/2 grid-cols-5 border-t border-[#e2eaf5] bg-white pb-[max(8px,env(safe-area-inset-bottom))] pt-1 shadow-[0_-10px_24px_rgba(40,91,172,0.1)]"
+      className="fixed bottom-0 left-1/2 z-30 grid h-[78px] w-full max-w-[480px] -translate-x-1/2 grid-cols-4 border-t border-[#e2eaf5] bg-white pb-[max(8px,env(safe-area-inset-bottom))] pt-1 shadow-[0_-10px_24px_rgba(40,91,172,0.1)]"
       aria-label="하단 메뉴"
     >
       {workerNavItems.map((item) => {

@@ -1,7 +1,5 @@
 import {
-  Bell,
   CalendarDays,
-  ChevronDown,
   ChevronRight,
   ClipboardList,
   Clock,
@@ -19,12 +17,12 @@ import {
 import { useMemo } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { CaregiverTopBar } from '../../components/worker/CaregiverTopBar'
+import { WorkerTopBar } from '../../components/worker/WorkerTopBar'
 import { elderDetails } from '../../features/worker/workerElderDetailData'
 import { cn } from '../../lib/utils'
 
 const workerAssetBase = '/assets/dolbomon/worker'
 const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
-const workerProfileSrc = '/assets/dolbomon/worker-mypage/worker-lee-bokji.png'
 
 const statusCards = [
   {
@@ -165,15 +163,6 @@ type StatusTone = keyof typeof statusPillClasses
 
 type DetailViewRole = 'caregiver' | 'worker'
 
-const workerDetailTopNavItems = [
-  { href: '/worker', label: '홈' },
-  { href: '/worker/welfare-connect', label: '복지 현황' },
-  { href: '/worker/consultations', label: '상담 관리' },
-  { href: '/worker/reports', label: '보고서' },
-  { href: '/worker/schedules', label: '기관 일정' },
-  { href: '/worker/mypage', label: '설정' },
-] as const
-
 function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
   const isCaregiverView = viewRole === 'caregiver'
 
@@ -181,87 +170,7 @@ function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
     return <CaregiverTopBar activeLabel="담당어르신" />
   }
 
-  const profileHref = '/worker/mypage'
-  const profileName = '이수진 복지사'
-  const profileImageSrc = workerProfileSrc
-
-  return (
-    <header className="sticky top-0 z-30 border-b border-[#dde7f4] bg-white/95 shadow-[0_5px_18px_rgba(35,73,128,0.07)] backdrop-blur">
-      <div className="mx-auto grid min-h-[82px] w-full grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-2 lg:h-[72px] lg:min-h-[72px] lg:grid-cols-[214px_minmax(0,1fr)_auto] lg:px-[31px] lg:py-0">
-        <Link
-          to="/"
-          className="inline-flex min-h-11 items-center text-[29px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.16)] focus-visible:rounded-lg lg:text-[34px]"
-          aria-label="돌봄ON 홈"
-        >
-          돌봄ON
-        </Link>
-
-        <nav
-          className="col-span-2 row-start-2 flex min-w-0 flex-wrap justify-start gap-x-3 gap-y-1 overflow-visible pb-2 text-[15px] font-extrabold text-[#101a3d] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-center lg:gap-12 lg:pb-0"
-          aria-label="복지사 메뉴"
-        >
-          {workerDetailTopNavItems.map((item) => {
-            const isActive = item.href === '/worker/welfare-connect'
-
-            return (
-              <Link
-                key={item.label}
-                to={item.href}
-                className={cn(
-                  'relative inline-flex min-h-11 shrink-0 items-center justify-center px-2 transition hover:text-[#0867f2] focus-visible:rounded-lg lg:min-h-[72px]',
-                  isActive ? 'text-[#0867f2]' : 'text-[#111827]',
-                )}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {item.label}
-                <span
-                  className={cn(
-                    'absolute bottom-0 left-0 right-0 h-1 rounded-full bg-[#0867f2]',
-                    !isActive && 'hidden',
-                  )}
-                  aria-hidden="true"
-                />
-              </Link>
-            )
-          })}
-        </nav>
-
-        <div className="col-start-2 row-start-1 flex items-center gap-3 justify-self-end lg:col-start-3">
-          <button
-            type="button"
-            className="relative inline-grid min-h-11 min-w-11 place-items-center rounded-lg text-[#33415c] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="알림 3건 확인"
-          >
-            <Bell aria-hidden="true" size={27} strokeWidth={2.4} />
-            <span className="absolute right-1 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ef3b43] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
-              3
-            </span>
-          </button>
-
-          <Link
-            to={profileHref}
-            className="hidden min-h-12 items-center gap-3 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[540px]:inline-flex"
-            aria-label={`${profileName} 프로필 보기`}
-          >
-            <img
-              src={profileImageSrc}
-              alt=""
-              className="h-11 w-11 rounded-full bg-[#f0f5ff] object-cover shadow-[0_6px_14px_rgba(42,96,184,0.16)]"
-              draggable="false"
-            />
-            <strong className="hidden text-[15px] font-black leading-tight text-[#111827] sm:block">
-              {profileName}
-            </strong>
-            <ChevronDown
-              aria-hidden="true"
-              className="hidden h-5 w-5 text-[#25324a] sm:block"
-              strokeWidth={2.7}
-            />
-          </Link>
-        </div>
-      </div>
-    </header>
-  )
+  return <WorkerTopBar activeHref="/worker/welfare-connect" />
 }
 
 function NotFoundState({ viewRole }: { viewRole: DetailViewRole }) {

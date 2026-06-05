@@ -23,10 +23,10 @@ describe('CaregiverAssignmentsPage', () => {
   it('renders assigned care work with primary actions and assistant panels', () => {
     renderCaregiverAssignments()
 
-    expect(
-      screen.getByRole('heading', { name: '배정받은 업무' }),
-    ).toBeInTheDocument()
-    expect(screen.getByText('오늘 배정')).toBeInTheDocument()
+    expect(screen.getAllByRole('heading', { name: '오늘 업무' })).toHaveLength(
+      2,
+    )
+    expect(screen.getAllByText('오늘 업무').length).toBeGreaterThan(1)
     expect(screen.getAllByText('오늘 마감').length).toBeGreaterThan(0)
     expect(
       screen.getByRole('heading', { name: '김영자님 방문 확인 요청' }),
@@ -60,8 +60,11 @@ describe('CaregiverAssignmentsPage', () => {
     })
 
     expect(
-      within(caregiverMenu).getByRole('link', { name: '오늘업무' }),
+      within(caregiverMenu).getByRole('link', { name: '홈' }),
     ).toHaveAttribute('href', '/caregiver')
+    expect(
+      within(caregiverMenu).getByRole('link', { name: '오늘 업무' }),
+    ).toHaveAttribute('aria-current', 'page')
     expect(
       within(caregiverMenu).queryByRole('link', { name: '설정' }),
     ).not.toBeInTheDocument()

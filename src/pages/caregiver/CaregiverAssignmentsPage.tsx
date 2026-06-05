@@ -74,7 +74,7 @@ const metricCards: MetricCard[] = [
   {
     iconSrc: `${workerAssetBase}/1.png`,
     id: 'assigned',
-    label: '오늘 배정',
+    label: '오늘 업무',
     tone: 'blue',
     unit: '건',
     value: '4',
@@ -397,7 +397,7 @@ function AssignmentControls({
   return (
     <section
       className="grid gap-3 rounded-[16px] border border-[#dfe8f5] bg-white/80 p-3 shadow-[0_10px_24px_rgba(37,72,125,0.05)] lg:grid-cols-[minmax(0,1fr)_348px] lg:items-center"
-      aria-label="배정 업무 검색 및 필터"
+      aria-label="오늘 업무 검색 및 필터"
     >
       <div
         className="flex min-w-0 gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -428,7 +428,7 @@ function AssignmentControls({
       </div>
 
       <label className="relative block">
-        <span className="sr-only">배정 업무 검색</span>
+        <span className="sr-only">오늘 업무 검색</span>
         <Search
           aria-hidden="true"
           className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#53678c]"
@@ -897,7 +897,7 @@ export function CaregiverAssignmentsPage() {
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <CaregiverTopBar activeLabel="오늘업무" />
+      <CaregiverTopBar activeLabel="오늘 업무" />
 
       <div className="mx-auto grid w-full max-w-[1720px] gap-6 px-5 py-6 lg:px-10 xl:grid-cols-[minmax(0,1fr)_430px] xl:items-start">
         <div className="grid min-w-0 gap-4">
@@ -910,16 +910,16 @@ export function CaregiverAssignmentsPage() {
                 id="caregiver-assignments-title"
                 className="break-keep text-[34px] font-black leading-tight text-[#071747] lg:text-[42px]"
               >
-                배정받은 업무
+                오늘 업무
               </h1>
               <p className="mt-3 break-keep text-[16px] font-bold leading-snug text-[#425371]">
-                복지사가 배정한 방문 요청과 확인 업무를 빠르게 처리하세요.
+                오늘 처리할 방문 요청과 확인 업무를 빠르게 처리하세요.
               </p>
             </div>
 
             <section
               className="grid gap-3 sm:grid-cols-3"
-              aria-label="배정 업무 요약"
+              aria-label="오늘 업무 요약"
             >
               {metricCards.map((metric) => (
                 <MetricSummaryCard key={metric.id} metric={metric} />
@@ -936,20 +936,20 @@ export function CaregiverAssignmentsPage() {
 
           <FeaturedAssignment task={featuredTask} />
 
-          <section className="grid gap-3" aria-label="배정 업무 목록">
+          <section className="grid gap-3" aria-label="오늘 업무 목록">
             {listTasks.map((task) => (
               <AssignmentRow key={task.id} task={task} />
             ))}
 
             {filteredTasks.length === 0 ? (
               <p className="rounded-[12px] border border-[#dfe8f5] bg-white px-5 py-8 text-center text-[17px] font-black text-[#425371] shadow-[0_10px_24px_rgba(37,72,125,0.06)]">
-                조건에 맞는 배정 업무가 없어요.
+                조건에 맞는 오늘 업무가 없어요.
               </p>
             ) : null}
           </section>
         </div>
 
-        <aside className="grid gap-4" aria-label="배정 업무 보조 정보">
+        <aside className="grid gap-4" aria-label="오늘 업무 보조 정보">
           <TodaySchedulePanel />
           <QuickContactPanel />
           <TaskChecklistPanel />

@@ -3,14 +3,12 @@ import {
   CalendarDays,
   Check,
   CheckCircle2,
-  ChevronLeft,
   Circle,
   ClipboardList,
   FileBadge2,
   FileText,
   Home,
   MapPin,
-  MessageCircle,
   Pencil,
   Plus,
   Star,
@@ -65,26 +63,17 @@ type ActivityPhoto = {
   tone: string
 }
 
-const sidebarItems: SidebarItem[] = [
+const mobileNavItems: SidebarItem[] = [
   { href: '/caregiver', icon: Home, label: '대시보드' },
-  { href: '/caregiver/elders/kim-yeongja', icon: Users, label: '담당 어르신' },
+  { href: '/caregiver/schedules', icon: CalendarDays, label: '일정' },
+  { href: '/caregiver/elders/kim-yeongja', icon: Users, label: '상세' },
+  { href: '/caregiver/records', icon: ClipboardList, label: '기록' },
   {
     active: true,
     href: '/caregiver/portfolio',
     icon: BriefcaseBusiness,
     label: '포트폴리오',
   },
-  { href: '/caregiver/schedules', icon: CalendarDays, label: '일정 관리' },
-  { href: '/caregiver/records', icon: ClipboardList, label: '방문 기록' },
-  { href: '/caregiver#family-memo', icon: MessageCircle, label: '전달사항' },
-]
-
-const mobileNavItems: SidebarItem[] = [
-  { href: '/caregiver', icon: Home, label: '대시보드' },
-  { href: '/caregiver/schedules', icon: CalendarDays, label: '일정' },
-  { href: '/caregiver/elders/kim-yeongja', icon: Users, label: '상세' },
-  { href: '/caregiver/records', icon: ClipboardList, label: '기록' },
-  { href: '/caregiver#family-memo', icon: MessageCircle, label: '전달' },
 ]
 
 const specialties: Specialty[] = [
@@ -168,7 +157,11 @@ function CaregiverPortfolioBottomNav() {
           <Link
             key={item.label}
             to={item.href}
-            className="relative flex min-h-[62px] flex-col items-center justify-center gap-1 text-[13px] font-extrabold leading-tight text-[#6f7786] transition hover:text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff]"
+            className={cn(
+              'relative flex min-h-[62px] flex-col items-center justify-center gap-1 text-[13px] font-extrabold leading-tight transition hover:text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-[-2px] focus-visible:outline-[#8bbcff]',
+              item.active ? 'text-[#0867f2]' : 'text-[#6f7786]',
+            )}
+            aria-current={item.active ? 'page' : undefined}
           >
             <Icon aria-hidden="true" className="h-8 w-8" strokeWidth={2.4} />
             <span>{item.label}</span>
@@ -176,88 +169,6 @@ function CaregiverPortfolioBottomNav() {
         )
       })}
     </nav>
-  )
-}
-
-function WorkerPortfolioSidebar() {
-  return (
-    <aside className="hidden w-[236px] shrink-0 border-r border-[#dfe7f2] bg-white/72 px-3 py-7 lg:block">
-      <div className="flex items-center gap-3 border-b border-[#dde6f3] px-2 pb-5">
-        <img
-          src={`${elderAssetBase}/elder-kim-yeongja.png`}
-          alt=""
-          className="h-[58px] w-[58px] rounded-full object-cover shadow-[0_8px_18px_rgba(42,96,184,0.14)]"
-          draggable="false"
-        />
-        <div className="min-w-0">
-          <p className="truncate text-[16px] font-black leading-tight text-[#071747]">
-            김영자님
-          </p>
-          <p className="mt-1 text-[14px] font-bold text-[#60708e]">요양사</p>
-        </div>
-      </div>
-
-      <nav className="mt-4 grid gap-2" aria-label="요양사 좌측 메뉴">
-        {sidebarItems.map((item) => {
-          const Icon = item.icon
-
-          return (
-            <Link
-              key={item.label}
-              to={item.href}
-              className={cn(
-                'inline-flex min-h-[48px] items-center gap-3 rounded-lg px-4 text-[16px] font-black transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]',
-                item.active
-                  ? 'bg-[#eaf3ff] text-[#0867f2] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.04)]'
-                  : 'text-[#152245] hover:bg-[#f4f8ff] hover:text-[#0867f2]',
-              )}
-              aria-current={item.active ? 'page' : undefined}
-            >
-              <Icon
-                aria-hidden="true"
-                className={cn(
-                  'h-8 w-8 shrink-0',
-                  item.active ? 'text-[#0867f2]' : 'text-[#42577a]',
-                )}
-                strokeWidth={item.active ? 2.7 : 2.2}
-              />
-              {item.label}
-            </Link>
-          )
-        })}
-      </nav>
-
-      <section
-        className="mt-[220px] rounded-[16px] border border-[#dce6f4] bg-white p-4 shadow-[0_12px_28px_rgba(42,96,184,0.08)]"
-        aria-labelledby="portfolio-help-title"
-      >
-        <h2
-          id="portfolio-help-title"
-          className="text-[16px] font-black leading-tight text-[#071747]"
-        >
-          도움이 필요하신가요?
-        </h2>
-        <p className="mt-3 text-[13px] font-bold leading-snug text-[#667795]">
-          돌봄ON 고객센터
-          <br />
-          평일 09:00 - 18:00
-        </p>
-        <div className="mt-4 flex items-end gap-2">
-          <Link
-            to="/worker/help"
-            className="inline-flex min-h-10 flex-1 items-center justify-center rounded-lg border border-[#bcd4fb] bg-[#f8fbff] px-3 text-[14px] font-black text-[#0867f2] shadow-[0_6px_14px_rgba(47,86,145,0.06)] transition hover:bg-[#eef6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-          >
-            1:1 문의하기
-          </Link>
-          <img
-            src={`${portfolioAssetBase}/상담사.png`}
-            alt=""
-            className="h-[76px] w-[76px] shrink-0 object-contain"
-            draggable="false"
-          />
-        </div>
-      </section>
-    </aside>
   )
 }
 
@@ -627,30 +538,17 @@ export function WorkerPortfolioPage() {
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <CaregiverTopBar />
+      <CaregiverTopBar activeLabel="포트폴리오" />
 
-      <div className="mx-auto flex w-full max-w-[1600px]">
-        <WorkerPortfolioSidebar />
-
-        <div className="min-w-0 flex-1 px-4 pb-[calc(106px+env(safe-area-inset-bottom))] pt-5 sm:px-5 lg:px-9 lg:pb-10">
+      <div className="mx-auto w-full max-w-[1600px]">
+        <div className="min-w-0 px-4 pb-[calc(106px+env(safe-area-inset-bottom))] pt-6 sm:px-5 lg:px-9 lg:pb-10">
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_260px] xl:items-start">
             <div className="min-w-0">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <section aria-labelledby="worker-portfolio-title">
-                  <Link
-                    to="/caregiver"
-                    className="inline-flex min-h-9 items-center gap-1 rounded-lg text-[14px] font-black text-[#0867f2] transition hover:bg-[#edf6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-                  >
-                    <ChevronLeft
-                      aria-hidden="true"
-                      className="h-5 w-5"
-                      strokeWidth={2.8}
-                    />
-                    포트폴리오 목록으로
-                  </Link>
                   <h1
                     id="worker-portfolio-title"
-                    className="mt-2 text-[30px] font-black leading-tight text-[#071747] sm:text-[34px]"
+                    className="text-[30px] font-black leading-tight text-[#071747] sm:text-[34px]"
                   >
                     포트폴리오 등록
                   </h1>

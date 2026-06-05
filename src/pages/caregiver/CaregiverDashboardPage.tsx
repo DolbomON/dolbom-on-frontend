@@ -21,6 +21,7 @@ import {
 import { cn } from '../../lib/utils'
 
 const dashboardAssetBase = '/assets/dolbomon/worker-dashboard'
+const portfolioAssetBase = '/assets/dolbomon/worker-portfolio'
 
 type ElderStatus = 'caution' | 'danger' | 'stable'
 
@@ -160,6 +161,12 @@ const quickMenus: QuickMenuItem[] = [
     href: '/caregiver/elders/kim-yeongja',
     iconSrc: `${dashboardAssetBase}/체크2.png`,
     label: '담당 어르신',
+  },
+  {
+    description: '내 소개와 활동 이력 관리',
+    href: '/caregiver/portfolio',
+    iconSrc: `${portfolioAssetBase}/체크완성.png`,
+    label: '포트폴리오',
   },
 ]
 
@@ -713,7 +720,7 @@ export function CaregiverDashboardPage() {
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <CaregiverTopBar activeLabel="오늘업무" />
+      <CaregiverTopBar activeLabel="홈" />
 
       <div className="mx-auto w-full max-w-[1600px] px-5 py-7 lg:px-[60px]">
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_376px] xl:items-start">
@@ -727,10 +734,10 @@ export function CaregiverDashboardPage() {
                   id="caregiver-dashboard-title"
                   className="text-[32px] font-black leading-tight text-[#071747] lg:text-[38px]"
                 >
-                  오늘 방문 업무
+                  홈
                 </h1>
                 <p className="mt-3 text-[17px] font-bold leading-snug text-[#50607f]">
-                  오늘 방문할 어르신과 복지사 요청사항을 확인해보세요.
+                  오늘 방문할 어르신과 복지사 요청사항을 한눈에 확인해보세요.
                 </p>
               </div>
               <img

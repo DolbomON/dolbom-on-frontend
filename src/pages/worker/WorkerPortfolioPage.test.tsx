@@ -22,14 +22,15 @@ describe('WorkerPortfolioPage', () => {
     const topMenu = screen.getByRole('navigation', {
       name: '요양사 메뉴',
     })
-    const sideMenu = screen.getByRole('navigation', {
-      name: '요양사 좌측 메뉴',
-    })
     const bottomMenu = screen.getByRole('navigation', { name: '하단 메뉴' })
 
+    expect(within(topMenu).getByRole('link', { name: '홈' })).toHaveAttribute(
+      'href',
+      '/caregiver',
+    )
     expect(
-      within(topMenu).getByRole('link', { name: '오늘업무' }),
-    ).toHaveAttribute('href', '/caregiver')
+      within(topMenu).getByRole('link', { name: '오늘 업무' }),
+    ).toHaveAttribute('href', '/caregiver/assignments')
     expect(
       within(topMenu).getByRole('link', { name: '방문일정' }),
     ).toHaveAttribute('href', '/caregiver/schedules')
@@ -40,16 +41,16 @@ describe('WorkerPortfolioPage', () => {
       within(topMenu).getByRole('link', { name: '방문기록' }),
     ).toHaveAttribute('href', '/caregiver/records')
     expect(
-      within(topMenu).getByRole('link', { name: '전달사항' }),
-    ).toHaveAttribute('href', '/caregiver#family-memo')
+      within(topMenu).getByRole('link', { name: '포트폴리오' }),
+    ).toHaveAttribute('href', '/caregiver/portfolio')
+    expect(
+      within(topMenu).getByRole('link', { name: '포트폴리오' }),
+    ).toHaveAttribute('aria-current', 'page')
     expect(
       within(topMenu).queryAllByRole('link', { name: '설정' }),
     ).toHaveLength(0)
-    expect(within(topMenu).queryAllByRole('link', { name: '홈' })).toHaveLength(
-      0,
-    )
     expect(
-      within(topMenu).queryAllByRole('link', { name: '포트폴리오' }),
+      within(topMenu).queryAllByRole('link', { name: '전달사항' }),
     ).toHaveLength(0)
     expect(
       within(topMenu).queryAllByRole('link', { name: '안부현황' }),
@@ -64,20 +65,20 @@ describe('WorkerPortfolioPage', () => {
       within(topMenu).queryAllByRole('link', { name: '가족메모' }),
     ).toHaveLength(0)
     expect(
-      within(sideMenu).getByRole('link', { name: '대시보드' }),
-    ).toHaveAttribute('href', '/caregiver')
+      screen.queryByRole('navigation', { name: '요양사 좌측 메뉴' }),
+    ).toBeNull()
     expect(
-      within(sideMenu).getByRole('link', { name: '담당 어르신' }),
-    ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
-    expect(
-      within(sideMenu).getByRole('link', { name: '포트폴리오' }),
-    ).toHaveAttribute('aria-current', 'page')
-    expect(
-      within(sideMenu).getByRole('link', { name: '포트폴리오' }),
-    ).toHaveAttribute('href', '/caregiver/portfolio')
+      screen.queryByRole('link', { name: '포트폴리오 목록으로' }),
+    ).toBeNull()
     expect(
       within(bottomMenu).getByRole('link', { name: '대시보드' }),
     ).toHaveAttribute('href', '/caregiver')
+    expect(
+      within(bottomMenu).getByRole('link', { name: '포트폴리오' }),
+    ).toHaveAttribute('href', '/caregiver/portfolio')
+    expect(
+      within(bottomMenu).getByRole('link', { name: '포트폴리오' }),
+    ).toHaveAttribute('aria-current', 'page')
     expect(screen.getByText('1. 자기소개')).toBeInTheDocument()
     expect(screen.getByText('2. 전문 분야')).toBeInTheDocument()
     expect(screen.getByText('3. 주요 경력')).toBeInTheDocument()
