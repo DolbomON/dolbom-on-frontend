@@ -42,26 +42,36 @@ export function WorkerProfileCard({
             {profile.organization}
           </p>
 
-          <p className="mt-3 text-[16px] font-semibold leading-snug text-[#405066] min-[410px]:text-[17px]">
-            담당 대상자{' '}
-            <strong className="font-black text-[#0867f2]">
-              {profile.assignedCount}명
-            </strong>
-            <span className="mx-2 text-[#8a95a6]" aria-hidden="true">
+          <p className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-[16px] font-semibold leading-snug text-[#405066] min-[410px]:text-[17px]">
+            <span className="whitespace-nowrap">
+              담당 대상자{' '}
+              <strong className="font-black text-[#0867f2]">
+                {profile.assignedCount}명
+              </strong>
+            </span>
+            <span
+              className="hidden text-[#8a95a6] min-[560px]:inline"
+              aria-hidden="true"
+            >
               ·
             </span>
-            오늘 확인{' '}
-            <strong className="font-black text-[#0867f2]">
-              {profile.todayCheckCount}건
-            </strong>
+            <span className="whitespace-nowrap">
+              오늘 확인{' '}
+              <strong className="font-black text-[#0867f2]">
+                {profile.todayCheckCount}건
+              </strong>
+            </span>
           </p>
 
-          <p className="mt-3 break-words text-[15px] font-medium leading-snug text-[#59667a] min-[410px]:text-[16px]">
-            <span>{profile.email}</span>
-            <span className="mx-2 text-[#8a95a6]" aria-hidden="true">
+          <p className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-[15px] font-medium leading-snug text-[#59667a] min-[410px]:text-[16px]">
+            <span className="break-all">{profile.email}</span>
+            <span
+              className="hidden text-[#8a95a6] min-[560px]:inline"
+              aria-hidden="true"
+            >
               ·
             </span>
-            <span>{profile.phone}</span>
+            <span className="whitespace-nowrap">{profile.phone}</span>
           </p>
         </div>
       </div>
