@@ -1029,8 +1029,8 @@ export function WorkerElderDetailPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#f6f9fd] text-[#071747]">
       <WorkerDetailTopBar viewRole={viewRole} />
 
-      <div className="mx-auto w-full max-w-[1618px] px-5 pb-9 pt-[22px] lg:px-0">
-        <div className="grid gap-x-[40px] gap-y-[18px] xl:grid-cols-[302px_minmax(0,1fr)_386px] 2xl:grid-cols-[302px_846px_386px]">
+      <div className="mx-auto w-full max-w-[1682px] px-5 pb-9 pt-[22px] lg:px-8">
+        <div className="grid gap-x-[40px] gap-y-[18px] xl:grid-cols-[302px_minmax(0,1fr)_386px] min-[1680px]:grid-cols-[302px_846px_386px]">
           <section
             className="order-1 xl:order-none xl:col-span-2"
             aria-labelledby="elder-detail-title"
