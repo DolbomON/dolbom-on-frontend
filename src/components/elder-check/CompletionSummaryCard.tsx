@@ -10,7 +10,7 @@ type CompletionSummaryCardProps = {
 export function CompletionSummaryCard({ items }: CompletionSummaryCardProps) {
   return (
     <dl
-      className="flex min-h-0 flex-1 flex-col rounded-[18px] border border-[#d9e7ff] bg-white/95 px-4 py-2 shadow-[0_10px_22px_rgba(61,114,198,0.08)]"
+      className="flex shrink-0 flex-col rounded-[18px] border border-[#d9e7ff] bg-white/95 px-4 py-2 shadow-[0_10px_22px_rgba(61,114,198,0.08)]"
       aria-label="입력한 상태 요약"
     >
       {items.map((item) => (

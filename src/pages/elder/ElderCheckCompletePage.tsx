@@ -153,9 +153,9 @@ export function ElderCheckCompletePage() {
   }
 
   return (
-    <main className="h-svh overflow-hidden bg-[#edf5ff] text-[#102b53]">
+    <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#102b53]">
       <section
-        className="mx-auto flex h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-5 pb-[calc(14px+env(safe-area-inset-bottom))] pt-[12px] shadow-[0_20px_80px_rgba(55,104,184,0.08)]"
+        className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-5 pb-[calc(20px+env(safe-area-inset-bottom))] pt-[12px] shadow-[0_20px_80px_rgba(55,104,184,0.08)]"
         aria-label="오늘 상태 입력 완료 화면"
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
@@ -174,7 +174,7 @@ export function ElderCheckCompletePage() {
 
         <CompletionProgress />
 
-        <section className="mt-4 flex min-h-0 flex-1 flex-col gap-4 rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-5 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)]">
+        <section className="mt-4 flex flex-col gap-4 rounded-[22px] border border-[#d7e8ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_48%,#edf7ff_100%)] p-5 text-center shadow-[0_14px_30px_rgba(36,92,174,0.12),inset_0_1px_0_rgba(255,255,255,0.92)]">
           <div className="flex shrink-0 items-center gap-2 text-left">
             <img
               src={completionIllustrationSrc}
