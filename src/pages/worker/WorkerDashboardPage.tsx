@@ -359,11 +359,7 @@ function elderMatchesSearch(elder: ElderRow, searchQuery: string) {
     .includes(keyword)
 }
 
-function WorkerDashboardTopBar({
-  onOpenRiskAlert,
-}: {
-  onOpenRiskAlert: () => void
-}) {
+function WorkerDashboardTopBar() {
   return (
     <header className="sticky top-0 z-30 border-b border-[#dfe8f5] bg-white/96 shadow-[0_5px_18px_rgba(30,66,118,0.05)] backdrop-blur">
       <div className="mx-auto grid min-h-[68px] w-full max-w-[1600px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-1 px-5 py-1 lg:grid-cols-[210px_minmax(0,1fr)_auto] lg:px-8">
@@ -405,17 +401,16 @@ function WorkerDashboardTopBar({
         </nav>
 
         <div className="col-start-2 row-start-1 flex items-center gap-3 justify-self-end lg:col-start-3">
-          <button
-            type="button"
-            className="relative inline-grid min-h-10 min-w-10 place-items-center rounded-lg text-[#3c4b67] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="알림 3건 확인"
-            onClick={onOpenRiskAlert}
+          <div
+            className="relative inline-grid min-h-10 min-w-10 place-items-center rounded-lg text-[#3c4b67]"
+            role="img"
+            aria-label="알림 3건"
           >
             <Bell aria-hidden="true" size={29} strokeWidth={2.4} />
             <span className="absolute right-0.5 top-0 grid h-[22px] min-w-[22px] place-items-center rounded-full bg-[#ff3648] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
               3
             </span>
-          </button>
+          </div>
 
           <Link
             to="/worker/mypage"
@@ -1243,10 +1238,6 @@ export function WorkerDashboardPage() {
     setAssignmentTarget(elder)
   }
 
-  const openRiskAlert = () => {
-    setRiskModalTarget(elderRows[0])
-  }
-
   const openAssignmentFromRiskModal = (elder: ElderRow) => {
     setRiskModalTarget(null)
     openAssignmentModal(elder)
@@ -1289,7 +1280,7 @@ export function WorkerDashboardPage() {
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f8fbff] text-[#071747]">
-      <WorkerDashboardTopBar onOpenRiskAlert={openRiskAlert} />
+      <WorkerDashboardTopBar />
 
       <div className="mx-auto grid w-full max-w-[1600px] gap-6 px-5 py-7 lg:px-10 xl:grid-cols-[minmax(0,1054px)_456px] xl:items-start">
         <div className="grid min-w-0 gap-4">

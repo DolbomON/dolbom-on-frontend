@@ -94,24 +94,22 @@ describe('WorkerDashboardPage', () => {
     )
   })
 
-  it('opens the risk response modal from the alert button', async () => {
-    const user = userEvent.setup()
-
+  it('keeps top notifications from opening the risk response modal', () => {
     render(
       <MemoryRouter initialEntries={['/worker']}>
         <WorkerDashboardPage />
       </MemoryRouter>,
     )
 
-    await user.click(screen.getByRole('button', { name: '알림 3건 확인' }))
-
-    const dialog = screen.getByRole('dialog', { name: '위험 대응 상세' })
-
-    expect(within(dialog).getByText(/김영자 어르신 · 위험/)).toBeInTheDocument()
-    expect(within(dialog).getByText('위험 사유')).toBeInTheDocument()
-    expect(within(dialog).getByText('처리 상태')).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: '알림 3건' })).toBeInTheDocument()
     expect(
-      within(dialog).getByRole('link', { name: '상담 메모 작성' }),
-    ).toHaveAttribute('href', '/worker/elders/kim-yeongja/case-note')
+      screen.queryByRole('button', { name: '알림 3건' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: '알림 3건' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('dialog', { name: '위험 대응 상세' }),
+    ).not.toBeInTheDocument()
   })
 })

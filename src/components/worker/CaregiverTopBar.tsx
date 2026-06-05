@@ -53,16 +53,16 @@ export function CaregiverTopBar({ activeLabel }: CaregiverTopBarProps) {
         </nav>
 
         <div className="col-start-2 row-start-1 flex items-center gap-3 justify-self-end lg:col-start-3">
-          <button
-            type="button"
-            className="relative inline-grid min-h-11 min-w-11 place-items-center rounded-lg text-[#3d4c69] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-            aria-label="알림 3건 확인"
+          <div
+            className="relative inline-grid min-h-11 min-w-11 place-items-center rounded-lg text-[#3d4c69]"
+            role="img"
+            aria-label="알림 3건"
           >
             <Bell aria-hidden="true" size={29} strokeWidth={2.4} />
             <span className="absolute right-1 top-0 grid h-[22px] min-w-[22px] place-items-center rounded-full bg-[#ff3648] px-1 text-[12px] font-black leading-none text-white ring-2 ring-white">
               3
             </span>
-          </button>
+          </div>
 
           <Link
             to="/caregiver"
