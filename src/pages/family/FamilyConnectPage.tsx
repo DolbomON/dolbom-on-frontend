@@ -3,15 +3,10 @@ import {
   Bell,
   CheckCircle2,
   ChevronDown,
-  Heart,
   HeartPulse,
-  Home,
   Info,
   Link as LinkIcon,
-  MessageSquare,
-  Settings,
   Users,
-  type LucideIcon,
 } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
@@ -26,25 +21,19 @@ const shieldIllustrationSrc = `${workerAssetBase}/image-removebg-preview%20(2).p
 const approvalIllustrationSrc = `${workerAssetBase}/image-removebg-preview%20(3).png`
 const bellIllustrationSrc = `${workerAssetBase}/image-removebg-preview%20(4).png`
 
-type NavItem = {
-  href: string
-  icon: LucideIcon
-  label: string
-}
-
 type BenefitItem = {
   description: string
   imageSrc: string
   title: string
 }
 
-const navItems: NavItem[] = [
-  { href: '/family', icon: Home, label: '홈' },
-  { href: '/family/status', icon: HeartPulse, label: '안부현황' },
-  { href: '/family/alerts', icon: Bell, label: '알림' },
-  { href: '/family/chat', icon: MessageSquare, label: '대화' },
-  { href: '#settings', icon: Settings, label: '설정' },
-]
+const navItems = [
+  { href: '/family', label: '홈' },
+  { href: '/family/status', label: '안부현황' },
+  { href: '/family/alerts', label: '알림' },
+  { href: '/family/chat', label: '대화' },
+  { href: '/family/connect', label: '어르신 연결' },
+] as const
 
 const benefitItems: BenefitItem[] = [
   {
@@ -68,84 +57,75 @@ function FamilyLogo() {
   return (
     <Link
       to="/family"
-      className="inline-flex min-h-12 items-center rounded-md text-[#0a57dd] drop-shadow-[0_5px_10px_rgba(23,98,232,0.16)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
+      className="inline-flex min-h-11 items-center text-[30px] font-black leading-none text-[#0867f2] drop-shadow-[0_5px_10px_rgba(8,103,242,0.12)] focus-visible:rounded-lg"
       aria-label="돌봄ON 가족 홈"
     >
-      <span className="text-[30px] font-black leading-none md:text-[38px]">
-        돌봄
-      </span>
-      <span className="mx-0.5 grid h-[26px] w-[26px] place-items-center rounded-full bg-[#1268f6] text-white md:h-[32px] md:w-[32px]">
-        <Heart
-          aria-hidden="true"
-          className="h-[17px] w-[17px] fill-current md:h-[21px] md:w-[21px]"
-          strokeWidth={3.2}
-        />
-      </span>
-      <span className="text-[34px] font-black leading-none md:text-[42px]">
-        N
-      </span>
+      돌봄ON
     </Link>
   )
 }
 
 function TopNavigation() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[#e4edf8] bg-white/95 shadow-[0_8px_28px_rgba(22,57,112,0.08)] backdrop-blur">
-      <div className="mx-auto grid min-h-[86px] w-full max-w-[1680px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-3 px-5 py-3 lg:min-h-[96px] lg:grid-cols-[250px_minmax(0,1fr)_auto] lg:px-12">
+    <header className="sticky top-0 z-40 overflow-x-hidden border-b border-[#dfe8f5] bg-white/96 shadow-[0_5px_18px_rgba(30,66,118,0.05)] backdrop-blur">
+      <div className="mx-auto grid min-h-[72px] w-full max-w-[1600px] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 px-5 py-1 lg:grid-cols-[210px_minmax(0,1fr)_auto] lg:px-8">
         <FamilyLogo />
 
         <nav
-          className="col-span-2 row-start-2 flex min-w-0 flex-wrap gap-x-4 gap-y-1 overflow-visible pb-2 text-[16px] font-bold text-[#11182f] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-center lg:gap-14 lg:pb-0"
+          className="col-span-2 row-start-2 flex min-w-0 flex-wrap gap-x-3 gap-y-1 overflow-visible pb-2 text-[15px] font-black leading-none text-[#071747] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:flex-nowrap lg:justify-self-center lg:gap-8 lg:pb-0"
           aria-label="가족 화면 메뉴"
         >
           {navItems.map((item) => {
-            const Icon = item.icon
+            const isActive = item.href === '/family/connect'
 
             return (
               <Link
                 key={item.label}
                 to={item.href}
-                className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg px-2 transition hover:text-[#0a63ef] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+                className={`relative inline-flex min-h-11 shrink-0 items-center justify-center px-2 transition hover:text-[#0867f2] focus-visible:rounded-lg ${
+                  isActive ? 'text-[#0867f2]' : 'text-[#071747]'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
               >
-                <Icon
-                  aria-hidden="true"
-                  className="h-7 w-7"
-                  strokeWidth={2.4}
-                />
-                <span>{item.label}</span>
+                {item.label}
+                {isActive ? (
+                  <span
+                    className="absolute bottom-[-8px] left-0 right-0 h-1 rounded-full bg-[#0867f2] lg:bottom-[-15px]"
+                    aria-hidden="true"
+                  />
+                ) : null}
               </Link>
             )
           })}
         </nav>
 
-        <Link
-          to="#profile"
-          className="col-start-2 row-start-1 inline-flex min-h-[58px] items-center justify-self-end rounded-lg pl-4 transition hover:bg-[#f4f8ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] lg:col-start-3"
+        <div
+          className="col-start-2 row-start-1 inline-flex min-h-11 items-center gap-3 justify-self-end py-1 pl-1 pr-2 lg:col-start-3"
           aria-label="김하나님 가족 계정"
+          role="group"
         >
-          <span className="hidden h-12 w-px bg-[#dce4ef] md:block" />
           <img
             src={familyProfileSrc}
             alt=""
             width="512"
             height="512"
-            className="ml-0 h-[54px] w-[54px] rounded-full bg-[#f0f6ff] object-cover shadow-[0_8px_18px_rgba(43,91,162,0.13)] md:ml-6 md:h-[62px] md:w-[62px]"
+            className="h-11 w-11 rounded-full bg-[#eaf4ff] object-cover shadow-[0_7px_15px_rgba(42,96,184,0.16)]"
             draggable="false"
           />
-          <span className="ml-3 hidden text-left sm:block">
-            <strong className="block whitespace-nowrap text-[18px] font-black leading-tight text-[#10162e]">
+          <span className="hidden text-left sm:block">
+            <strong className="block whitespace-nowrap text-[14px] font-black leading-tight text-[#071747]">
               김하나님
             </strong>
-            <span className="mt-1 block whitespace-nowrap text-[15px] font-semibold leading-tight text-[#58657a]">
+            <span className="mt-0.5 block whitespace-nowrap text-[12px] font-bold leading-tight text-[#58657a]">
               가족 계정
             </span>
           </span>
           <ChevronDown
             aria-hidden="true"
-            className="ml-4 hidden h-6 w-6 text-[#8b97ac] sm:block"
-            strokeWidth={2.5}
+            className="hidden h-4 w-4 text-[#33415f] sm:block"
+            strokeWidth={2.8}
           />
-        </Link>
+        </div>
       </div>
     </header>
   )

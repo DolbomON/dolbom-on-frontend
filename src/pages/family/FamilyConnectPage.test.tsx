@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { FamilyConnectPage } from './FamilyConnectPage'
@@ -20,6 +20,15 @@ describe('FamilyConnectPage', () => {
     expect(
       screen.getByRole('button', { name: /연결 요청하기/ }),
     ).toBeInTheDocument()
+    const topMenu = screen.getByRole('navigation', { name: '가족 화면 메뉴' })
+
+    expect(
+      within(topMenu).getByRole('link', { name: '어르신 연결' }),
+    ).toHaveAttribute('aria-current', 'page')
+    expect(within(topMenu).queryByRole('link', { name: '설정' })).toBeNull()
+    expect(
+      screen.queryByRole('link', { name: '김하나님 가족 계정' }),
+    ).toBeNull()
     expect(screen.getByText('김영자님')).toBeInTheDocument()
     expect(screen.getByText('승인 완료')).toBeInTheDocument()
     expect(
