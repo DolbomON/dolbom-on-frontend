@@ -188,10 +188,10 @@ export function RoleMypagePage({ role }: RoleMypagePageProps) {
   }
 
   return (
-    <main className="min-h-svh overflow-x-hidden bg-[#eef6ff] text-[#071747] lg:grid lg:place-items-center lg:p-3">
+    <main className="min-h-svh overflow-x-hidden bg-[#eef6ff] text-[#071747] lg:grid lg:place-items-center lg:p-[12px]">
       <div className="mx-auto min-h-svh w-full max-w-[520px] bg-[#f8fbff] shadow-[0_24px_80px_rgba(42,96,184,0.12)] lg:min-h-[calc(100svh-24px)] lg:max-w-[1120px] lg:overflow-hidden lg:rounded-[28px]">
         <header className="sticky top-0 z-20 border-b border-[#dfe8f5] bg-white/95 backdrop-blur lg:static">
-          <div className="flex min-h-[72px] items-center justify-between gap-3 px-5 lg:min-h-[68px] lg:px-8">
+          <div className="flex min-h-[72px] items-center justify-between gap-3 px-5 lg:min-h-16 lg:px-8">
             <Link
               to={config.backTo}
               className="inline-flex min-h-11 items-center rounded-lg text-[29px] font-black leading-none text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
@@ -208,37 +208,37 @@ export function RoleMypagePage({ role }: RoleMypagePageProps) {
           </div>
         </header>
 
-        <div className="px-5 pb-[max(28px,env(safe-area-inset-bottom))] pt-7 lg:px-8 lg:py-6">
+        <div className="px-5 pb-[max(28px,env(safe-area-inset-bottom))] pt-7 lg:px-8 lg:py-5">
           <section aria-labelledby={`${role}-mypage-title`}>
             <h1
               id={`${role}-mypage-title`}
-              className="text-[34px] font-black leading-tight text-[#071747] lg:text-[38px]"
+              className="text-[34px] font-black leading-tight text-[#071747] lg:text-[36px]"
             >
               마이페이지
             </h1>
-            <p className="mt-3 break-keep text-[17px] font-semibold leading-snug text-[#4e596c] lg:text-[18px]">
+            <p className="mt-3 break-keep text-[17px] font-semibold leading-snug text-[#4e596c]">
               {config.description}
             </p>
           </section>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,0.96fr)_minmax(0,1.04fr)] lg:gap-7">
+          <div className="mt-6 grid gap-6 lg:mt-5 lg:grid-cols-[minmax(0,0.96fr)_minmax(0,1.04fr)] lg:gap-5">
             <div className="min-w-0">
               <section
-                className="rounded-[22px] border border-[#d9e5f4] bg-white p-4 shadow-[0_16px_34px_rgba(47,86,145,0.1)] lg:p-5"
+                className="rounded-[22px] border border-[#d9e5f4] bg-white p-4 shadow-[0_16px_34px_rgba(47,86,145,0.1)]"
                 aria-label={`${config.roleLabel} 프로필`}
               >
                 <div className="flex items-center gap-4 max-[359px]:flex-col max-[359px]:items-start lg:gap-5">
                   <img
                     src={config.avatarSrc}
                     alt=""
-                    className="h-20 w-20 shrink-0 rounded-full bg-[#eaf4ff] object-cover shadow-[0_10px_24px_rgba(42,96,184,0.14)] lg:h-24 lg:w-24"
+                    className="h-20 w-20 shrink-0 rounded-full bg-[#eaf4ff] object-cover shadow-[0_10px_24px_rgba(42,96,184,0.14)] lg:h-[88px] lg:w-[88px]"
                     draggable="false"
                   />
                   <div className="min-w-0">
-                    <p className="text-[25px] font-black leading-tight text-[#071747] lg:text-[30px]">
+                    <p className="text-[25px] font-black leading-tight text-[#071747] lg:text-[28px]">
                       {config.name}
                     </p>
-                    <p className="mt-1 text-[16px] font-bold leading-tight text-[#53627a] lg:text-[17px]">
+                    <p className="mt-1 text-[16px] font-bold leading-tight text-[#53627a]">
                       {config.roleLabel}
                     </p>
                     <button
@@ -262,14 +262,14 @@ export function RoleMypagePage({ role }: RoleMypagePageProps) {
                   <article
                     key={metric.label}
                     className={cn(
-                      'min-h-[86px] rounded-[18px] px-3 py-3 text-center shadow-[0_12px_24px_rgba(47,86,145,0.08)] lg:min-h-[92px] lg:py-4',
+                      'min-h-[86px] rounded-[18px] px-3 py-3 text-center shadow-[0_12px_24px_rgba(47,86,145,0.08)] lg:min-h-[84px]',
                       metricToneClasses[metric.tone],
                     )}
                   >
-                    <p className="text-[14px] font-black leading-tight lg:text-[15px]">
+                    <p className="text-[14px] font-black leading-tight">
                       {metric.label}
                     </p>
-                    <p className="mt-3 text-[24px] font-black leading-none lg:text-[28px]">
+                    <p className="mt-3 text-[24px] font-black leading-none lg:text-[26px]">
                       {metric.value}
                     </p>
                   </article>
@@ -282,7 +282,7 @@ export function RoleMypagePage({ role }: RoleMypagePageProps) {
               >
                 <h2
                   id={`${role}-settings-title`}
-                  className="text-[24px] font-black leading-tight text-[#071747] lg:text-[27px]"
+                  className="text-[24px] font-black leading-tight text-[#071747] lg:text-[25px]"
                 >
                   마이페이지 설정
                 </h2>
@@ -291,7 +291,7 @@ export function RoleMypagePage({ role }: RoleMypagePageProps) {
                   {config.settings.map((setting) => (
                     <label
                       key={setting}
-                      className="flex min-h-[62px] items-center justify-between gap-4 border-b border-[#e6edf6] px-4 py-3 last:border-b-0 lg:min-h-[58px]"
+                      className="flex min-h-[62px] items-center justify-between gap-4 border-b border-[#e6edf6] px-4 py-3 last:border-b-0 lg:min-h-[54px] lg:py-2"
                     >
                       <span className="break-keep text-[17px] font-black leading-tight text-[#1f2d44]">
                         {setting}
@@ -317,7 +317,7 @@ export function RoleMypagePage({ role }: RoleMypagePageProps) {
                       <Link
                         key={item.title}
                         to={item.href}
-                        className="grid min-h-[76px] grid-cols-[48px_minmax(0,1fr)_28px] items-center gap-3 rounded-[18px] border border-[#dfe7f2] bg-white px-4 py-3 shadow-[0_12px_26px_rgba(47,86,145,0.08)] transition hover:bg-[#f8fbff] active:scale-[0.995] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] lg:min-h-[80px]"
+                        className="grid min-h-[76px] grid-cols-[48px_minmax(0,1fr)_28px] items-center gap-3 rounded-[18px] border border-[#dfe7f2] bg-white px-4 py-3 shadow-[0_12px_26px_rgba(47,86,145,0.08)] transition hover:bg-[#f8fbff] active:scale-[0.995] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] lg:min-h-[74px]"
                       >
                         <span className="grid h-12 w-12 place-items-center rounded-[14px] bg-[#edf6ff] text-[#0867f2]">
                           <Icon aria-hidden="true" className="h-7 w-7" />
