@@ -239,7 +239,7 @@ export function FamilyStatusPage() {
   const navigate = useNavigate()
 
   function handleMenuClick() {
-    navigate('/select-role')
+    navigate('/family/mypage')
   }
 
   return (
@@ -254,7 +254,7 @@ export function FamilyStatusPage() {
           <button
             className="inline-grid h-11 w-11 place-items-center rounded-md text-[#071747] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="메뉴 열기"
+            aria-label="마이페이지 열기"
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={38} strokeWidth={2.8} />

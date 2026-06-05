@@ -118,8 +118,7 @@ export function ElderLivingEnvironmentPage() {
     )
 
   function handleMenuClick() {
-    // TODO: Open the senior onboarding menu when navigation items are defined.
-    console.info('Senior check menu is not implemented yet.')
+    navigate('/elder/mypage')
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -160,7 +159,7 @@ export function ElderLivingEnvironmentPage() {
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="메뉴 열기"
+            aria-label="마이페이지 열기"
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={42} strokeWidth={2.8} />

@@ -27,8 +27,8 @@ describe('FamilyConnectPage', () => {
     ).toHaveAttribute('aria-current', 'page')
     expect(within(topMenu).queryByRole('link', { name: '설정' })).toBeNull()
     expect(
-      screen.queryByRole('link', { name: '김하나님 가족 계정' }),
-    ).toBeNull()
+      screen.getByRole('link', { name: '김하나님 가족 계정' }),
+    ).toHaveAttribute('href', '/family/mypage')
     expect(screen.getByText('김영자님')).toBeInTheDocument()
     expect(screen.getByText('승인 완료')).toBeInTheDocument()
     expect(

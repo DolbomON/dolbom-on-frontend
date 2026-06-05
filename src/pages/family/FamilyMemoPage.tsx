@@ -197,7 +197,7 @@ export function FamilyMemoPage() {
   const navigate = useNavigate()
 
   function handleMenuClick() {
-    navigate('/select-role')
+    navigate('/family/mypage')
   }
 
   return (
@@ -221,7 +221,7 @@ export function FamilyMemoPage() {
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-[16px] bg-[#eef2f8] text-[#596273] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="메뉴 열기"
+            aria-label="마이페이지 열기"
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={34} strokeWidth={2.65} />

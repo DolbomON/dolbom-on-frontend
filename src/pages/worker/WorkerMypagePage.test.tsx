@@ -46,7 +46,11 @@ describe('WorkerMypagePage', () => {
     expect(
       screen.getByRole('button', { name: '설정 저장' }),
     ).toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: '마이페이지' })).toBeNull()
+    expect(screen.getByRole('link', { name: '마이페이지' })).toHaveAttribute(
+      'href',
+      '/worker/mypage',
+    )
+    expect(screen.queryByRole('navigation', { name: '하단 메뉴' })).toBeNull()
   })
 
   it('keeps not-yet-implemented actions safe', async () => {

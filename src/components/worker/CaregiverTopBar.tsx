@@ -7,13 +7,22 @@ type CaregiverTopNavLabel = (typeof caregiverTopNavItems)[number]['label']
 
 type CaregiverTopBarProps = {
   activeLabel?: CaregiverTopNavLabel
+  sticky?: boolean
 }
 
 const caregiverProfileSrc = '/assets/dolbomon/worker-dashboard/요양사.png'
 
-export function CaregiverTopBar({ activeLabel }: CaregiverTopBarProps) {
+export function CaregiverTopBar({
+  activeLabel,
+  sticky = true,
+}: CaregiverTopBarProps) {
   return (
-    <header className="sticky top-0 z-40 border-b border-[#dde7f4] bg-white/96 shadow-[0_5px_18px_rgba(35,73,128,0.07)] backdrop-blur">
+    <header
+      className={cn(
+        'z-40 border-b border-[#dde7f4] bg-white/96 shadow-[0_5px_18px_rgba(35,73,128,0.07)] backdrop-blur',
+        sticky ? 'sticky top-0' : 'relative',
+      )}
+    >
       <div className="mx-auto grid min-h-[74px] w-full max-w-[1800px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 py-2 lg:grid-cols-[196px_minmax(0,1fr)_auto] lg:px-10">
         <Link
           to="/caregiver"
@@ -65,9 +74,9 @@ export function CaregiverTopBar({ activeLabel }: CaregiverTopBarProps) {
           </div>
 
           <Link
-            to="/caregiver"
+            to="/caregiver/mypage"
             className="hidden min-h-10 items-center gap-2 rounded-lg px-1.5 py-1 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[560px]:inline-flex"
-            aria-label="김민수 요양사 프로필 보기"
+            aria-label="김민수 요양사 마이페이지"
           >
             <img
               src={caregiverProfileSrc}

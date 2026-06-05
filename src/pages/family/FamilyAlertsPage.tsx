@@ -128,7 +128,7 @@ function Logo() {
 function SummaryCard({ summary }: { summary: AlertSummary }) {
   return (
     <article
-      className="flex min-h-[74px] min-w-0 items-center gap-1.5 rounded-[18px] border border-[#dfe5ee] bg-white px-2 py-1.5 shadow-[0_10px_22px_rgba(32,66,112,0.12)]"
+      className="flex min-h-[102px] min-w-0 flex-col items-center justify-center gap-1 rounded-[18px] border border-[#dfe5ee] bg-white px-1.5 py-2 text-center shadow-[0_10px_22px_rgba(32,66,112,0.12)]"
       aria-label={`${summary.label} ${summary.value}`}
     >
       <img
@@ -136,17 +136,17 @@ function SummaryCard({ summary }: { summary: AlertSummary }) {
         alt=""
         width="1024"
         height="1024"
-        className="h-[50px] w-[50px] shrink-0 object-contain drop-shadow-[0_7px_10px_rgba(43,80,132,0.18)]"
+        className="h-[44px] w-[44px] shrink-0 object-contain drop-shadow-[0_7px_10px_rgba(43,80,132,0.18)] min-[390px]:h-[50px] min-[390px]:w-[50px]"
         aria-hidden="true"
         draggable="false"
       />
-      <span className="min-w-0">
-        <span className="block whitespace-nowrap text-[16px] font-black leading-none text-[#071747]">
+      <span className="block w-full min-w-0">
+        <span className="block truncate text-[15px] font-black leading-none text-[#071747] min-[390px]:text-[16px]">
           {summary.label}
         </span>
         <strong
           className={cn(
-            'mt-1.5 block whitespace-nowrap text-[29px] font-black leading-none',
+            'mt-1 block truncate text-[27px] font-black leading-none min-[390px]:text-[29px]',
             summaryToneClasses[summary.tone],
           )}
         >
@@ -297,7 +297,7 @@ export function FamilyAlertsPage() {
   }, [activeFilter])
 
   function handleMenuClick() {
-    navigate('/select-role')
+    navigate('/family/mypage')
   }
 
   return (
@@ -312,7 +312,7 @@ export function FamilyAlertsPage() {
           <button
             className="inline-grid h-10 w-10 place-items-center rounded-md text-[#071747] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="메뉴 열기"
+            aria-label="마이페이지 열기"
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={38} strokeWidth={2.6} />

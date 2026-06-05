@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
+import { RoleMypagePage } from '../pages/RoleMypagePage'
 import { CaregiverAssignmentsPage } from '../pages/caregiver/CaregiverAssignmentsPage'
 import { CaregiverDashboardPage } from '../pages/caregiver/CaregiverDashboardPage'
 import { CaregiverVisitRecordsPage } from '../pages/caregiver/CaregiverVisitRecordsPage'
@@ -41,6 +42,7 @@ import { WorkerDashboardPage } from '../pages/worker/WorkerDashboardPage'
 import { WorkerElderDetailPage } from '../pages/worker/WorkerElderDetailPage'
 import { WorkerConsultationsPage } from '../pages/worker/WorkerConsultationsPage'
 import { WorkerMemoCreatePage } from '../pages/worker/WorkerMemoCreatePage'
+import { WorkerMypagePage } from '../pages/worker/WorkerMypagePage'
 import { WorkerPortfolioPage } from '../pages/worker/WorkerPortfolioPage'
 import { WorkerReportsPage } from '../pages/worker/WorkerReportsPage'
 import { WorkerSchedulesPage } from '../pages/worker/WorkerSchedulesPage'
@@ -143,6 +145,10 @@ export const router = createBrowserRouter([
     element: <ElderCareTeamPage />,
   },
   {
+    path: '/elder/mypage',
+    element: <RoleMypagePage role="elder" />,
+  },
+  {
     path: '/family',
     element: <FamilyDashboardPage />,
   },
@@ -167,6 +173,10 @@ export const router = createBrowserRouter([
     element: <FamilyConnectPage />,
   },
   {
+    path: '/family/mypage',
+    element: <RoleMypagePage role="family" />,
+  },
+  {
     path: '/caregiver',
     element: <CaregiverDashboardPage />,
   },
@@ -181,6 +191,10 @@ export const router = createBrowserRouter([
   {
     path: '/caregiver/records',
     element: <CaregiverVisitRecordsPage />,
+  },
+  {
+    path: '/caregiver/mypage',
+    element: <RoleMypagePage role="caregiver" />,
   },
   {
     path: '/caregiver/elders/:elderId',
@@ -252,6 +266,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '/worker/mypage',
-    element: <Navigate replace to="/worker" />,
+    element: <WorkerMypagePage />,
   },
 ])

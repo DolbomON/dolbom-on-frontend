@@ -99,10 +99,10 @@ function TopNavigation() {
           })}
         </nav>
 
-        <div
-          className="col-start-2 row-start-1 inline-flex min-h-11 items-center gap-3 justify-self-end py-1 pl-1 pr-2 lg:col-start-3"
+        <Link
+          to="/family/mypage"
+          className="col-start-2 row-start-1 inline-flex min-h-11 items-center gap-3 justify-self-end rounded-lg py-1 pl-1 pr-2 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] lg:col-start-3"
           aria-label="김하나님 가족 계정"
-          role="group"
         >
           <img
             src={familyProfileSrc}
@@ -125,7 +125,7 @@ function TopNavigation() {
             className="hidden h-4 w-4 text-[#33415f] sm:block"
             strokeWidth={2.8}
           />
-        </div>
+        </Link>
       </div>
     </header>
   )

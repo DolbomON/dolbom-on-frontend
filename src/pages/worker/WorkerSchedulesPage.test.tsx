@@ -38,8 +38,8 @@ describe('WorkerSchedulesPage', () => {
       ).queryByRole('link', { name: '설정' }),
     ).toBeNull()
     expect(
-      screen.queryByRole('link', { name: '이수진 복지사 프로필 보기' }),
-    ).toBeNull()
+      screen.getByRole('link', { name: '이수진 복지사 마이페이지' }),
+    ).toHaveAttribute('href', '/worker/mypage')
     expect(screen.getByText('2024년 5월 15일 (수) 일정')).toBeInTheDocument()
   })
 

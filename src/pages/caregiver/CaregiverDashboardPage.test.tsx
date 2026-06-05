@@ -97,6 +97,9 @@ describe('CaregiverDashboardPage', () => {
       within(caregiverMenu).getByRole('link', { name: '담당어르신' }),
     ).toHaveAttribute('href', '/caregiver/elders/kim-yeongja')
     expect(
+      within(caregiverMenu).getByRole('link', { name: '어르신연결' }),
+    ).toHaveAttribute('href', '/caregiver/connect')
+    expect(
       within(caregiverMenu).getByRole('link', { name: '방문기록' }),
     ).toHaveAttribute('href', '/caregiver/records')
     expect(
@@ -120,6 +123,9 @@ describe('CaregiverDashboardPage', () => {
     expect(
       within(caregiverMenu).queryAllByRole('link', { name: '가족메모' }),
     ).toHaveLength(0)
+    expect(
+      screen.getByRole('link', { name: '김민수 요양사 마이페이지' }),
+    ).toHaveAttribute('href', '/caregiver/mypage')
     expect(screen.queryByRole('navigation', { name: '하단 메뉴' })).toBeNull()
   })
 

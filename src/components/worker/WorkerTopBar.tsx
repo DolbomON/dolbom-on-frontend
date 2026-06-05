@@ -87,10 +87,10 @@ export function WorkerTopBar({
             {notificationContent}
           </div>
 
-          <div
-            className="hidden min-h-11 items-center gap-3 rounded-lg py-1 pl-1 pr-2 min-[560px]:inline-flex"
-            aria-label="이수진 복지사"
-            role="group"
+          <Link
+            to="/worker/mypage"
+            className="hidden min-h-11 items-center gap-3 rounded-lg py-1 pl-1 pr-2 transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[560px]:inline-flex"
+            aria-label="이수진 복지사 마이페이지"
           >
             <img
               src={workerProfileSrc}
@@ -106,7 +106,7 @@ export function WorkerTopBar({
               className="hidden h-4 w-4 text-[#33415f] sm:block"
               strokeWidth={2.8}
             />
-          </div>
+          </Link>
         </div>
       </div>
     </header>

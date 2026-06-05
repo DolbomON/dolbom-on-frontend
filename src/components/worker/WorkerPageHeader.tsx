@@ -1,4 +1,4 @@
-import { Menu } from 'lucide-react'
+import { Menu, UserRound } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 type WorkerPageHeaderProps = {
@@ -17,14 +17,24 @@ export function WorkerPageHeader({ onMenuClick }: WorkerPageHeaderProps) {
           돌봄<span className="font-black">ON</span>
         </Link>
 
-        <button
-          type="button"
-          className="inline-grid min-h-11 min-w-11 place-items-center rounded-full text-[#0867f2] transition hover:bg-[#eef6ff] active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-          aria-label="메뉴 열기"
-          onClick={onMenuClick}
-        >
-          <Menu aria-hidden="true" size={34} strokeWidth={3} />
-        </button>
+        {onMenuClick ? (
+          <button
+            type="button"
+            className="inline-grid min-h-11 min-w-11 place-items-center rounded-full text-[#0867f2] transition hover:bg-[#eef6ff] active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            aria-label="메뉴 열기"
+            onClick={onMenuClick}
+          >
+            <Menu aria-hidden="true" size={34} strokeWidth={3} />
+          </button>
+        ) : (
+          <Link
+            to="/worker/mypage"
+            className="inline-grid min-h-11 min-w-11 place-items-center rounded-full text-[#0867f2] transition hover:bg-[#eef6ff] active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
+            aria-label="마이페이지"
+          >
+            <UserRound aria-hidden="true" size={33} strokeWidth={2.8} />
+          </Link>
+        )}
       </div>
     </header>
   )

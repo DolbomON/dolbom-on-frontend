@@ -13,7 +13,7 @@ export function ElderVoiceGuidePage() {
   const [isMuted, setIsMuted] = useState(false)
 
   function handleMenuClick() {
-    navigate('/select-role')
+    navigate('/elder/mypage')
   }
 
   function handleMuteClick() {
@@ -53,7 +53,7 @@ export function ElderVoiceGuidePage() {
           <button
             className="inline-grid h-10 w-10 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="메뉴 열기"
+            aria-label="마이페이지 열기"
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={36} strokeWidth={2.8} />
