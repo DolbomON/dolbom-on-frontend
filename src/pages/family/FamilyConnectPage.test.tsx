@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { FamilyConnectPage } from './FamilyConnectPage'
 
 describe('FamilyConnectPage', () => {
-  it('renders the family elder connection screen', () => {
+  it('renders the family elder connection screen with the family top bar', () => {
     render(
       <MemoryRouter initialEntries={['/family/connect']}>
         <FamilyConnectPage />
@@ -37,5 +37,30 @@ describe('FamilyConnectPage', () => {
     expect(screen.getByText('안심 연결')).toBeInTheDocument()
     expect(screen.getByText('복지사 승인')).toBeInTheDocument()
     expect(screen.getByText('빠른 알림')).toBeInTheDocument()
+  })
+
+  it('uses the caregiver top bar in the caregiver connection route', () => {
+    render(
+      <MemoryRouter initialEntries={['/caregiver/connect']}>
+        <FamilyConnectPage topBarVariant="caregiver" />
+      </MemoryRouter>,
+    )
+
+    const caregiverMenu = screen.getByRole('navigation', {
+      name: '요양사 메뉴',
+    })
+
+    expect(
+      within(caregiverMenu).getByRole('link', { name: '어르신연결' }),
+    ).toHaveAttribute('href', '/caregiver/connect')
+    expect(
+      within(caregiverMenu).getByRole('link', { name: '어르신연결' }),
+    ).toHaveAttribute('aria-current', 'page')
+    expect(
+      screen.getByRole('link', { name: '김민수 요양사 마이페이지' }),
+    ).toHaveAttribute('href', '/caregiver/mypage')
+    expect(
+      screen.queryByRole('navigation', { name: '가족 화면 메뉴' }),
+    ).not.toBeInTheDocument()
   })
 })

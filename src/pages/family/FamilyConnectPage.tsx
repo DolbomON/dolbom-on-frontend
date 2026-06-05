@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { CaregiverTopBar } from '../../components/worker/CaregiverTopBar'
 
 const workerAssetBase = '/assets/dolbomon/worker'
 
@@ -65,7 +66,7 @@ function FamilyLogo() {
   )
 }
 
-function TopNavigation() {
+function FamilyTopNavigation() {
   return (
     <header className="sticky top-0 z-40 overflow-x-hidden border-b border-[#dfe8f5] bg-white/96 shadow-[0_5px_18px_rgba(30,66,118,0.05)] backdrop-blur">
       <div className="mx-auto grid min-h-[72px] w-full max-w-[1600px] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 px-5 py-1 lg:grid-cols-[210px_minmax(0,1fr)_auto] lg:px-8">
@@ -382,10 +383,23 @@ function BenefitsBar() {
   )
 }
 
-export function FamilyConnectPage() {
+type FamilyConnectPageProps = {
+  topBarVariant?: 'caregiver' | 'family'
+}
+
+export function FamilyConnectPage({
+  topBarVariant = 'family',
+}: FamilyConnectPageProps) {
+  const topBar =
+    topBarVariant === 'caregiver' ? (
+      <CaregiverTopBar activeLabel="어르신연결" />
+    ) : (
+      <FamilyTopNavigation />
+    )
+
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#fbfdff] text-[#06143a]">
-      <TopNavigation />
+      {topBar}
 
       <div className="relative mx-auto w-full max-w-[1680px] px-5 pb-8 pt-5 sm:px-8 lg:px-[68px] lg:pb-10">
         <img

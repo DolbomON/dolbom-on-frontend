@@ -197,6 +197,10 @@ export const router = createBrowserRouter([
     element: <RoleMypagePage role="caregiver" />,
   },
   {
+    path: '/caregiver/connect',
+    element: <FamilyConnectPage topBarVariant="caregiver" />,
+  },
+  {
     path: '/caregiver/elders/:elderId',
     element: <WorkerElderDetailPage />,
   },
