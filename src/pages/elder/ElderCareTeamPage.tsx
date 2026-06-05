@@ -4,13 +4,15 @@ import {
   CheckCircle2,
   Copy,
   Eye,
-  Heart,
   Send,
   Users,
   type LucideIcon,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 const welfareAssetBase = '/assets/dolbomon/welfare'
@@ -33,120 +35,106 @@ const chatIconSrc = `${welfareAssetBase}/4.png`
 type NavItem = {
   active?: boolean
   href: string
-  label: string
+  labelKey: TranslationKey
 }
 
 type FamilyMember = {
   avatarSrc: string
-  name: string
-  relation: string
+  nameKey: TranslationKey
+  relationKey: TranslationKey
 }
 
 type TeamRole = {
   avatarSrc: string
-  badge: string
+  badgeKey: TranslationKey
   badgeClassName: string
-  description: string
-  heading: string
+  descriptionKey: TranslationKey
+  headingKey: TranslationKey
   iconSrc: string
-  name: string
+  nameKey: TranslationKey
   propSrc: string
 }
 
 type InfoItem = {
-  description: string
+  descriptionKey?: TranslationKey
   icon?: LucideIcon
   iconClassName?: string
   iconSrc?: string
-  title?: string
+  titleKey?: TranslationKey
 }
 
 const navItems: NavItem[] = [
-  { active: true, href: '/elder/connect', label: '내 돌봄팀' },
+  { active: true, href: '/elder/care-team', labelKey: 'elder.careTeam.title' },
 ]
 
 const familyMembers: FamilyMember[] = [
   {
     avatarSrc: `${workerAssetBase}/딸.png`,
-    name: '이순자',
-    relation: '딸',
+    nameKey: 'elder.careTeam.family.daughter.name',
+    relationKey: 'elder.careTeam.family.daughter.relation',
   },
   {
     avatarSrc: `${workerAssetBase}/아들.png`,
-    name: '박철수',
-    relation: '아들',
+    nameKey: 'elder.careTeam.family.son.name',
+    relationKey: 'elder.careTeam.family.son.relation',
   },
 ]
 
 const teamRoles: TeamRole[] = [
   {
     avatarSrc: socialWorkerSrc,
-    badge: '복지사',
+    badgeKey: 'elder.careTeam.role.worker',
     badgeClassName: 'bg-[#efeaff] text-[#654ee9]',
-    description: '전체 관리 및 연결 지원',
-    heading: '담당 복지사',
+    descriptionKey: 'elder.careTeam.worker.description',
+    headingKey: 'elder.careTeam.worker.heading',
     iconSrc: socialWorkerSrc,
-    name: '이수진',
+    nameKey: 'elder.careTeam.worker.name',
     propSrc: laptopSrc,
   },
   {
     avatarSrc: caregiverSrc,
-    badge: '요양사',
+    badgeKey: 'elder.careTeam.role.caregiver',
     badgeClassName: 'bg-[#dff8e8] text-[#0a8f53]',
-    description: '방문 돌봄 및 생활 지원',
-    heading: '담당 요양사',
+    descriptionKey: 'elder.careTeam.caregiver.description',
+    headingKey: 'elder.careTeam.caregiver.heading',
     iconSrc: caregiverSrc,
-    name: '김민수',
+    nameKey: 'elder.careTeam.caregiver.name',
     propSrc: caregiverPropsSrc,
   },
 ]
 
 const infoItems: InfoItem[] = [
   {
-    description: '',
     iconSrc: infoShieldSrc,
-    title: '정보 공유 안내',
+    titleKey: 'elder.careTeam.info.title',
   },
   {
-    description: '연결된 가족만 오늘 상태와 알림을 볼 수 있어요.',
+    descriptionKey: 'elder.careTeam.info.familyOnly',
     iconSrc: eyeIconSrc,
   },
   {
-    description: '담당 복지사와 요양사는 돌봄을 위해 필요한 정보만 확인해요.',
+    descriptionKey: 'elder.careTeam.info.staff',
     iconSrc: lockIconSrc,
   },
   {
-    description: '연결 정보는 언제든 관리자가 조정할 수 있어요.',
+    descriptionKey: 'elder.careTeam.info.adjust',
     iconSrc: sliderIconSrc,
   },
   {
-    description: '궁금한 점이 있으면 담당 복지사에게 문의하세요.',
+    descriptionKey: 'elder.careTeam.info.contact',
     iconSrc: chatIconSrc,
   },
 ]
 
 function Logo() {
-  return (
-    <Link
-      to="/elder"
-      className="inline-flex min-h-12 items-center gap-2 rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-      aria-label="돌봄ON 홈"
-    >
-      <span className="grid h-10 w-10 place-items-center rounded-[12px] bg-[#0867f2] text-white shadow-[0_8px_18px_rgba(8,103,242,0.18)]">
-        <Heart
-          aria-hidden="true"
-          className="h-7 w-7 fill-current"
-          strokeWidth={3}
-        />
-      </span>
-      <span className="whitespace-nowrap text-[30px] font-black leading-none tracking-normal lg:text-[38px]">
-        돌봄ON
-      </span>
-    </Link>
-  )
+  const { t } = useI18n()
+
+  return <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
 }
 
 function TopNavigation() {
+  const { t } = useI18n()
+
   return (
     <header className="sticky top-0 z-40 border-b border-[#dce5f1] bg-white/96 shadow-[0_5px_18px_rgba(35,73,128,0.06)] backdrop-blur">
       <div className="mx-auto grid min-h-[74px] w-full max-w-[1800px] grid-cols-[auto_auto] items-center gap-x-4 gap-y-2 px-5 lg:grid-cols-[300px_minmax(0,1fr)_auto] lg:px-8">
@@ -154,11 +142,11 @@ function TopNavigation() {
 
         <nav
           className="col-span-2 row-start-2 flex min-w-0 justify-start overflow-visible pb-2 text-[16px] font-extrabold text-[#0c1531] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:justify-center lg:pb-0"
-          aria-label="어르신 돌봄 메뉴"
+          aria-label={t('elder.careTeam.navAria')}
         >
           {navItems.map((item) => (
             <Link
-              key={item.label}
+              key={item.labelKey}
               to={item.href}
               className={cn(
                 'relative inline-flex min-h-12 shrink-0 items-center justify-center rounded-md px-2 transition hover:text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] lg:min-h-[74px]',
@@ -166,7 +154,7 @@ function TopNavigation() {
               )}
               aria-current={item.active ? 'page' : undefined}
             >
-              {item.label}
+              {t(item.labelKey)}
               <span
                 className={cn(
                   'absolute bottom-0 left-1 right-1 h-1 rounded-full bg-[#0867f2]',
@@ -182,14 +170,14 @@ function TopNavigation() {
           <Link
             to="/elder"
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#dfe7f2] bg-white px-4 text-[15px] font-black text-[#071747] shadow-[0_8px_20px_rgba(48,82,132,0.08)] transition hover:bg-[#f1f6ff] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] sm:min-h-12 sm:px-5 sm:text-[16px]"
-            aria-label="어르신 홈으로 되돌아가기"
+            aria-label={t('elder.careTeam.backAria')}
           >
             <ArrowLeft
               aria-hidden="true"
               className="h-5 w-5"
               strokeWidth={2.7}
             />
-            되돌아가기
+            {t('elder.careTeam.back')}
           </Link>
         </div>
       </div>
@@ -200,12 +188,14 @@ function TopNavigation() {
 function HeroMetric({
   count,
   iconSrc,
-  label,
+  labelKey,
 }: {
   count: string
   iconSrc: string
-  label: string
+  labelKey: TranslationKey
 }) {
+  const { t } = useI18n()
+
   return (
     <span className="inline-flex min-h-[74px] min-w-[160px] items-center justify-center gap-3 rounded-[12px] border border-[#e5edf7] bg-white/92 px-4 shadow-[0_12px_24px_rgba(43,86,150,0.08)]">
       <img
@@ -217,7 +207,7 @@ function HeroMetric({
       />
       <span className="text-left">
         <span className="block text-[16px] font-extrabold leading-tight text-[#253653]">
-          {label}
+          {t(labelKey)}
         </span>
         <strong className="block text-[27px] font-black leading-none text-[#071747]">
           {count}
@@ -228,6 +218,8 @@ function HeroMetric({
 }
 
 function PrivacyHero() {
+  const { t } = useI18n()
+
   return (
     <section
       className="relative min-h-[230px] overflow-hidden rounded-[14px] border border-[#cfe0f6] bg-[linear-gradient(105deg,#f9fcff_0%,#eef7ff_54%,#f8fbff_100%)] shadow-[0_14px_34px_rgba(44,91,157,0.09)] md:h-[270px]"
@@ -249,17 +241,30 @@ function PrivacyHero() {
             id="care-team-privacy-title"
             className="break-keep text-[31px] font-black leading-tight text-[#071747] lg:text-[36px]"
           >
-            내 정보는 연결된 가족과 <br className="hidden sm:block" />
-            담당자에게만 공유돼요.
+            {t('elder.careTeam.hero.line1')}{' '}
+            <br className="hidden sm:block" />
+            {t('elder.careTeam.hero.line2')}
           </h2>
 
           <div
             className="mt-6 flex flex-wrap gap-5"
-            aria-label="돌봄팀 연결 요약"
+            aria-label={t('elder.careTeam.hero.metricsAria')}
           >
-            <HeroMetric count="2명" iconSrc={familyIconSrc} label="가족" />
-            <HeroMetric count="1명" iconSrc={socialWorkerSrc} label="복지사" />
-            <HeroMetric count="1명" iconSrc={caregiverSrc} label="요양사" />
+            <HeroMetric
+              count={t('elder.careTeam.metric.familyCount')}
+              iconSrc={familyIconSrc}
+              labelKey="elder.careTeam.metric.family"
+            />
+            <HeroMetric
+              count={t('elder.careTeam.metric.workerCount')}
+              iconSrc={socialWorkerSrc}
+              labelKey="elder.careTeam.metric.worker"
+            />
+            <HeroMetric
+              count={t('elder.careTeam.metric.caregiverCount')}
+              iconSrc={caregiverSrc}
+              labelKey="elder.careTeam.metric.caregiver"
+            />
           </div>
         </div>
 
@@ -356,6 +361,8 @@ function PermissionPill({
 }
 
 function FamilyMemberRow({ member }: { member: FamilyMember }) {
+  const { t } = useI18n()
+
   return (
     <article className="grid min-h-[104px] grid-cols-[74px_minmax(0,1fr)_32px] items-center gap-4 rounded-[12px] border border-[#e3eaf4] bg-white px-4 py-3 shadow-[0_8px_20px_rgba(35,68,116,0.05)]">
       <img
@@ -369,22 +376,24 @@ function FamilyMemberRow({ member }: { member: FamilyMember }) {
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
           <strong className="text-[23px] font-black leading-tight text-[#071747]">
-            {member.name}
+            {t(member.nameKey)}
           </strong>
           <span className="inline-flex min-h-7 items-center rounded-full bg-[#eaf3ff] px-3 text-[14px] font-black leading-none text-[#0867f2]">
-            {member.relation}
+            {t(member.relationKey)}
           </span>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
-          <PermissionPill icon={Eye}>상태 요약 보기 가능</PermissionPill>
+          <PermissionPill icon={Eye}>
+            {t('elder.careTeam.permission.status')}
+          </PermissionPill>
           <PermissionPill icon={Bell} tone="green">
-            알림 수신 중
+            {t('elder.careTeam.permission.notification')}
           </PermissionPill>
         </div>
       </div>
 
       <CheckCircle2
-        aria-label="연결 완료"
+        aria-label={t('elder.careTeam.connectedAria')}
         className="h-8 w-8 text-[#14a34a]"
         strokeWidth={2.6}
       />
@@ -393,18 +402,20 @@ function FamilyMemberRow({ member }: { member: FamilyMember }) {
 }
 
 function FamilyCard() {
+  const { t } = useI18n()
+
   return (
     <SectionCard
       className="min-h-[360px] xl:h-[360px]"
       titleId="connected-family-title"
     >
       <CardTitle id="connected-family-title" iconSrc={familyIconSrc}>
-        가족
+        {t('elder.careTeam.metric.family')}
       </CardTitle>
 
       <div className="mt-4 grid gap-3">
         {familyMembers.map((member) => (
-          <FamilyMemberRow key={member.name} member={member} />
+          <FamilyMemberRow key={member.nameKey} member={member} />
         ))}
       </div>
     </SectionCard>
@@ -412,13 +423,15 @@ function FamilyCard() {
 }
 
 function TeamRoleCard({ role }: { role: TeamRole }) {
+  const { t } = useI18n()
+
   return (
     <SectionCard
       className="min-h-[360px] xl:h-[360px]"
-      titleId={`${role.name}-title`}
+      titleId={`${role.nameKey}-title`}
     >
-      <CardTitle id={`${role.name}-title`} iconSrc={role.iconSrc}>
-        {role.heading}
+      <CardTitle id={`${role.nameKey}-title`} iconSrc={role.iconSrc}>
+        {t(role.headingKey)}
       </CardTitle>
 
       <article className="mt-5 flex min-h-[265px] flex-col items-center justify-between text-center">
@@ -432,7 +445,7 @@ function TeamRoleCard({ role }: { role: TeamRole }) {
           />
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
             <strong className="text-[24px] font-black leading-tight text-[#071747]">
-              {role.name}
+              {t(role.nameKey)}
             </strong>
             <span
               className={cn(
@@ -440,11 +453,11 @@ function TeamRoleCard({ role }: { role: TeamRole }) {
                 role.badgeClassName,
               )}
             >
-              {role.badge}
+              {t(role.badgeKey)}
             </span>
           </div>
           <p className="mt-3 break-keep text-[16px] font-bold leading-tight text-[#53627a]">
-            {role.description}
+            {t(role.descriptionKey)}
           </p>
         </div>
 
@@ -461,6 +474,8 @@ function TeamRoleCard({ role }: { role: TeamRole }) {
 }
 
 function InviteCodeCard() {
+  const { t } = useI18n()
+
   return (
     <SectionCard
       className="min-h-[382px] p-5 xl:h-[382px]"
@@ -478,7 +493,7 @@ function InviteCodeCard() {
           id="family-invite-title"
           className="break-keep text-[21px] font-black leading-tight text-[#071747]"
         >
-          가족에게 초대코드 보내기
+          {t('elder.careTeam.invite.title')}
         </h2>
       </div>
 
@@ -489,7 +504,7 @@ function InviteCodeCard() {
       </div>
 
       <p className="mx-auto mt-3 max-w-[300px] break-keep text-center text-[16px] font-bold leading-snug text-[#52617a]">
-        가족이 이 코드를 입력하면 담당 복지사 승인 후 연결돼요.
+        {t('elder.careTeam.invite.description')}
       </p>
 
       <div className="mt-3 grid gap-3">
@@ -498,14 +513,14 @@ function InviteCodeCard() {
           className="inline-flex min-h-[52px] w-full items-center justify-center gap-3 rounded-[8px] bg-[#0867f2] px-4 text-[19px] font-black leading-none text-white shadow-[0_14px_28px_rgba(8,103,242,0.23)] transition hover:bg-[#005cdf] active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
         >
           <Send aria-hidden="true" className="h-6 w-6" strokeWidth={2.8} />
-          초대코드 보내기
+          {t('elder.careTeam.invite.send')}
         </button>
         <button
           type="button"
           className="inline-flex min-h-[46px] w-full items-center justify-center gap-3 rounded-[8px] border-2 border-[#0867f2] bg-white px-4 text-[17px] font-black leading-none text-[#0867f2] transition hover:bg-[#f2f7ff] active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
         >
           <Copy aria-hidden="true" className="h-6 w-6" strokeWidth={2.7} />
-          코드 복사
+          {t('elder.careTeam.invite.copy')}
         </button>
       </div>
     </SectionCard>
@@ -520,6 +535,7 @@ function InfoItemCard({
   showDivider: boolean
 }) {
   const Icon = item.icon
+  const { t } = useI18n()
 
   return (
     <article className="relative flex min-h-[88px] items-center gap-4 px-4 py-3">
@@ -540,13 +556,13 @@ function InfoItemCard({
       ) : null}
 
       <div className="min-w-0">
-        {item.title ? (
+        {item.titleKey ? (
           <h2 className="text-[21px] font-black leading-tight text-[#071747]">
-            {item.title}
+            {t(item.titleKey)}
           </h2>
         ) : (
           <p className="break-keep text-[16px] font-bold leading-snug text-[#34415d]">
-            {item.description}
+            {item.descriptionKey ? t(item.descriptionKey) : ''}
           </p>
         )}
       </div>
@@ -562,14 +578,16 @@ function InfoItemCard({
 }
 
 function InfoBar() {
+  const { t } = useI18n()
+
   return (
     <section
       className="grid rounded-[14px] border border-[#dfe7f2] bg-white shadow-[0_14px_34px_rgba(40,76,132,0.08)] md:grid-cols-2 lg:grid-cols-[1.12fr_1.4fr_1.55fr_1.4fr_1.45fr]"
-      aria-label="정보 공유 안내"
+      aria-label={t('elder.careTeam.info.title')}
     >
       {infoItems.map((item, index) => (
         <InfoItemCard
-          key={item.title ?? item.description}
+          key={item.titleKey ?? item.descriptionKey}
           item={item}
           showDivider={index < infoItems.length - 1}
         />
@@ -579,6 +597,8 @@ function InfoBar() {
 }
 
 export function ElderCareTeamPage() {
+  const { t } = useI18n()
+
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#fbfdff] text-[#071747]">
       <TopNavigation />
@@ -589,10 +609,10 @@ export function ElderCareTeamPage() {
             id="care-team-title"
             className="text-[42px] font-black leading-tight text-[#071747] lg:text-[52px]"
           >
-            내 돌봄팀
+            {t('elder.careTeam.title')}
           </h1>
           <p className="mt-2 break-keep text-[19px] font-bold leading-snug text-[#3f4e68]">
-            누가 내 정보를 보고 있는지 한눈에 확인해보세요.
+            {t('elder.careTeam.description')}
           </p>
         </section>
 
@@ -603,7 +623,7 @@ export function ElderCareTeamPage() {
         <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(470px,1.28fr)_minmax(260px,0.62fr)_minmax(270px,0.66fr)_minmax(360px,0.94fr)]">
           <FamilyCard />
           {teamRoles.map((role) => (
-            <TeamRoleCard key={role.name} role={role} />
+            <TeamRoleCard key={role.nameKey} role={role} />
           ))}
           <InviteCodeCard />
         </div>

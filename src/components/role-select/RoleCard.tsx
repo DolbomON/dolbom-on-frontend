@@ -1,4 +1,5 @@
 import { Check } from 'lucide-react'
+import { useI18n } from '../../lib/i18n/useI18n'
 
 export type RoleOption<TRole extends string> = {
   description: string
@@ -18,6 +19,8 @@ export function RoleCard<TRole extends string>({
   role,
   selected,
 }: RoleCardProps<TRole>) {
+  const { t } = useI18n()
+
   return (
     <button
       className="relative flex min-h-[128px] flex-col items-center justify-center rounded-[18px] border border-[#e7edf5] bg-white/95 px-2 pb-3 pt-3 text-center shadow-[0_14px_28px_rgba(47,82,133,0.1)] transition active:scale-[0.99] aria-pressed:border-[#0867f2] aria-pressed:bg-[#f4f9ff] aria-pressed:shadow-[0_16px_34px_rgba(5,101,242,0.15)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[142px]"
@@ -26,7 +29,7 @@ export function RoleCard<TRole extends string>({
       onClick={onSelect}
     >
       <span className="sr-only">
-        {selected ? '선택됨: ' : ''}
+        {selected ? `${t('role.selectedPrefix')} ` : ''}
         {role.title}
       </span>
       {selected ? (

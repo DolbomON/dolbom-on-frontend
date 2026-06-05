@@ -8,6 +8,8 @@ import type { MedicationAnswer } from '../../components/elder-check/MedicationQu
 import type { MoodAnswer } from '../../components/elder-check/MoodQuestionCard'
 import type { SleepAnswer } from '../../components/elder-check/SleepQuestionCard'
 import type { CompletionSummaryItem } from '../../components/elder-check/CompletionSummaryRow'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 
 const completionIllustrationSrc =
   '/assets/dolbomon/elder-check/completion-illustration.png'
@@ -20,63 +22,69 @@ type DailyCheckRouteState = {
   sleepAnswer?: Exclude<SleepAnswer, null>
 }
 
-const defaultSummaryItems: CompletionSummaryItem[] = [
+type CompletionSummaryItemKeys = {
+  answerKey: TranslationKey
+  id: CompletionSummaryItem['id']
+  labelKey: TranslationKey
+}
+
+const defaultSummaryItems: CompletionSummaryItemKeys[] = [
   {
     id: 'medication',
-    label: '복약',
-    answer: '네, 먹었어요',
+    labelKey: 'elder.check.summary.medication',
+    answerKey: 'elder.check.medication.taken',
   },
   {
     id: 'meal',
-    label: '식사',
-    answer: '네, 했어요',
+    labelKey: 'elder.check.summary.meal',
+    answerKey: 'elder.check.meal.done',
   },
   {
     id: 'discomfort',
-    label: '몸 상태',
-    answer: '없어요',
+    labelKey: 'elder.check.summary.discomfort',
+    answerKey: 'elder.check.discomfort.none',
   },
   {
     id: 'mood',
-    label: '기분',
-    answer: '좋아요',
+    labelKey: 'elder.check.summary.mood',
+    answerKey: 'elder.check.mood.good',
   },
   {
     id: 'sleep',
-    label: '수면',
-    answer: '네, 잘 잤어요',
+    labelKey: 'elder.check.summary.sleep',
+    answerKey: 'elder.check.sleep.sleptWell',
   },
 ]
 
 const medicationAnswerLabels: Record<
   Exclude<MedicationAnswer, null>,
-  string
+  TranslationKey
 > = {
-  not_taken: '아직 못 먹었어요',
-  taken: '네, 먹었어요',
+  not_taken: 'elder.check.medication.notTaken',
+  taken: 'elder.check.medication.taken',
 }
 
-const mealAnswerLabels: Record<Exclude<MealAnswer, null>, string> = {
-  done: '네, 했어요',
-  not_done: '아직 못 했어요',
+const mealAnswerLabels: Record<Exclude<MealAnswer, null>, TranslationKey> = {
+  done: 'elder.check.meal.done',
+  not_done: 'elder.check.meal.notDone',
 }
 
 const discomfortAnswerLabels: Record<
   Exclude<DiscomfortAnswer, null>,
-  string
+  TranslationKey
 > = {
-  has_discomfort: '있어요',
-  none: '없어요',
+  has_discomfort: 'elder.check.discomfort.hasDiscomfort',
+  none: 'elder.check.discomfort.none',
 }
 
-const moodAnswerLabels: Record<Exclude<MoodAnswer, null>, string> = {
-  good: '좋아요',
-  sad: '조금 울적해요',
+const moodAnswerLabels: Record<Exclude<MoodAnswer, null>, TranslationKey> = {
+  good: 'elder.check.mood.good',
+  sad: 'elder.check.mood.sad',
 }
 
-const sleepAnswerLabels: Record<Exclude<SleepAnswer, null>, string> = {
-  slept_well: '네, 잘 잤어요',
-  uncomfortable: '조금 불편했어요',
+const sleepAnswerLabels: Record<Exclude<SleepAnswer, null>, TranslationKey> = {
+  slept_well: 'elder.check.sleep.sleptWell',
+  uncomfortable: 'elder.check.sleep.uncomfortable',
 }
 
 function getDailyCheckRouteState(state: unknown): DailyCheckRouteState {
@@ -89,42 +97,42 @@ function getDailyCheckRouteState(state: unknown): DailyCheckRouteState {
 
 function getCompletionSummaryItems(
   routeState: DailyCheckRouteState,
-): CompletionSummaryItem[] {
+): CompletionSummaryItemKeys[] {
   // TODO: Replace route-state fallbacks with durable daily-check draft persistence,
   // backend submission, risk score calculation, AI summary generation, and alert trigger.
   return defaultSummaryItems.map((item) => {
     if (item.id === 'medication' && routeState.medicationTaken) {
       return {
         ...item,
-        answer: medicationAnswerLabels[routeState.medicationTaken],
+        answerKey: medicationAnswerLabels[routeState.medicationTaken],
       }
     }
 
     if (item.id === 'meal' && routeState.mealAnswer) {
       return {
         ...item,
-        answer: mealAnswerLabels[routeState.mealAnswer],
+        answerKey: mealAnswerLabels[routeState.mealAnswer],
       }
     }
 
     if (item.id === 'discomfort' && routeState.discomfortAnswer) {
       return {
         ...item,
-        answer: discomfortAnswerLabels[routeState.discomfortAnswer],
+        answerKey: discomfortAnswerLabels[routeState.discomfortAnswer],
       }
     }
 
     if (item.id === 'mood' && routeState.moodAnswer) {
       return {
         ...item,
-        answer: moodAnswerLabels[routeState.moodAnswer],
+        answerKey: moodAnswerLabels[routeState.moodAnswer],
       }
     }
 
     if (item.id === 'sleep' && routeState.sleepAnswer) {
       return {
         ...item,
-        answer: sleepAnswerLabels[routeState.sleepAnswer],
+        answerKey: sleepAnswerLabels[routeState.sleepAnswer],
       }
     }
 
@@ -135,8 +143,15 @@ function getCompletionSummaryItems(
 export function ElderCheckCompletePage() {
   const location = useLocation()
   const navigate = useNavigate()
+  const { t } = useI18n()
   const summaryItems = getCompletionSummaryItems(
     getDailyCheckRouteState(location.state),
+  ).map(
+    (item): CompletionSummaryItem => ({
+      answer: t(item.answerKey),
+      id: item.id,
+      label: t(item.labelKey),
+    }),
   )
 
   function handleNotificationClick() {
@@ -156,7 +171,7 @@ export function ElderCheckCompletePage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#102b53]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-[radial-gradient(circle_at_78%_20%,rgba(235,247,255,0.96)_0_16%,transparent_35%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-5 pb-[calc(20px+env(safe-area-inset-bottom))] pt-[12px] shadow-[0_20px_80px_rgba(55,104,184,0.08)]"
-        aria-label="오늘 상태 입력 완료 화면"
+        aria-label={t('elder.check.complete.pageAria')}
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
 
@@ -165,10 +180,10 @@ export function ElderCheckCompletePage() {
             id="greeting"
             className="text-[34px] font-black leading-[1.06] tracking-[-0.075em] text-[#061844]"
           >
-            안녕하세요, 김영자님
+            {t('elder.check.greeting')}
           </h1>
           <p className="mt-1 text-[18px] font-bold leading-[1.2] tracking-[-0.045em] text-[#5b6473]">
-            2024년 5월 16일 (목)
+            {t('elder.check.date')}
           </p>
         </section>
 
@@ -178,7 +193,7 @@ export function ElderCheckCompletePage() {
           <div className="flex shrink-0 items-center gap-2 text-left">
             <img
               src={completionIllustrationSrc}
-              alt="오늘 상태 입력 완료 이미지"
+              alt={t('elder.check.complete.imageAlt')}
               width="305"
               height="160"
               className="h-[78px] w-[98px] shrink-0 rounded-[16px] bg-[#edf6ff] object-contain"
@@ -187,15 +202,17 @@ export function ElderCheckCompletePage() {
             <div className="min-w-0 flex-1">
               <h2
                 className="text-[30px] font-black leading-[1.04] tracking-[-0.075em] text-[#061844]"
-                aria-label="오늘 상태 입력이 완료되었어요"
+                aria-label={t('elder.check.complete.titleAria')}
               >
                 <span className="block whitespace-nowrap">
-                  오늘 상태 입력이
+                  {t('elder.check.complete.titleLine1')}
                 </span>
-                <span className="block whitespace-nowrap">완료되었어요</span>
+                <span className="block whitespace-nowrap">
+                  {t('elder.check.complete.titleLine2')}
+                </span>
               </h2>
               <p className="mt-2 text-[16px] font-bold leading-[1.25] tracking-[-0.045em] text-[#4f5a70]">
-                가족과 복지사가 안부를 확인할 수 있어요.
+                {t('elder.check.complete.description')}
               </p>
             </div>
           </div>
@@ -208,7 +225,7 @@ export function ElderCheckCompletePage() {
               type="button"
               onClick={handleHomeClick}
             >
-              홈으로 가기
+              {t('elder.check.complete.homeCta')}
             </button>
 
             <button
@@ -216,7 +233,7 @@ export function ElderCheckCompletePage() {
               type="button"
               onClick={handleStartChatClick}
             >
-              AI 안부 대화 시작
+              {t('elder.check.complete.chatCta')}
             </button>
           </div>
         </section>

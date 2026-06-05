@@ -5,7 +5,7 @@ import { WorkerWelfareConnectPage } from './WorkerWelfareConnectPage'
 
 function renderWorkerWelfareConnectPage() {
   return render(
-    <MemoryRouter initialEntries={['/worker/welfare-connect']}>
+    <MemoryRouter initialEntries={['/worker/elders/kim-yeongja/care-team']}>
       <WorkerWelfareConnectPage />
     </MemoryRouter>,
   )

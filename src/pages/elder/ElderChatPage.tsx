@@ -1,6 +1,8 @@
 import { ArrowLeft, Mic } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { ElderCheckHeader } from '../../components/elder-check/ElderCheckHeader'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 type ChatRole = 'assistant' | 'user'
@@ -8,33 +10,37 @@ type ChatRole = 'assistant' | 'user'
 type ChatMessage = {
   id: string
   role: ChatRole
-  text: string
+  textKey: TranslationKey
 }
 
 const defaultMessages: ChatMessage[] = [
   {
     id: 'welcome',
     role: 'assistant',
-    text: '안녕하세요, 김영자님.\n오늘 기분은 어떠셨어요?',
+    textKey: 'elder.chat.message.welcome',
   },
   {
     id: 'mood',
     role: 'user',
-    text: '기분은 괜찮았어요.',
+    textKey: 'elder.chat.message.moodAnswer',
   },
   {
     id: 'meal-medication',
     role: 'assistant',
-    text: '식사와 약은 잘 챙기셨나요?',
+    textKey: 'elder.chat.message.mealMedication',
   },
   {
     id: 'meal-medication-answer',
     role: 'user',
-    text: '네, 식사도 했고 약도 먹었어요.',
+    textKey: 'elder.chat.message.mealMedicationAnswer',
   },
 ]
 
-const quickReplies: string[] = ['좋아요', '조금 피곤해요', '도움이 필요해요']
+const quickReplies: TranslationKey[] = [
+  'elder.chat.quick.good',
+  'elder.chat.quick.tired',
+  'elder.chat.quick.needHelp',
+]
 
 const chatInfoImageSrc = '/assets/dolbomon/elder-chat/ai-chat-robot.png'
 const chatAvatarImageSrc = '/assets/dolbomon/image.png'
@@ -56,6 +62,7 @@ function ChatAvatar() {
 }
 
 function ChatBubble({ message }: { message: ChatMessage }) {
+  const { t } = useI18n()
   const isUser = message.role === 'user'
 
   return (
@@ -74,7 +81,7 @@ function ChatBubble({ message }: { message: ChatMessage }) {
             : 'rounded-tl-md bg-[#edf6ff] text-[#061844]',
         )}
       >
-        {message.text}
+        {t(message.textKey)}
       </p>
     </div>
   )
@@ -82,6 +89,7 @@ function ChatBubble({ message }: { message: ChatMessage }) {
 
 export function ElderChatPage() {
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   function handleNotificationClick() {
     // TODO: Open the notification center when notifications are implemented.
@@ -113,7 +121,7 @@ export function ElderChatPage() {
     <main className="h-svh overflow-hidden bg-white text-[#061844]">
       <section
         className="mx-auto flex h-svh w-full max-w-[480px] flex-col overflow-hidden bg-white"
-        aria-label="AI 안부 대화 화면"
+        aria-label={t('elder.chat.aria')}
       >
         <div className="flex-1 overflow-y-auto px-4 pb-[max(18px,env(safe-area-inset-bottom))] pt-[8px] min-[390px]:px-6 min-[390px]:pb-[max(24px,env(safe-area-inset-bottom))] min-[390px]:pt-[10px]">
           <div className="-mx-[12px]">
@@ -123,11 +131,11 @@ export function ElderChatPage() {
           <button
             className="mt-3 inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#b9d6ff] bg-white px-4 text-[17px] font-black tracking-[-0.045em] text-[#0867f2] shadow-[0_8px_20px_rgba(36,95,190,0.08)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:mt-4 min-[390px]:text-[18px]"
             type="button"
-            aria-label="이전 화면으로 되돌아가기"
+            aria-label={t('elder.chat.backAria')}
             onClick={handleBack}
           >
             <ArrowLeft className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
-            <span>되돌아가기</span>
+            <span>{t('elder.chat.back')}</span>
           </button>
 
           <section
@@ -138,7 +146,7 @@ export function ElderChatPage() {
               id="chat-title"
               className="text-[34px] font-black leading-[1.08] tracking-[-0.07em] text-[#061844] min-[390px]:text-[44px]"
             >
-              AI 안부 대화
+              {t('elder.chat.title')}
             </h1>
           </section>
 
@@ -162,17 +170,17 @@ export function ElderChatPage() {
                 id="chat-info-title"
                 className="text-[17px] font-black leading-[1.2] tracking-[-0.045em] text-[#061844] min-[390px]:text-[20px]"
               >
-                오늘의 안부를 대화로 남겨보세요
+                {t('elder.chat.infoTitle')}
               </h2>
               <p className="mt-[6px] text-[13px] font-semibold leading-[1.28] tracking-[-0.035em] text-[#566174] min-[390px]:mt-[8px] min-[390px]:text-[14px] min-[390px]:leading-[1.32]">
-                음성 또는 텍스트로 편하게 이야기할 수 있어요.
+                {t('elder.chat.infoDescription')}
               </p>
             </div>
           </section>
 
           <section
             className="mt-[12px] rounded-[22px] border border-[#cfe3ff] bg-white px-[6px] py-[12px] shadow-[0_12px_30px_rgba(36,92,174,0.12)] min-[390px]:mt-[14px] min-[390px]:rounded-[24px] min-[390px]:py-[16px]"
-            aria-label="AI 안부 대화 내용"
+            aria-label={t('elder.chat.messagesAria')}
           >
             <div className="grid gap-[10px] min-[390px]:gap-[12px]">
               {defaultMessages.map((message) => (
@@ -183,16 +191,16 @@ export function ElderChatPage() {
 
           <section
             className="mt-[10px] flex flex-wrap gap-[8px] min-[390px]:mt-[12px] min-[390px]:gap-[10px] min-[430px]:grid min-[430px]:grid-cols-3 min-[430px]:gap-[12px]"
-            aria-label="빠른 답변"
+            aria-label={t('elder.chat.quickAria')}
           >
-            {quickReplies.map((reply) => (
+            {quickReplies.map((replyKey) => (
               <button
-                key={reply}
+                key={replyKey}
                 className="min-h-[38px] min-w-[106px] flex-1 whitespace-nowrap rounded-[15px] border border-[#75a7ff] bg-white px-3 text-[15px] font-black tracking-[-0.045em] text-[#0867f2] shadow-[inset_0_0_0_1px_rgba(8,103,242,0.03)] transition active:scale-[0.985] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[42px] min-[390px]:min-w-[112px] min-[390px]:text-[16px] min-[430px]:min-w-0 min-[430px]:text-[17px]"
                 type="button"
-                onClick={() => handleQuickReply(reply)}
+                onClick={() => handleQuickReply(t(replyKey))}
               >
-                {reply}
+                {t(replyKey)}
               </button>
             ))}
           </section>
@@ -203,7 +211,7 @@ export function ElderChatPage() {
             onClick={handleVoiceContinue}
           >
             <Mic size={28} strokeWidth={3.1} aria-hidden="true" />
-            <span>음성으로 계속하기</span>
+            <span>{t('elder.chat.voiceContinue')}</span>
           </button>
         </div>
       </section>

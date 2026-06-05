@@ -1,7 +1,10 @@
 import { Check, Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import type { MedicationHabitAnswers } from '../../components/elder-check/MedicationHabitQuestionCard'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 import type { DiseaseHistoryAnswers } from './ElderDiseaseHistoryPage'
 import type { PainWalkingAnswers } from './ElderPainWalkingPage'
@@ -27,7 +30,7 @@ type SleepHabitRouteState = {
 }
 
 type SleepDurationOption = {
-  label: string
+  labelKey: TranslationKey
   value: SleepDuration
 }
 
@@ -35,19 +38,22 @@ const clockSelectedImageSrc = '/assets/dolbomon/elder-check/시계_선택.png'
 const clockUnselectedImageSrc = '/assets/dolbomon/elder-check/시계_미선택.png'
 
 const durationOptions: SleepDurationOption[] = [
-  { label: '4시간 미만', value: 'under_four' },
-  { label: '4~6시간', value: 'four_to_six' },
-  { label: '6~8시간', value: 'six_to_eight' },
-  { label: '8시간 이상', value: 'eight_or_more' },
+  { labelKey: 'elder.survey.sleep.duration.underFour', value: 'under_four' },
+  { labelKey: 'elder.survey.sleep.duration.fourToSix', value: 'four_to_six' },
+  { labelKey: 'elder.survey.sleep.duration.sixToEight', value: 'six_to_eight' },
+  { labelKey: 'elder.survey.sleep.duration.eightOrMore', value: 'eight_or_more' },
 ]
 
 const concernOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: SleepConcern
 }> = [
-  { label: '낮잠 잠', value: 'nap' },
-  { label: '자주 깸', value: 'wakes_often' },
-  { label: '잠들기 어려움', value: 'hard_to_fall_asleep' },
+  { labelKey: 'elder.survey.sleep.concern.nap', value: 'nap' },
+  { labelKey: 'elder.survey.sleep.concern.wakesOften', value: 'wakes_often' },
+  {
+    labelKey: 'elder.survey.sleep.concern.hardToFallAsleep',
+    value: 'hard_to_fall_asleep',
+  },
 ]
 
 function getSleepHabitRouteState(state: unknown): SleepHabitRouteState {
@@ -59,15 +65,16 @@ function getSleepHabitRouteState(state: unknown): SleepHabitRouteState {
 }
 
 function SleepHabitProgress() {
+  const { t } = useI18n()
   const currentStep = 4
   const totalSteps = 6
   const progressPercent = (currentStep / totalSteps) * 100
 
   return (
-    <section aria-label="수면 습관 진행률">
+    <section aria-label={t('elder.survey.sleep.progressAria')}>
       <div className="flex items-end justify-between gap-4">
         <h1 className="text-[39px] font-black leading-tight text-[#061844] min-[390px]:text-[46px]">
-          잠은 어떠세요
+          {t('elder.survey.sleep.title')}
         </h1>
         <p
           className="flex items-baseline gap-2 text-[31px] font-black leading-none min-[390px]:text-[36px]"
@@ -84,7 +91,10 @@ function SleepHabitProgress() {
         aria-valuemin={0}
         aria-valuemax={totalSteps}
         aria-valuenow={currentStep}
-        aria-label={`총 ${totalSteps}단계 중 ${currentStep}단계`}
+        aria-label={t('elder.progress.totalAria', {
+          current: currentStep,
+          total: totalSteps,
+        })}
       >
         <div
           className="h-full rounded-full bg-gradient-to-r from-[#2d86ff] to-[#0f74f5] shadow-[0_6px_14px_rgba(0,96,229,0.24)]"
@@ -98,6 +108,7 @@ function SleepHabitProgress() {
 export function ElderSleepHabitPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useI18n()
   const routeState = getSleepHabitRouteState(location.state)
   const [duration, setDuration] = useState<SleepDuration>(
     routeState.sleepHabit?.duration ?? 'four_to_six',
@@ -136,26 +147,15 @@ export function ElderSleepHabitPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#061844]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-[max(20px,env(safe-area-inset-top))] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
-        aria-label="수면 습관 입력 화면"
+        aria-label={t('elder.survey.sleep.aria')}
       >
         <header className="flex items-center justify-between">
-          <Link
-            to="/elder"
-            className="inline-flex min-h-12 items-baseline rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄온 어르신 홈"
-          >
-            <span className="text-[29px] font-black leading-none min-[390px]:text-[34px]">
-              돌봄
-            </span>
-            <span className="ml-1 text-[39px] font-black leading-none min-[390px]:text-[46px]">
-              ON
-            </span>
-          </Link>
+          <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
 
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={42} strokeWidth={2.8} />
@@ -170,7 +170,7 @@ export function ElderSleepHabitPage() {
 
           <fieldset className="mt-8 min-[390px]:mt-10">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#061844] min-[390px]:text-[28px]">
-              평소 몇 시간 주무세요?
+              {t('elder.survey.sleep.durationLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-4">
@@ -207,7 +207,7 @@ export function ElderSleepHabitPage() {
                       draggable="false"
                     />
                     <span className="text-[29px] font-black leading-none min-[390px]:text-[34px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -217,7 +217,7 @@ export function ElderSleepHabitPage() {
 
           <fieldset className="mt-8 min-[390px]:mt-10">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#061844] min-[390px]:text-[28px]">
-              잠과 관련해 (복수)
+              {t('elder.survey.sleep.concernLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-3 min-[390px]:gap-4">
@@ -249,8 +249,8 @@ export function ElderSleepHabitPage() {
                     >
                       <Check size={22} strokeWidth={3.4} />
                     </span>
-                    <span className="whitespace-nowrap text-[21px] font-black leading-none min-[390px]:text-[25px]">
-                      {option.label}
+                    <span className="break-keep text-[21px] font-black leading-none min-[390px]:text-[25px]">
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -264,7 +264,7 @@ export function ElderSleepHabitPage() {
               type="submit"
             >
               <span className="text-[30px] font-black leading-none min-[390px]:text-[34px]">
-                다음
+                {t('common.next')}
               </span>
             </button>
           </div>

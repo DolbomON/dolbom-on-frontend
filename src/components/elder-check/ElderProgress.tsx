@@ -1,3 +1,4 @@
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 type ElderProgressProps = {
@@ -13,6 +14,7 @@ export function ElderProgress({
   variant = 'inline',
   totalSteps,
 }: ElderProgressProps) {
+  const { t } = useI18n()
   const progressPercent = Math.min(
     100,
     Math.max(0, (currentStep / totalSteps) * 100),
@@ -24,7 +26,10 @@ export function ElderProgress({
         'flex items-baseline gap-2 whitespace-nowrap',
         variant === 'inline' ? 'min-w-[61px]' : 'pl-1',
       )}
-      aria-label={`${currentStep} / ${totalSteps}`}
+      aria-label={t('elder.progress.currentAria', {
+        current: currentStep,
+        total: totalSteps,
+      })}
     >
       <strong className="text-[22px] font-black tracking-[-0.04em] text-[#0867f2] min-[390px]:text-[24px]">
         {currentStep}
@@ -42,7 +47,10 @@ export function ElderProgress({
       aria-valuemin={0}
       aria-valuemax={totalSteps}
       aria-valuenow={currentStep}
-      aria-label={`총 ${totalSteps}단계 중 ${currentStep}단계`}
+      aria-label={t('elder.progress.totalAria', {
+        current: currentStep,
+        total: totalSteps,
+      })}
     >
       <div
         className="h-full min-w-3 rounded-full bg-gradient-to-r from-[#0878ff] to-[#005ce5] shadow-[0_6px_14px_rgba(0,96,229,0.24)]"
@@ -59,7 +67,7 @@ export function ElderProgress({
           : 'grid gap-3',
         className,
       )}
-      aria-label="진행률"
+      aria-label={t('elder.progress.aria')}
     >
       {variant === 'inline' ? (
         <>

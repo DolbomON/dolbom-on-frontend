@@ -1,6 +1,7 @@
-import { ArrowLeft, Home } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import type { PropsWithChildren, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { DolbomLogo } from './DolbomLogo'
 
 type PageShellProps = PropsWithChildren<{
   actions?: ReactNode
@@ -22,13 +23,7 @@ export function PageShell({
     <div className="flex min-h-svh flex-col overflow-x-hidden bg-[var(--color-page)] text-[var(--color-text)]">
       <header className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:px-8 sm:py-4">
-          <Link
-            to="/"
-            className="inline-flex min-h-9 items-center gap-2 rounded-md text-lg font-bold text-[var(--color-brand-strong)] sm:min-h-11 sm:text-xl"
-          >
-            <Home aria-hidden="true" size={22} />
-            DolbomON
-          </Link>
+          <DolbomLogo />
           <nav className="flex items-center gap-2" aria-label="주요 메뉴">
             <Link
               to="/select-role"

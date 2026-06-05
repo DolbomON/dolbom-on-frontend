@@ -576,7 +576,7 @@ export function WorkerWelfareConnectPage() {
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#f7fbff] text-[#071747]">
       <WorkerTopBar
-        activeHref="/worker/welfare-connect"
+        activeHref="/worker/elders/kim-yeongja/care-team"
         ariaLabel="복지사 돌봄 연결 메뉴"
       />
 

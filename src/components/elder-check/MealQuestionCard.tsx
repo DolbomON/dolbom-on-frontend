@@ -1,4 +1,6 @@
 import { CheckCircle2 } from 'lucide-react'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 import { VoiceGuideButton } from './VoiceGuideButton'
 
@@ -11,19 +13,19 @@ type MealQuestionCardProps = {
 }
 
 type MealChoice = {
-  label: string
+  labelKey: TranslationKey
   value: Exclude<MealAnswer, null>
   variant: 'primary' | 'outline'
 }
 
 const mealChoices: MealChoice[] = [
   {
-    label: '네, 했어요',
+    labelKey: 'elder.check.meal.done',
     value: 'done',
     variant: 'primary',
   },
   {
-    label: '아직 못 했어요',
+    labelKey: 'elder.check.meal.notDone',
     value: 'not_done',
     variant: 'outline',
   },
@@ -36,12 +38,14 @@ export function MealQuestionCard({
   onAnswer,
   onVoiceGuide,
 }: MealQuestionCardProps) {
+  const { t } = useI18n()
+
   return (
     <section className="mt-4 flex flex-1 flex-col overflow-hidden rounded-[22px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#f2f8ff_0%,#eaf5ff_100%)] pb-4 text-center shadow-[0_14px_30px_rgba(46,83,135,0.12),inset_0_1px_0_rgba(255,255,255,0.85)] min-[390px]:pb-5">
       <div className="min-h-[128px] flex-[0.8] bg-[#edf6ff] min-[390px]:min-h-[148px]">
         <img
           src={mealIllustrationSrc}
-          alt="식사 확인 이미지"
+          alt={t('elder.check.meal.imageAlt')}
           width="1448"
           height="1086"
           className="h-full w-full object-cover object-center"
@@ -51,7 +55,7 @@ export function MealQuestionCard({
 
       <div className="flex flex-1 flex-col justify-center px-4 min-[390px]:px-5">
         <h2 className="mt-4 whitespace-nowrap text-[27px] font-black leading-[1.1] tracking-[-0.055em] text-[#102b53] min-[390px]:text-[30px]">
-          오늘 식사는 하셨나요?
+          {t('elder.check.meal.question')}
         </h2>
 
         <div className="mt-4 grid gap-3">
@@ -80,7 +84,7 @@ export function MealQuestionCard({
                     strokeWidth={3}
                   />
                 ) : null}
-                <span>{choice.label}</span>
+                <span>{t(choice.labelKey)}</span>
               </button>
             )
           })}

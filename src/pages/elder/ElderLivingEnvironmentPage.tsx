@@ -1,7 +1,10 @@
 import { Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import type { MedicationHabitAnswers } from '../../components/elder-check/MedicationHabitQuestionCard'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 import type { DiseaseHistoryAnswers } from './ElderDiseaseHistoryPage'
 import type { PainWalkingAnswers } from './ElderPainWalkingPage'
@@ -30,29 +33,29 @@ const familyImageSrc = '/assets/dolbomon/elder-check/같이.png'
 
 const cohabitantOptions: Array<{
   imageSrc: string
-  label: string
+  labelKey: TranslationKey
   value: Cohabitant
 }> = [
-  { imageSrc: aloneImageSrc, label: '혼자', value: 'alone' },
-  { imageSrc: familyImageSrc, label: '가족과', value: 'family' },
+  { imageSrc: aloneImageSrc, labelKey: 'elder.survey.living.cohabitant.alone', value: 'alone' },
+  { imageSrc: familyImageSrc, labelKey: 'elder.survey.living.cohabitant.family', value: 'family' },
 ]
 
 const housingOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: HousingType
 }> = [
-  { label: '아파트', value: 'apartment' },
-  { label: '단독주택', value: 'detached' },
-  { label: '임대', value: 'rental' },
-  { label: '기타', value: 'other' },
+  { labelKey: 'elder.survey.living.housing.apartment', value: 'apartment' },
+  { labelKey: 'elder.survey.living.housing.detached', value: 'detached' },
+  { labelKey: 'elder.survey.living.housing.rental', value: 'rental' },
+  { labelKey: 'elder.survey.living.housing.other', value: 'other' },
 ]
 
 const emergencyContactOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: EmergencyFamilyContact
 }> = [
-  { label: '있어요', value: 'yes' },
-  { label: '없어요', value: 'no' },
+  { labelKey: 'elder.survey.choice.yes', value: 'yes' },
+  { labelKey: 'elder.survey.choice.no', value: 'no' },
 ]
 
 function getLivingEnvironmentRouteState(
@@ -66,15 +69,16 @@ function getLivingEnvironmentRouteState(
 }
 
 function LivingEnvironmentProgress() {
+  const { t } = useI18n()
   const currentStep = 5
   const totalSteps = 6
   const progressPercent = (currentStep / totalSteps) * 100
 
   return (
-    <section aria-label="생활 환경 진행률">
+    <section aria-label={t('elder.survey.living.progressAria')}>
       <div className="flex items-end justify-between gap-4">
         <h1 className="text-[40px] font-black leading-tight text-[#061844] min-[390px]:text-[47px]">
-          생활 환경
+          {t('elder.survey.living.title')}
         </h1>
         <p
           className="flex items-baseline gap-2 text-[31px] font-black leading-none min-[390px]:text-[36px]"
@@ -91,7 +95,10 @@ function LivingEnvironmentProgress() {
         aria-valuemin={0}
         aria-valuemax={totalSteps}
         aria-valuenow={currentStep}
-        aria-label={`총 ${totalSteps}단계 중 ${currentStep}단계`}
+        aria-label={t('elder.progress.totalAria', {
+          current: currentStep,
+          total: totalSteps,
+        })}
       >
         <div
           className="h-full rounded-full bg-gradient-to-r from-[#2d86ff] to-[#0f74f5] shadow-[0_6px_14px_rgba(0,96,229,0.24)]"
@@ -105,6 +112,7 @@ function LivingEnvironmentProgress() {
 export function ElderLivingEnvironmentPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useI18n()
   const routeState = getLivingEnvironmentRouteState(location.state)
   const [cohabitant, setCohabitant] = useState<Cohabitant>(
     routeState.livingEnvironment?.cohabitant ?? 'alone',
@@ -140,26 +148,15 @@ export function ElderLivingEnvironmentPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#061844]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-[max(20px,env(safe-area-inset-top))] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
-        aria-label="생활 환경 입력 화면"
+        aria-label={t('elder.survey.living.aria')}
       >
         <header className="flex items-center justify-between">
-          <Link
-            to="/elder"
-            className="inline-flex min-h-12 items-baseline rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄온 어르신 홈"
-          >
-            <span className="text-[29px] font-black leading-none min-[390px]:text-[34px]">
-              돌봄
-            </span>
-            <span className="ml-1 text-[39px] font-black leading-none min-[390px]:text-[46px]">
-              ON
-            </span>
-          </Link>
+          <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
 
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={42} strokeWidth={2.8} />
@@ -174,7 +171,7 @@ export function ElderLivingEnvironmentPage() {
 
           <fieldset className="mt-8 min-[390px]:mt-9">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#333333] min-[390px]:text-[28px]">
-              지금 누구와 사세요?
+              {t('elder.survey.living.cohabitantLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-4">
@@ -208,7 +205,7 @@ export function ElderLivingEnvironmentPage() {
                       draggable="false"
                     />
                     <span className="text-[34px] font-black leading-none min-[390px]:text-[40px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -218,7 +215,7 @@ export function ElderLivingEnvironmentPage() {
 
           <fieldset className="mt-7 min-[390px]:mt-8">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#333333] min-[390px]:text-[28px]">
-              주거 형태
+              {t('elder.survey.living.housingLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-3 min-[390px]:gap-4">
@@ -238,8 +235,8 @@ export function ElderLivingEnvironmentPage() {
                     aria-pressed={selected}
                     onClick={() => setHousingType(option.value)}
                   >
-                    <span className="whitespace-nowrap text-[26px] font-black leading-none min-[390px]:text-[30px]">
-                      {option.label}
+                    <span className="break-keep text-[26px] font-black leading-none min-[390px]:text-[30px]">
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -249,7 +246,7 @@ export function ElderLivingEnvironmentPage() {
 
           <fieldset className="mt-7 min-[390px]:mt-8">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#333333] min-[390px]:text-[28px]">
-              급할 때 연락할 가족이 있나요?
+              {t('elder.survey.living.emergencyLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-4">
@@ -274,7 +271,7 @@ export function ElderLivingEnvironmentPage() {
                     onClick={() => setEmergencyFamilyContact(option.value)}
                   >
                     <span className="text-[34px] font-black leading-none min-[390px]:text-[40px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -288,7 +285,7 @@ export function ElderLivingEnvironmentPage() {
               type="submit"
             >
               <span className="text-[30px] font-black leading-none min-[390px]:text-[34px]">
-                다음
+                {t('common.next')}
               </span>
             </button>
           </div>

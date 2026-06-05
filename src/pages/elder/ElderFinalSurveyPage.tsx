@@ -1,7 +1,10 @@
 import { Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import type { MedicationHabitAnswers } from '../../components/elder-check/MedicationHabitQuestionCard'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 import type { DiseaseHistoryAnswers } from './ElderDiseaseHistoryPage'
 import type { LivingEnvironmentAnswers } from './ElderLivingEnvironmentPage'
@@ -28,22 +31,26 @@ type FinalSurveyRouteState = {
 }
 
 const contactOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   tone?: 'caution'
   value: ContactFrequency
 }> = [
-  { label: '매일', value: 'daily' },
-  { label: '주 몇번', value: 'weekly' },
-  { label: '거의 없음', tone: 'caution', value: 'rarely' },
+  { labelKey: 'elder.survey.final.contact.daily', value: 'daily' },
+  { labelKey: 'elder.survey.final.contact.weekly', value: 'weekly' },
+  {
+    labelKey: 'elder.survey.final.contact.rarely',
+    tone: 'caution',
+    value: 'rarely',
+  },
 ]
 
 const lonelinessOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: LonelinessLevel
 }> = [
-  { label: '낮음', value: 'low' },
-  { label: '보통', value: 'medium' },
-  { label: '높음', value: 'high' },
+  { labelKey: 'elder.survey.final.loneliness.low', value: 'low' },
+  { labelKey: 'elder.survey.final.loneliness.medium', value: 'medium' },
+  { labelKey: 'elder.survey.final.loneliness.high', value: 'high' },
 ]
 
 const defaultFinalSurveyAnswers: FinalSurveyAnswers = {
@@ -60,15 +67,16 @@ function getFinalSurveyRouteState(state: unknown): FinalSurveyRouteState {
 }
 
 function FinalSurveyProgress() {
+  const { t } = useI18n()
   const currentStep = 6
   const totalSteps = 6
   const progressPercent = (currentStep / totalSteps) * 100
 
   return (
-    <section aria-label="마지막 설문 진행률">
+    <section aria-label={t('elder.survey.final.progressAria')}>
       <div className="flex items-end justify-between gap-4">
         <h1 className="text-[38px] font-black leading-tight text-[#061844] min-[390px]:text-[44px]">
-          마지막이에요
+          {t('elder.survey.final.title')}
         </h1>
         <p
           className="text-[31px] font-black leading-none text-[#061844] min-[390px]:text-[35px]"
@@ -84,7 +92,10 @@ function FinalSurveyProgress() {
         aria-valuemin={0}
         aria-valuemax={totalSteps}
         aria-valuenow={currentStep}
-        aria-label={`총 ${totalSteps}단계 중 ${currentStep}단계`}
+        aria-label={t('elder.progress.totalAria', {
+          current: currentStep,
+          total: totalSteps,
+        })}
       >
         <div
           className="h-full rounded-full bg-gradient-to-r from-[#2d86ff] to-[#0f74f5] shadow-[0_6px_14px_rgba(0,96,229,0.24)]"
@@ -98,6 +109,7 @@ function FinalSurveyProgress() {
 export function ElderFinalSurveyPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useI18n()
   const routeState = getFinalSurveyRouteState(location.state)
   const [answers, setAnswers] = useState<FinalSurveyAnswers>({
     ...defaultFinalSurveyAnswers,
@@ -121,26 +133,15 @@ export function ElderFinalSurveyPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#061844]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-[max(22px,env(safe-area-inset-top))] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
-        aria-label="마지막 설문 입력 화면"
+        aria-label={t('elder.survey.final.aria')}
       >
         <header className="flex items-center justify-between">
-          <Link
-            to="/elder"
-            className="inline-flex min-h-12 items-baseline rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄ON 어르신 홈"
-          >
-            <span className="text-[29px] font-black leading-none min-[390px]:text-[34px]">
-              돌봄
-            </span>
-            <span className="ml-1 text-[39px] font-black leading-none min-[390px]:text-[46px]">
-              ON
-            </span>
-          </Link>
+          <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
 
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={42} strokeWidth={2.8} />
@@ -155,7 +156,7 @@ export function ElderFinalSurveyPage() {
 
           <fieldset className="mt-12 min-[390px]:mt-14">
             <legend className="mb-6 text-[27px] font-black leading-tight text-[#061844] min-[390px]:text-[31px]">
-              얼마나 자주 사람과 연락하세요?
+              {t('elder.survey.final.contactLegend')}
             </legend>
 
             <div className="grid grid-cols-3 gap-3 min-[390px]:gap-4">
@@ -183,7 +184,7 @@ export function ElderFinalSurveyPage() {
                     }
                   >
                     <span className="text-[25px] font-black leading-none min-[390px]:text-[30px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -193,7 +194,7 @@ export function ElderFinalSurveyPage() {
 
           <fieldset className="mt-12 min-[390px]:mt-14">
             <legend className="mb-6 text-[27px] font-black leading-tight text-[#061844] min-[390px]:text-[31px]">
-              외로움을 느끼는 편인가요?
+              {t('elder.survey.final.lonelinessLegend')}
             </legend>
 
             <div className="grid grid-cols-3 gap-3 min-[390px]:gap-4">
@@ -219,7 +220,7 @@ export function ElderFinalSurveyPage() {
                     }
                   >
                     <span className="text-[25px] font-black leading-none min-[390px]:text-[30px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -229,19 +230,19 @@ export function ElderFinalSurveyPage() {
 
           <section
             className="mt-10 rounded-[24px] border border-[#d9e2ee] bg-[#f9fcff] px-5 py-6 text-center shadow-[0_12px_24px_rgba(22,48,88,0.07)] min-[390px]:mt-12"
-            aria-label="가족 요양사 연결 코드"
+            aria-label={t('elder.survey.final.codeAria')}
           >
             <p className="text-[22px] font-semibold leading-none text-[#061844] min-[390px]:text-[26px]">
-              가족·요양사 연결 코드
+              {t('elder.survey.final.codeTitle')}
             </p>
             <p
               className="mt-5 text-[56px] font-black leading-none text-[#061844] min-[390px]:text-[68px]"
-              aria-label="연결 코드 4829"
+              aria-label={t('elder.survey.final.codeNumberAria')}
             >
               4 8 2 9
             </p>
             <p className="mt-4 text-[20px] font-semibold leading-tight text-[#526178] min-[390px]:text-[24px]">
-              이 번호를 가족에게 알려주세요
+              {t('elder.survey.final.codeDescription')}
             </p>
           </section>
 
@@ -251,7 +252,7 @@ export function ElderFinalSurveyPage() {
               type="submit"
             >
               <span className="text-[32px] font-black leading-none min-[390px]:text-[36px]">
-                설문 완료!
+                {t('elder.survey.final.complete')}
               </span>
             </button>
           </div>

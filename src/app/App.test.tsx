@@ -1,15 +1,19 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { LandingPage } from '../pages/LandingPage'
+import { useAppStore } from './store'
+import { AppProviders } from './providers'
 
 describe('LandingPage', () => {
+  afterEach(() => {
+    useAppStore.getState().setLanguage('ko')
+    window.localStorage.clear()
+  })
+
   it('renders the mobile landing screen', () => {
-    render(
-      <MemoryRouter>
-        <LandingPage />
-      </MemoryRouter>,
-    )
+    renderLandingPage()
 
     expect(
       screen.getByRole('heading', {
@@ -21,4 +25,32 @@ describe('LandingPage', () => {
     ).toHaveAttribute('href', '/login')
     expect(screen.getByRole('button', { name: '메뉴 열기' })).toBeTruthy()
   })
+
+  it('switches the landing screen to Japanese', async () => {
+    const user = userEvent.setup()
+
+    renderLandingPage()
+
+    await user.click(screen.getByRole('button', { name: '일본어로 보기' }))
+
+    expect(document.documentElement).toHaveAttribute('lang', 'ja')
+    expect(
+      screen.getByRole('heading', {
+        name: '今日の安否をかんたん・安全に記録しましょう',
+      }),
+    ).toBeTruthy()
+    expect(
+      screen.getByRole('link', { name: /今日の状態を入力/ }),
+    ).toHaveAttribute('href', '/login')
+  })
 })
+
+function renderLandingPage() {
+  return render(
+    <AppProviders>
+      <MemoryRouter>
+        <LandingPage />
+      </MemoryRouter>
+    </AppProviders>,
+  )
+}

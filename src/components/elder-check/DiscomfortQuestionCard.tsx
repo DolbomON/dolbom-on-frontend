@@ -1,4 +1,6 @@
 import { CheckCircle2 } from 'lucide-react'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 import { VoiceGuideButton } from './VoiceGuideButton'
 
@@ -11,19 +13,19 @@ type DiscomfortQuestionCardProps = {
 }
 
 type DiscomfortChoice = {
-  label: string
+  labelKey: TranslationKey
   value: Exclude<DiscomfortAnswer, null>
   variant: 'primary' | 'outline'
 }
 
 const discomfortChoices: DiscomfortChoice[] = [
   {
-    label: '없어요',
+    labelKey: 'elder.check.discomfort.none',
     value: 'none',
     variant: 'primary',
   },
   {
-    label: '있어요',
+    labelKey: 'elder.check.discomfort.hasDiscomfort',
     value: 'has_discomfort',
     variant: 'outline',
   },
@@ -37,12 +39,14 @@ export function DiscomfortQuestionCard({
   onAnswer,
   onVoiceGuide,
 }: DiscomfortQuestionCardProps) {
+  const { t } = useI18n()
+
   return (
     <section className="mt-4 flex flex-1 flex-col overflow-hidden rounded-[22px] border border-[#e7f1ff] bg-[linear-gradient(180deg,#edf6ff_0%,#f8fbff_50%,#edf6ff_100%)] px-4 pb-4 text-center shadow-[0_14px_30px_rgba(46,83,135,0.12),inset_0_1px_0_rgba(255,255,255,0.86)] min-[390px]:px-5 min-[390px]:pb-5">
       <div className="relative -mx-4 min-h-[126px] flex-[0.8] bg-[#edf6ff] min-[390px]:-mx-5 min-[390px]:min-h-[146px]">
         <img
           src={discomfortIllustrationSrc}
-          alt="몸 불편 여부 확인 이미지"
+          alt={t('elder.check.discomfort.imageAlt')}
           width="1448"
           height="1086"
           className="mx-auto h-full w-full object-cover object-center"
@@ -57,11 +61,11 @@ export function DiscomfortQuestionCard({
       <div className="flex flex-1 flex-col justify-center">
         <h2
           className="mt-4 text-[28px] font-black leading-[1.12] tracking-[-0.075em] text-[#102b53] min-[390px]:text-[32px]"
-          aria-label="오늘 몸이 불편한 곳이 있나요?"
+          aria-label={t('elder.check.discomfort.questionAria')}
         >
-          오늘 몸이
+          {t('elder.check.discomfort.questionLine1')}
           <br />
-          불편한 곳이 있나요?
+          {t('elder.check.discomfort.questionLine2')}
         </h2>
 
         <div className="mt-4 grid gap-3">
@@ -90,7 +94,7 @@ export function DiscomfortQuestionCard({
                     strokeWidth={3}
                   />
                 ) : null}
-                <span>{choice.label}</span>
+                <span>{t(choice.labelKey)}</span>
               </button>
             )
           })}

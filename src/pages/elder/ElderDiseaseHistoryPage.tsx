@@ -1,7 +1,10 @@
 import { Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import type { MedicationHabitAnswers } from '../../components/elder-check/MedicationHabitQuestionCard'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 export type DiseaseHistoryCondition =
@@ -27,7 +30,7 @@ type DiseaseHistoryRouteState = {
 type ConditionOption = {
   imageClassName?: string
   imageSrc: string
-  label: string
+  labelKey: TranslationKey
   value: DiseaseHistoryCondition
 }
 
@@ -36,52 +39,52 @@ const conditionOptions: ConditionOption[] = [
     imageClassName:
       'h-[82px] w-[82px] min-[390px]:h-[92px] min-[390px]:w-[92px]',
     imageSrc: '/assets/dolbomon/elder-check/blade.png',
-    label: '고혈압',
+    labelKey: 'elder.survey.disease.condition.hypertension',
     value: 'hypertension',
   },
   {
     imageClassName:
       'h-[84px] w-[94px] min-[390px]:h-[94px] min-[390px]:w-[104px]',
     imageSrc: '/assets/dolbomon/elder-check/당뇨.png',
-    label: '당뇨',
+    labelKey: 'elder.survey.disease.condition.diabetes',
     value: 'diabetes',
   },
   {
     imageClassName:
       'h-[86px] w-[100px] min-[390px]:h-[98px] min-[390px]:w-[112px]',
     imageSrc: '/assets/dolbomon/elder-check/치매.png',
-    label: '치매',
+    labelKey: 'elder.survey.disease.condition.dementia',
     value: 'dementia',
   },
   {
     imageClassName:
       'h-[84px] w-[84px] min-[390px]:h-[96px] min-[390px]:w-[96px]',
     imageSrc: '/assets/dolbomon/elder-check/심장.png',
-    label: '심혈관',
+    labelKey: 'elder.survey.disease.condition.cardiovascular',
     value: 'cardiovascular',
   },
   {
     imageClassName:
       'h-[92px] w-[104px] min-[390px]:h-[106px] min-[390px]:w-[116px]',
     imageSrc: '/assets/dolbomon/elder-check/관절.png',
-    label: '관절',
+    labelKey: 'elder.survey.disease.condition.joint',
     value: 'joint',
   },
   {
     imageClassName:
       'h-[86px] w-[86px] min-[390px]:h-[100px] min-[390px]:w-[100px]',
     imageSrc: '/assets/dolbomon/elder-check/기타.png',
-    label: '기타 직접',
+    labelKey: 'elder.survey.disease.condition.other',
     value: 'other',
   },
 ]
 
 const hospitalFallOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: HospitalFallHistory
 }> = [
-  { label: '있어요', value: 'yes' },
-  { label: '없어요', value: 'no' },
+  { labelKey: 'elder.survey.choice.yes', value: 'yes' },
+  { labelKey: 'elder.survey.choice.no', value: 'no' },
 ]
 
 function getDiseaseHistoryRouteState(state: unknown): DiseaseHistoryRouteState {
@@ -93,15 +96,16 @@ function getDiseaseHistoryRouteState(state: unknown): DiseaseHistoryRouteState {
 }
 
 function DiseaseProgress() {
+  const { t } = useI18n()
   const currentStep = 2
   const totalSteps = 6
   const progressPercent = (currentStep / totalSteps) * 100
 
   return (
-    <section aria-label="알고 계신 병 진행률">
+    <section aria-label={t('elder.survey.disease.progressAria')}>
       <div className="flex items-end justify-between gap-4">
         <h1 className="text-[38px] font-black leading-tight text-[#061844] min-[390px]:text-[44px]">
-          알고 계신 병
+          {t('elder.survey.disease.title')}
         </h1>
         <p
           className="text-[30px] font-black leading-none text-[#4f5a67] min-[390px]:text-[34px]"
@@ -117,7 +121,10 @@ function DiseaseProgress() {
         aria-valuemin={0}
         aria-valuemax={totalSteps}
         aria-valuenow={currentStep}
-        aria-label={`총 ${totalSteps}단계 중 ${currentStep}단계`}
+        aria-label={t('elder.progress.totalAria', {
+          current: currentStep,
+          total: totalSteps,
+        })}
       >
         <div
           className="h-full rounded-full bg-gradient-to-r from-[#2d86ff] to-[#0f74f5] shadow-[0_6px_14px_rgba(0,96,229,0.24)]"
@@ -131,6 +138,7 @@ function DiseaseProgress() {
 export function ElderDiseaseHistoryPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useI18n()
   const routeState = getDiseaseHistoryRouteState(location.state)
   const [selectedConditions, setSelectedConditions] = useState<
     DiseaseHistoryCondition[]
@@ -178,26 +186,15 @@ export function ElderDiseaseHistoryPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#061844]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-[max(20px,env(safe-area-inset-top))] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
-        aria-label="알고 계신 병 입력 화면"
+        aria-label={t('elder.survey.disease.aria')}
       >
         <header className="flex items-center justify-between">
-          <Link
-            to="/elder"
-            className="inline-flex min-h-12 items-baseline rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄온 어르신 홈"
-          >
-            <span className="text-[29px] font-black leading-none min-[390px]:text-[34px]">
-              돌봄
-            </span>
-            <span className="ml-1 text-[39px] font-black leading-none min-[390px]:text-[46px]">
-              ON
-            </span>
-          </Link>
+          <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
 
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={42} strokeWidth={2.8} />
@@ -212,7 +209,7 @@ export function ElderDiseaseHistoryPage() {
 
           <fieldset className="mt-7 min-[390px]:mt-8">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#5b6572] min-[390px]:text-[28px]">
-              해당되는 것을 모두 눌러주세요
+              {t('elder.survey.disease.conditionLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-3 min-[390px]:gap-4">
@@ -245,7 +242,7 @@ export function ElderDiseaseHistoryPage() {
                       draggable="false"
                     />
                     <span className="text-[30px] font-black leading-none min-[390px]:text-[34px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -255,7 +252,7 @@ export function ElderDiseaseHistoryPage() {
 
           <fieldset className="mt-6 min-[390px]:mt-7">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#5b6572] min-[390px]:text-[28px]">
-              예전에 입원·낙상한 적 있나요?
+              {t('elder.survey.disease.fallLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-4">
@@ -276,7 +273,7 @@ export function ElderDiseaseHistoryPage() {
                     onClick={() => setHospitalFallHistory(option.value)}
                   >
                     <span className="text-[28px] font-black leading-none min-[390px]:text-[32px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -290,7 +287,7 @@ export function ElderDiseaseHistoryPage() {
               type="submit"
             >
               <span className="text-[28px] font-black leading-none min-[390px]:text-[32px]">
-                다음
+                {t('common.next')}
               </span>
             </button>
           </div>

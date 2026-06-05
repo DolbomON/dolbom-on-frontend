@@ -8,56 +8,13 @@ import {
   Phone,
   ShieldAlert,
   UserPlus,
-  UsersRound,
 } from 'lucide-react'
 import { useId, useMemo, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { DolbomLogo } from '../components/layout/DolbomLogo'
+import type { TranslationKey } from '../lib/i18n/translations'
+import { useI18n } from '../lib/i18n/useI18n'
 import { cn } from '../lib/utils'
-
-type SignupRole =
-  | 'elder'
-  | 'family'
-  | 'caregiver'
-  | 'worker'
-  | 'government'
-  | 'admin'
-
-const roleOptions: Array<{
-  description: string
-  label: string
-  value: SignupRole
-}> = [
-  {
-    description: '내 건강과 안부를 직접 기록해요.',
-    label: '어르신',
-    value: 'elder',
-  },
-  {
-    description: '부모님의 상태와 알림을 확인해요.',
-    label: '가족',
-    value: 'family',
-  },
-  {
-    description: '방문 돌봄과 기록을 담당해요.',
-    label: '요양사',
-    value: 'caregiver',
-  },
-  {
-    description: '대상자와 돌봄팀을 관리해요.',
-    label: '복지사',
-    value: 'worker',
-  },
-  {
-    description: '지역 관제와 통계를 확인해요.',
-    label: '지자체',
-    value: 'government',
-  },
-  {
-    description: '서비스 운영과 정책을 관리해요.',
-    label: '관리자',
-    value: 'admin',
-  },
-]
 
 const duplicatedEmails = new Set([
   'already@dolbom-on.local',
@@ -74,6 +31,7 @@ function isValidEmail(email: string) {
 }
 
 export function SignupPage() {
+  const { t } = useI18n()
   const emailId = useId()
   const phoneId = useId()
   const passwordId = useId()
@@ -82,17 +40,28 @@ export function SignupPage() {
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
-  const [role, setRole] = useState<SignupRole>('elder')
   const [showPassword, setShowPassword] = useState(false)
-  const [statusMessage, setStatusMessage] = useState('')
+  const [statusKey, setStatusKey] = useState<TranslationKey | ''>('')
   const [createdAccount, setCreatedAccount] = useState('')
 
   const passwordChecks = useMemo(
     () => [
-      { label: '8자 이상', passed: password.length >= 8 },
-      { label: '영문 포함', passed: /[a-zA-Z]/.test(password) },
-      { label: '숫자 포함', passed: /\d/.test(password) },
-      { label: '특수문자 포함', passed: /[^a-zA-Z0-9]/.test(password) },
+      {
+        labelKey: 'signup.passwordPolicy.length' as TranslationKey,
+        passed: password.length >= 8,
+      },
+      {
+        labelKey: 'signup.passwordPolicy.letter' as TranslationKey,
+        passed: /[a-zA-Z]/.test(password),
+      },
+      {
+        labelKey: 'signup.passwordPolicy.number' as TranslationKey,
+        passed: /\d/.test(password),
+      },
+      {
+        labelKey: 'signup.passwordPolicy.special' as TranslationKey,
+        passed: /[^a-zA-Z0-9]/.test(password),
+      },
     ],
     [password],
   )
@@ -108,17 +77,17 @@ export function SignupPage() {
     setCreatedAccount('')
 
     if (!trimmedEmail && !normalizedPhone) {
-      setStatusMessage('이메일 또는 전화번호 중 하나는 입력해야 해요.')
+      setStatusKey('signup.status.missingContact')
       return
     }
 
     if (trimmedEmail && !isValidEmail(trimmedEmail)) {
-      setStatusMessage('이메일 형식을 확인해주세요.')
+      setStatusKey('signup.status.invalidEmail')
       return
     }
 
     if (normalizedPhone && normalizedPhone.length < 10) {
-      setStatusMessage('전화번호를 10자리 이상 입력해주세요.')
+      setStatusKey('signup.status.shortPhone')
       return
     }
 
@@ -126,74 +95,70 @@ export function SignupPage() {
       duplicatedEmails.has(trimmedEmail) ||
       duplicatedPhones.has(normalizedPhone)
     ) {
-      setStatusMessage('이미 가입된 이메일 또는 전화번호입니다.')
+      setStatusKey('signup.status.duplicated')
       return
     }
 
     if (!passwordPolicyPassed) {
-      setStatusMessage('비밀번호 정책을 모두 만족해야 해요.')
+      setStatusKey('signup.status.passwordPolicy')
       return
     }
 
     if (!passwordMatched) {
-      setStatusMessage('비밀번호 확인이 일치하지 않아요.')
+      setStatusKey('signup.status.passwordMismatch')
       return
     }
 
-    const accountId = `DOLBOM-${role.toUpperCase()}-${Date.now()
+    const accountId = `DOLBOM-USER-${Date.now()
       .toString()
       .slice(-5)}`
 
     setCreatedAccount(accountId)
-    setStatusMessage('계정이 생성되었습니다.')
+    setStatusKey('signup.status.created')
   }
 
   return (
     <main className="min-h-svh bg-[#edf5ff] text-[#070707]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#fbfdff_58%,#ffffff_100%)] px-5 pb-6 pt-5 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6 min-[390px]:pt-6"
-        aria-label="돌봄온 회원가입 화면"
+        aria-label={t('signup.aria')}
       >
         <header className="flex items-center justify-between">
           <Link
             to="/login"
             className="inline-flex h-12 w-12 items-center justify-center rounded-md text-[#0a56d5] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="로그인으로 돌아가기"
+            aria-label={t('signup.backToLogin')}
           >
             <ArrowLeft aria-hidden="true" size={36} strokeWidth={3.2} />
           </Link>
 
-          <Link
-            to="/"
-            className="inline-flex min-h-11 items-baseline rounded-md text-[#0b63df] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄온 홈"
-          >
-            <span className="text-[28px] font-black leading-none">돌봄</span>
-            <span className="ml-1 text-[38px] font-black leading-none">ON</span>
-          </Link>
+          <DolbomLogo />
 
           <Link
             to="/login"
             className="inline-flex min-h-12 items-center rounded-md px-1 text-[18px] font-black text-[#0b63df] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
           >
-            로그인
+            {t('login.submit')}
           </Link>
         </header>
 
         <section className="mt-10 min-[390px]:mt-12">
-          <p className="text-[20px] font-black text-[#0b63df]">돌봄ON</p>
+          <p className="text-[20px] font-black text-[#0b63df]">
+            {t('login.brand')}
+          </p>
           <h1
             className="mt-3 text-[42px] font-black leading-[1.08] tracking-[0] text-[#070707] min-[390px]:text-[48px]"
-            aria-label="회원가입"
+            aria-label={t('signup.heading.aria')}
           >
-            회원가입하고
+            {t('signup.heading.line1')}
             <br />
-            <span className="text-[#0b63df]">돌봄</span>을
+            <span className="text-[#0b63df]">{t('signup.heading.accent')}</span>
+            {t('signup.heading.suffix')}
             <br />
-            시작해요
+            {t('signup.heading.line3')}
           </h1>
           <p className="mt-5 text-[20px] font-bold leading-[1.45] text-[#4d5968] min-[390px]:text-[22px]">
-            이메일 또는 전화번호로 공통 계정을 만들고 사용할 역할을 선택합니다.
+            {t('signup.description')}
           </p>
         </section>
 
@@ -210,14 +175,14 @@ export function SignupPage() {
               id="signup-form-title"
               className="text-[24px] font-black leading-tight text-[#07111f]"
             >
-              가입 정보 입력
+              {t('signup.formTitle')}
             </h2>
           </div>
 
           <label className="block" htmlFor={emailId}>
             <span className="mb-2 flex items-center gap-2 text-[18px] font-black text-[#07111f]">
               <AtSign aria-hidden="true" size={22} strokeWidth={3} />
-              이메일
+              {t('signup.emailLabel')}
             </span>
             <input
               id={emailId}
@@ -233,7 +198,7 @@ export function SignupPage() {
           <label className="block" htmlFor={phoneId}>
             <span className="mb-2 flex items-center gap-2 text-[18px] font-black text-[#07111f]">
               <Phone aria-hidden="true" size={22} strokeWidth={3} />
-              전화번호
+              {t('signup.phoneLabel')}
             </span>
             <input
               id={phoneId}
@@ -249,14 +214,14 @@ export function SignupPage() {
           <label className="block" htmlFor={passwordId}>
             <span className="mb-2 flex items-center gap-2 text-[18px] font-black text-[#07111f]">
               <KeyRound aria-hidden="true" size={22} strokeWidth={3} />
-              비밀번호
+              {t('login.passwordLabel')}
             </span>
             <span className="relative block">
               <input
                 id={passwordId}
                 className="min-h-[64px] w-full rounded-[18px] border-2 border-[#cfe0f6] bg-[#fbfdff] px-4 pr-16 text-[20px] font-bold text-[#07111f] outline-none transition placeholder:text-[#7b8796] focus:border-[#0b63df] focus:ring-4 focus:ring-[#cfe4ff]"
                 autoComplete="new-password"
-                placeholder="영문, 숫자, 특수문자 포함"
+                placeholder={t('signup.passwordPlaceholder')}
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
@@ -264,7 +229,11 @@ export function SignupPage() {
               <button
                 type="button"
                 className="absolute right-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-[14px] text-[#596778] transition hover:bg-[#eaf3ff] hover:text-[#0b63df] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-                aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+                aria-label={
+                  showPassword
+                    ? t('login.password.hide')
+                    : t('login.password.show')
+                }
                 onClick={() => setShowPassword((value) => !value)}
               >
                 {showPassword ? (
@@ -279,7 +248,7 @@ export function SignupPage() {
           <label className="block" htmlFor={passwordConfirmId}>
             <span className="mb-2 flex items-center gap-2 text-[18px] font-black text-[#07111f]">
               <ShieldAlert aria-hidden="true" size={22} strokeWidth={3} />
-              비밀번호 확인
+              {t('signup.passwordConfirmLabel')}
             </span>
             <input
               id={passwordConfirmId}
@@ -291,55 +260,14 @@ export function SignupPage() {
             />
           </label>
 
-          <fieldset className="grid gap-3">
-            <legend className="mb-1 flex items-center gap-2 text-[20px] font-black text-[#07111f]">
-              <UsersRound aria-hidden="true" size={24} strokeWidth={3} />
-              역할 선택
-            </legend>
-            <div className="grid grid-cols-2 gap-3">
-              {roleOptions.map((option) => {
-                const selected = role === option.value
-
-                return (
-                  <button
-                    key={option.value}
-                    type="button"
-                    className={cn(
-                      'min-h-[104px] rounded-[20px] border-2 px-3 py-3 text-left transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]',
-                      selected
-                        ? 'border-[#0b63df] bg-[#eaf3ff]'
-                        : 'border-[#d8e7ff] bg-[#fbfdff] hover:border-[#0b63df]',
-                    )}
-                    aria-pressed={selected}
-                    onClick={() => setRole(option.value)}
-                  >
-                    <span className="flex items-center justify-between gap-2 text-[19px] font-black text-[#07111f]">
-                      {option.label}
-                      {selected ? (
-                        <CheckCircle2
-                          aria-hidden="true"
-                          className="h-6 w-6 shrink-0 text-[#0b63df]"
-                          strokeWidth={3}
-                        />
-                      ) : null}
-                    </span>
-                    <span className="mt-2 block text-[13px] font-bold leading-snug text-[#596778]">
-                      {option.description}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-          </fieldset>
-
           <section className="rounded-[20px] bg-[#f7fbff] p-4">
             <h2 className="text-[19px] font-black text-[#07111f]">
-              비밀번호 정책
+              {t('signup.passwordPolicy.title')}
             </h2>
             <ul className="mt-3 grid gap-2">
               {passwordChecks.map((check) => (
                 <li
-                  key={check.label}
+                  key={check.labelKey}
                   className="flex items-center gap-3 text-[16px] font-bold text-[#07111f]"
                 >
                   <CheckCircle2
@@ -350,7 +278,7 @@ export function SignupPage() {
                     )}
                     strokeWidth={3}
                   />
-                  {check.label}
+                  {t(check.labelKey)}
                 </li>
               ))}
               <li className="flex items-center gap-3 text-[16px] font-bold text-[#07111f]">
@@ -362,7 +290,7 @@ export function SignupPage() {
                   )}
                   strokeWidth={3}
                 />
-                비밀번호 확인 일치
+                {t('signup.passwordPolicy.match')}
               </li>
             </ul>
           </section>
@@ -372,18 +300,20 @@ export function SignupPage() {
             type="submit"
           >
             <UserPlus aria-hidden="true" size={30} strokeWidth={3} />
-            계정 생성
+            {t('signup.createAccount')}
           </button>
 
-          {statusMessage ? (
+          {statusKey ? (
             <p
               className="rounded-[18px] border-2 border-[#d8e7ff] bg-[#fbfdff] px-4 py-3 text-[18px] font-black leading-snug text-[#07111f]"
               role="status"
             >
-              {statusMessage}
+              {t(statusKey)}
               {createdAccount ? (
                 <span className="mt-2 block break-all text-[14px] font-bold text-[#596778]">
-                  생성된 계정: {createdAccount}
+                  {t('signup.status.createdAccount', {
+                    accountId: createdAccount,
+                  })}
                 </span>
               ) : null}
             </p>
@@ -391,7 +321,7 @@ export function SignupPage() {
         </form>
 
         <p className="mt-4 rounded-[20px] border-2 border-amber-200 bg-amber-50 px-4 py-3 text-[16px] font-bold leading-snug text-amber-950">
-          이미 가입된 이메일 또는 전화번호는 계정 생성 시 바로 안내합니다.
+          {t('signup.duplicateNotice')}
         </p>
       </section>
     </main>

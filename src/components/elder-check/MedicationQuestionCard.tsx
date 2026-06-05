@@ -1,4 +1,6 @@
 import { CheckCircle2 } from 'lucide-react'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 export type MedicationAnswer = 'taken' | 'not_taken' | null
@@ -9,17 +11,17 @@ type MedicationQuestionCardProps = {
 }
 
 const answerOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: Exclude<MedicationAnswer, null>
   variant: 'primary' | 'outline'
 }> = [
   {
-    label: '네, 먹었어요',
+    labelKey: 'elder.check.medication.taken',
     value: 'taken',
     variant: 'primary',
   },
   {
-    label: '아직 못 먹었어요',
+    labelKey: 'elder.check.medication.notTaken',
     value: 'not_taken',
     variant: 'outline',
   },
@@ -31,11 +33,13 @@ export function MedicationQuestionCard({
   answer,
   onAnswer,
 }: MedicationQuestionCardProps) {
+  const { t } = useI18n()
+
   return (
     <section className="mt-4 flex flex-1 flex-col justify-evenly rounded-[22px] bg-[radial-gradient(circle_at_50%_23%,rgba(255,255,255,0.86)_0_24%,transparent_50%),linear-gradient(180deg,#eff8ff_0%,#eaf5ff_100%)] px-4 pb-4 pt-5 text-center shadow-[0_14px_30px_rgba(39,77,128,0.12),inset_0_1px_0_rgba(255,255,255,0.8)] min-[390px]:px-5 min-[390px]:pb-5 min-[390px]:pt-6">
       <img
         src={medicationIconSrc}
-        alt="복약 확인 아이콘"
+        alt={t('elder.check.medication.iconAlt')}
         width="512"
         height="512"
         className="mx-auto h-[126px] w-[126px] object-contain drop-shadow-[0_14px_20px_rgba(66,105,168,0.18)] min-[390px]:h-[142px] min-[390px]:w-[142px]"
@@ -43,7 +47,7 @@ export function MedicationQuestionCard({
       />
 
       <h2 className="mt-3 text-[28px] font-black leading-[1.1] tracking-[-0.075em] text-[#080808] min-[390px]:text-[32px]">
-        오늘 약을 드셨나요?
+        {t('elder.check.medication.question')}
       </h2>
 
       <div className="mt-4 grid gap-3">
@@ -72,7 +76,7 @@ export function MedicationQuestionCard({
                   strokeWidth={3}
                 />
               ) : null}
-              <span>{option.label}</span>
+              <span>{t(option.labelKey)}</span>
             </button>
           )
         })}

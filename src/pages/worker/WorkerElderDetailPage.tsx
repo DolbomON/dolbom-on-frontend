@@ -171,7 +171,7 @@ function WorkerDetailTopBar({ viewRole }: { viewRole: DetailViewRole }) {
     return <CaregiverTopBar activeLabel="담당어르신" />
   }
 
-  return <WorkerTopBar activeHref="/worker/welfare-connect" />
+  return <WorkerTopBar activeHref="/worker/elders/kim-yeongja/care-team" />
 }
 
 function NotFoundState({ viewRole }: { viewRole: DetailViewRole }) {

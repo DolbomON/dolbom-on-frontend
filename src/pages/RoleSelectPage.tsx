@@ -2,35 +2,45 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { RoleCard, type RoleOption } from '../components/role-select/RoleCard'
 import { RoleSelectHeader } from '../components/role-select/RoleSelectHeader'
+import { useI18n } from '../lib/i18n/useI18n'
+import type { TranslationKey } from '../lib/i18n/translations'
 
 type UserRole = 'elder' | 'family' | 'worker' | 'government'
 
 const heroImage = '/assets/dolbomon/role-select/hero-role-select.png'
 
-const roleOptions: Array<RoleOption<UserRole>> = [
+type RoleTranslationOption = Omit<
+  RoleOption<UserRole>,
+  'description' | 'title'
+> & {
+  descriptionKey: TranslationKey
+  titleKey: TranslationKey
+}
+
+const roleOptions: RoleTranslationOption[] = [
   {
-    description: '건강과 안부를 쉽게 기록해요',
+    descriptionKey: 'role.elder.description',
     id: 'elder',
     imageSrc: '/assets/dolbomon/role-select/role-elder.png',
-    title: '어르신',
+    titleKey: 'role.elder.title',
   },
   {
-    description: '가족의 상태를 함께 살펴봐요',
+    descriptionKey: 'role.family.description',
     id: 'family',
     imageSrc: '/assets/dolbomon/role-select/role-family.png',
-    title: '가족',
+    titleKey: 'role.family.title',
   },
   {
-    description: '오늘 방문 업무를 실행하고 기록해요',
+    descriptionKey: 'role.worker.description',
     id: 'worker',
     imageSrc: '/assets/dolbomon/role-select/role-worker.png',
-    title: '요양사',
+    titleKey: 'role.worker.title',
   },
   {
-    description: '위험 대응과 요양사 배정을 관리해요',
+    descriptionKey: 'role.government.description',
     id: 'government',
     imageSrc: '/assets/dolbomon/role-select/role-government.png',
-    title: '복지사',
+    titleKey: 'role.government.title',
   },
 ]
 
@@ -44,6 +54,7 @@ const nextRouteByRole: Record<UserRole, string> = {
 export function RoleSelectPage() {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null)
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   function handleBack() {
     if (window.history.length > 1) {
@@ -68,7 +79,7 @@ export function RoleSelectPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#eef6ff] text-[#050505]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_87%_25%,rgba(228,242,255,0.95)_0_17%,transparent_36%),linear-gradient(180deg,#ffffff_0%,#fbfdff_62%,#ffffff_100%)] px-4 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5 min-[390px]:pt-4 sm:px-6"
-        aria-label="이용 유형 선택 화면"
+        aria-label={t('role.aria')}
       >
         <RoleSelectHeader onBack={handleBack} />
 
@@ -79,13 +90,13 @@ export function RoleSelectPage() {
           <div className="relative z-10 flex items-center gap-4">
             <span
               className="inline-flex min-h-[31px] min-w-[59px] items-center justify-center gap-1 rounded-full border border-[#b8d3ff] bg-white/75 px-4 text-[19px] tracking-[-0.04em] shadow-[0_8px_18px_rgba(36,95,190,0.05)]"
-              aria-label="1단계, 총 3단계"
+              aria-label={t('role.step.aria')}
             >
               <strong className="font-black text-[#0867f2]">1</strong>
               <span className="font-bold text-[#8ea7cf]">/ 3</span>
             </span>
             <span className="text-[16px] font-bold tracking-[-0.045em] text-[#0867f2]">
-              이용 유형 선택
+              {t('role.step.label')}
             </span>
           </div>
 
@@ -93,17 +104,17 @@ export function RoleSelectPage() {
             <h1
               id="role-title"
               className="text-[32px] font-black leading-[1.1] tracking-[-0.075em] min-[390px]:text-[38px]"
-              aria-label="이용 유형을 선택해주세요"
+              aria-label={t('role.heading.aria')}
             >
-              이용 유형을
+              {t('role.heading.line1')}
               <br />
-              <span className="text-[#005ee6]">선택해주세요</span>
+              <span className="text-[#005ee6]">{t('role.heading.line2')}</span>
             </h1>
 
             <p className="mt-3 text-[14px] font-medium leading-[1.35] tracking-[-0.045em] text-[#596170] min-[390px]:mt-4 min-[390px]:text-[15px]">
-              사용할 대상에 맞는 메뉴와
+              {t('role.description.line1')}
               <br />
-              기능을 안내해드릴게요.
+              {t('role.description.line2')}
             </p>
           </div>
 
@@ -120,12 +131,17 @@ export function RoleSelectPage() {
 
         <section
           className="relative z-10 grid flex-1 auto-rows-fr grid-cols-2 gap-3"
-          aria-label="이용 유형 목록"
+          aria-label={t('role.list.aria')}
         >
           {roleOptions.map((role) => (
             <RoleCard
               key={role.id}
-              role={role}
+              role={{
+                description: t(role.descriptionKey),
+                id: role.id,
+                imageSrc: role.imageSrc,
+                title: t(role.titleKey),
+              }}
               selected={selectedRole === role.id}
               onSelect={() => setSelectedRole(role.id)}
             />
@@ -138,7 +154,7 @@ export function RoleSelectPage() {
           disabled={!selectedRole}
           onClick={handleNext}
         >
-          다음
+          {t('common.next')}
         </button>
       </section>
     </main>

@@ -1,6 +1,7 @@
 import { Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
 import {
   MedicationHabitQuestionCard,
   type MedicationFrequency,
@@ -8,6 +9,7 @@ import {
   type MedicationHelp,
   type MedicationTime,
 } from '../../components/elder-check/MedicationHabitQuestionCard'
+import { useI18n } from '../../lib/i18n/useI18n'
 
 type MedicationHabitRouteState = {
   medicationHabit?: MedicationHabitAnswers
@@ -24,15 +26,16 @@ function getMedicationHabitRouteState(
 }
 
 function HabitProgress() {
+  const { t } = useI18n()
   const currentStep = 1
   const totalSteps = 6
   const progressPercent = (currentStep / totalSteps) * 100
 
   return (
-    <section aria-label="복약 습관 진행률">
+    <section aria-label={t('elder.survey.medicationHabit.progressAria')}>
       <div className="flex items-end justify-between gap-4">
         <h1 className="text-[40px] font-black leading-none text-[#061844] min-[390px]:text-[46px]">
-          복약 습관
+          {t('elder.survey.medicationHabit.title')}
         </h1>
         <p
           className="text-[30px] font-black leading-none text-[#4f5a67] min-[390px]:text-[34px]"
@@ -48,7 +51,10 @@ function HabitProgress() {
         aria-valuemin={0}
         aria-valuemax={totalSteps}
         aria-valuenow={currentStep}
-        aria-label={`총 ${totalSteps}단계 중 ${currentStep}단계`}
+        aria-label={t('elder.progress.totalAria', {
+          current: currentStep,
+          total: totalSteps,
+        })}
       >
         <div
           className="h-full rounded-full bg-gradient-to-r from-[#2d86ff] to-[#0f74f5] shadow-[0_6px_14px_rgba(0,96,229,0.24)]"
@@ -62,6 +68,7 @@ function HabitProgress() {
 export function ElderMedicationHabitPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useI18n()
   const routeState = getMedicationHabitRouteState(location.state)
   const [frequency, setFrequency] = useState<MedicationFrequency>(
     routeState.medicationHabit?.frequency ?? 'twice',
@@ -104,26 +111,15 @@ export function ElderMedicationHabitPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#061844]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(22px,env(safe-area-inset-bottom))] pt-[max(26px,env(safe-area-inset-top))] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
-        aria-label="복약 습관 입력 화면"
+        aria-label={t('elder.survey.medicationHabit.aria')}
       >
         <header className="flex items-center justify-between">
-          <Link
-            to="/elder"
-            className="inline-flex min-h-12 items-baseline rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄온 어르신 홈"
-          >
-            <span className="text-[29px] font-black leading-none min-[390px]:text-[34px]">
-              돌봄
-            </span>
-            <span className="ml-1 text-[39px] font-black leading-none min-[390px]:text-[46px]">
-              ON
-            </span>
-          </Link>
+          <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
 
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={42} strokeWidth={2.8} />
@@ -150,7 +146,7 @@ export function ElderMedicationHabitPage() {
               className="flex min-h-[72px] w-full items-center justify-center rounded-[22px] bg-gradient-to-br from-[#147cff] to-[#0066f5] px-6 text-[33px] font-black text-white shadow-[0_18px_30px_rgba(2,92,221,0.22)] transition active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[78px] min-[390px]:text-[38px]"
               type="submit"
             >
-              다음
+              {t('common.next')}
             </button>
           </div>
         </form>

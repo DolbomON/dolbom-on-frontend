@@ -2,8 +2,8 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { RoleSelectPage } from '../pages/RoleSelectPage'
-import { SignupPage } from '../pages/SignupPage'
 import { RoleMypagePage } from '../pages/RoleMypagePage'
+import { SignupPage } from '../pages/SignupPage'
 import { CaregiverAssignmentsPage } from '../pages/caregiver/CaregiverAssignmentsPage'
 import { CaregiverDashboardPage } from '../pages/caregiver/CaregiverDashboardPage'
 import { CaregiverVisitRecordsPage } from '../pages/caregiver/CaregiverVisitRecordsPage'
@@ -155,12 +155,16 @@ export const router = createBrowserRouter([
     element: <ElderChatPage />,
   },
   {
-    path: '/elder/connect',
+    path: '/elder/care-team',
     element: <ElderCareTeamPage />,
   },
   {
     path: '/elder/mypage',
     element: <RoleMypagePage role="elder" />,
+  },
+  {
+    path: '/elder/connect',
+    element: <Navigate replace to="/elder/care-team" />,
   },
   {
     path: '/family',
@@ -210,7 +214,10 @@ export const router = createBrowserRouter([
     path: '/caregiver/mypage',
     element: <RoleMypagePage role="caregiver" />,
   },
-
+  {
+    path: '/caregiver/connect',
+    element: <FamilyConnectPage topBarVariant="caregiver" />,
+  },
   {
     path: '/caregiver/elders/:elderId',
     element: <WorkerElderDetailPage />,
@@ -224,8 +231,12 @@ export const router = createBrowserRouter([
     element: <WorkerDashboardPage />,
   },
   {
-    path: '/worker/welfare-connect',
+    path: '/worker/elders/:elderId/care-team',
     element: <WorkerWelfareConnectPage />,
+  },
+  {
+    path: '/worker/welfare-connect',
+    element: <Navigate replace to="/worker/elders/kim-yeongja/care-team" />,
   },
   {
     path: '/worker/signup',

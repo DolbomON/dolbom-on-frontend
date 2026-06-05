@@ -1,10 +1,13 @@
 import { Mic } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
+import { useI18n } from '../../lib/i18n/useI18n'
 
 const microphoneImageSrc = '/assets/dolbomon/voice/마이크.png'
 
 export function ElderVoiceListeningPage() {
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   function handleDoneClick() {
     // TODO: Submit the recognized speech when the STT flow is connected.
@@ -20,14 +23,18 @@ export function ElderVoiceListeningPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#061844]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-white px-8 pb-[max(18px,env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[430px]:px-11"
-        aria-label="음성 인식 화면"
+        aria-label={t('elder.voiceListening.aria')}
       >
-        <section className="mt-14 shrink-0 text-center min-[430px]:mt-16">
+        <header className="flex min-h-11 items-center">
+          <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
+        </header>
+
+        <section className="mt-8 shrink-0 text-center min-[430px]:mt-10">
           <h1 className="text-[41px] font-black leading-none text-[#061844] min-[430px]:text-[50px]">
-            말씀해 주세요
+            {t('elder.voiceListening.title')}
           </h1>
-          <p className="mt-5 whitespace-nowrap text-[20px] font-semibold leading-tight text-[#24385b] min-[430px]:text-[22px]">
-            음성을 인식하여 정확하게 도와드릴게요.
+          <p className="mt-5 break-keep text-[20px] font-semibold leading-tight text-[#24385b] min-[430px]:text-[22px]">
+            {t('elder.voiceListening.description')}
           </p>
         </section>
 
@@ -49,7 +56,7 @@ export function ElderVoiceListeningPage() {
             aria-hidden="true"
           />
           <p className="text-[33px] font-black leading-none text-[#126fff] min-[430px]:text-[38px]">
-            듣는 중...
+            {t('elder.voiceListening.listening')}
           </p>
         </div>
 
@@ -65,10 +72,10 @@ export function ElderVoiceListeningPage() {
             id="recognized-title"
             className="text-[25px] font-bold leading-none text-[#0b72ff] min-[430px]:text-[28px]"
           >
-            인식된 말
+            {t('elder.voiceListening.recognizedTitle')}
           </h2>
-          <p className="relative mt-4 whitespace-nowrap text-[29px] font-black leading-none text-[#061844] min-[430px]:text-[33px]">
-            “밥은 조금 먹었고...”
+          <p className="relative mt-4 break-keep text-[29px] font-black leading-tight text-[#061844] min-[430px]:text-[33px]">
+            {t('elder.voiceListening.recognizedSample')}
           </p>
         </section>
 
@@ -82,7 +89,7 @@ export function ElderVoiceListeningPage() {
             aria-hidden="true"
           />
           <span className="text-[31px] leading-none min-[430px]:text-[36px]">
-            말 끝났어요
+            {t('elder.voiceListening.done')}
           </span>
         </button>
 
@@ -93,7 +100,7 @@ export function ElderVoiceListeningPage() {
         >
           <Mic size={31} strokeWidth={3.2} aria-hidden="true" />
           <span className="text-[22px] leading-none min-[430px]:text-[25px]">
-            다시 말할게요
+            {t('elder.voiceListening.retry')}
           </span>
         </button>
       </section>

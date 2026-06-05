@@ -6,6 +6,8 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 type WorkerNavItemId = 'alerts' | 'dashboard' | 'elders' | 'reports'
@@ -14,7 +16,7 @@ type WorkerNavItem = {
   href: string
   icon: LucideIcon
   id: WorkerNavItemId
-  label: string
+  labelKey: TranslationKey
 }
 
 const workerNavItems: WorkerNavItem[] = [
@@ -22,36 +24,39 @@ const workerNavItems: WorkerNavItem[] = [
     href: '/worker',
     icon: LayoutDashboard,
     id: 'dashboard',
-    label: '대시보드',
+    labelKey: 'worker.bottomNav.dashboard',
   },
   {
     href: '/worker#risk-elder-panel',
     icon: Users,
     id: 'elders',
-    label: '대상자',
+    labelKey: 'worker.bottomNav.elders',
   },
   {
     href: '/worker/alerts',
     icon: Bell,
     id: 'alerts',
-    label: '알림',
+    labelKey: 'worker.bottomNav.alerts',
   },
   {
     href: '/worker/reports',
     icon: FileText,
     id: 'reports',
-    label: '보고서',
+    labelKey: 'worker.bottomNav.reports',
   },
 ]
 
 export function WorkerBottomNav() {
+  const { t } = useI18n()
+
   return (
     <nav
       className="fixed bottom-0 left-1/2 z-30 grid h-[78px] w-full max-w-[480px] -translate-x-1/2 grid-cols-4 border-t border-[#e2eaf5] bg-white pb-[max(8px,env(safe-area-inset-bottom))] pt-1 shadow-[0_-10px_24px_rgba(40,91,172,0.1)]"
-      aria-label="하단 메뉴"
+      aria-label={t('worker.bottomNav.aria')}
     >
       {workerNavItems.map((item) => {
         const Icon = item.icon
+        const label = t(item.labelKey)
 
         return (
           <NavLink
@@ -79,7 +84,7 @@ export function WorkerBottomNav() {
                   className="h-8 w-8"
                   strokeWidth={isActive ? 2.9 : 2.4}
                 />
-                <span>{item.label}</span>
+                <span>{label}</span>
               </>
             )}
           </NavLink>

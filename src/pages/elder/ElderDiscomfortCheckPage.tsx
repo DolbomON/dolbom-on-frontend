@@ -6,9 +6,7 @@ import {
   type DiscomfortAnswer,
 } from '../../components/elder-check/DiscomfortQuestionCard'
 import { ElderProgress } from '../../components/elder-check/ElderProgress'
-
-const voiceGuideText =
-  '오늘 몸이 불편한 곳이 있나요? 없어요 또는 있어요 중에서 선택해주세요.'
+import { useI18n } from '../../lib/i18n/useI18n'
 
 type DailyCheckRouteState = {
   discomfortAnswer?: Exclude<DiscomfortAnswer, null>
@@ -27,6 +25,7 @@ function getDailyCheckRouteState(state: unknown): DailyCheckRouteState {
 export function ElderDiscomfortCheckPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useI18n()
   const routeState = getDailyCheckRouteState(location.state)
   const [discomfortAnswer, setDiscomfortAnswer] = useState<DiscomfortAnswer>(
     routeState.discomfortAnswer ?? null,
@@ -52,14 +51,14 @@ export function ElderDiscomfortCheckPage() {
 
   function handleVoiceGuide() {
     // TODO: Connect this to the voice/TTS feature when it is ready.
-    console.info(voiceGuideText)
+    console.info(t('elder.check.discomfort.voiceGuide'))
   }
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#102b53]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_80%_22%,rgba(235,247,255,0.95)_0_15%,transparent_34%),linear-gradient(180deg,#ffffff_0%,#fbfdff_55%,#ffffff_100%)] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-[10px] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5"
-        aria-label="몸 불편 상태 입력 화면"
+        aria-label={t('elder.check.discomfort.pageAria')}
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
 
@@ -68,10 +67,10 @@ export function ElderDiscomfortCheckPage() {
             id="greeting"
             className="text-[28px] font-black leading-[1.1] tracking-[-0.075em] text-[#102b53] min-[390px]:text-[32px]"
           >
-            안녕하세요, 김영자님
+            {t('elder.check.greeting')}
           </h1>
           <p className="mt-1 text-[15px] font-semibold leading-[1.25] tracking-[-0.045em] text-[#6d7280] min-[390px]:text-[16px]">
-            2024년 5월 16일 (목)
+            {t('elder.check.date')}
           </p>
         </section>
 

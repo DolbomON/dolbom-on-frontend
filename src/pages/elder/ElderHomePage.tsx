@@ -1,5 +1,7 @@
 import { Menu, Siren } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
+import { useI18n } from '../../lib/i18n/useI18n'
 
 const mainAssetBase = '/assets/dolbomon/main'
 const recordCardBackgroundSrc = `${mainAssetBase}/배경.png`
@@ -8,17 +10,14 @@ const microphoneImageSrc = `${mainAssetBase}/마이크.png`
 const chatImageSrc = `${mainAssetBase}/채팅.png`
 const careTeamImageSrc = '/assets/dolbomon/welfare/보안.png'
 
-function getTodayLabel() {
-  return new Intl.DateTimeFormat('ko-KR', {
+export function ElderHomePage() {
+  const navigate = useNavigate()
+  const { formatDate, t } = useI18n()
+  const todayLabel = formatDate(new Date(), {
     day: 'numeric',
     month: 'long',
     weekday: 'long',
-  }).format(new Date())
-}
-
-export function ElderHomePage() {
-  const navigate = useNavigate()
-  const todayLabel = getTodayLabel()
+  })
 
   function handleMenuClick() {
     navigate('/elder/mypage')
@@ -28,26 +27,15 @@ export function ElderHomePage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#061844]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-[max(18px,env(safe-area-inset-top))] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6 min-[430px]:px-7"
-        aria-label="어르신 홈 화면"
+        aria-label={t('elder.home.aria')}
       >
         <header className="flex items-start justify-between">
-          <Link
-            to="/elder"
-            className="inline-flex min-h-10 items-baseline rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄ON 어르신 홈"
-          >
-            <span className="text-[31px] font-black leading-none min-[390px]:text-[34px]">
-              돌봄
-            </span>
-            <span className="ml-1 text-[40px] font-black leading-none min-[390px]:text-[44px]">
-              ON
-            </span>
-          </Link>
+          <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
 
           <button
             className="inline-grid h-10 w-10 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={36} strokeWidth={2.8} />
@@ -62,10 +50,10 @@ export function ElderHomePage() {
             id="greeting"
             className="mt-5 text-[39px] font-black leading-[1.15] text-[#061844] min-[390px]:text-[42px]"
           >
-            안녕하세요,
+            {t('elder.home.greeting')}
             <br />
             <span className="whitespace-nowrap">
-              길동 어르신 <span aria-hidden="true">👋</span>
+              {t('elder.home.name')} <span aria-hidden="true">👋</span>
             </span>
           </h1>
         </section>
@@ -83,12 +71,12 @@ export function ElderHomePage() {
             id="record-title"
             className="whitespace-nowrap text-center text-[28px] font-black leading-tight text-[#061844] min-[390px]:text-[31px]"
           >
-            오늘 상태를 기록해요
+            {t('elder.home.recordTitle')}
           </h2>
 
           <ol
             className="mt-7 flex items-center justify-center gap-0"
-            aria-label="오늘 기록 단계"
+            aria-label={t('elder.home.recordStepsAria')}
           >
             {[1, 2, 3, 4, 5].map((step) => (
               <li key={step} className="flex items-center gap-1">
@@ -112,7 +100,7 @@ export function ElderHomePage() {
           </ol>
 
           <p className="mt-6 whitespace-nowrap text-center text-[19px] font-bold leading-tight text-[#6a7280] min-[390px]:text-[21px]">
-            식사 · 복약 · 통증 · 기분 · 수면
+            {t('elder.home.recordCategories')}
           </p>
 
           <Link
@@ -129,14 +117,14 @@ export function ElderHomePage() {
               draggable="false"
             />
             <span className="whitespace-nowrap text-[25px] font-black leading-none min-[390px]:text-[28px]">
-              오늘 기록 시작
+              {t('elder.home.recordCta')}
             </span>
           </Link>
         </section>
 
         <section
           className="mt-4 grid grid-cols-2 gap-3 min-[390px]:gap-4"
-          aria-label="어르신 안부 메뉴"
+          aria-label={t('elder.home.menuAria')}
         >
           <Link
             to="/elder/voice"
@@ -154,10 +142,10 @@ export function ElderHomePage() {
               />
             </span>
             <strong className="mt-4 whitespace-nowrap text-[26px] font-black leading-none text-[#061844] min-[390px]:text-[29px]">
-              음성으로
+              {t('elder.home.voice.title')}
             </strong>
             <span className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none text-[#6a7280] min-[390px]:text-[20px]">
-              말로 답하기
+              {t('elder.home.voice.description')}
             </span>
           </Link>
 
@@ -177,15 +165,15 @@ export function ElderHomePage() {
               />
             </span>
             <strong className="mt-4 whitespace-nowrap text-[26px] font-black leading-none text-[#061844] min-[390px]:text-[29px]">
-              말동무
+              {t('elder.home.chat.title')}
             </strong>
             <span className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none text-[#6a7280] min-[390px]:text-[20px]">
-              AI 안부
+              {t('elder.home.chat.description')}
             </span>
           </Link>
 
           <Link
-            to="/elder/connect"
+            to="/elder/care-team"
             className="flex min-h-[162px] flex-col items-center justify-center rounded-[22px] border border-[#d8e2ee] bg-white px-2 py-4 text-center shadow-[0_12px_24px_rgba(31,74,128,0.1)] transition active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff] min-[390px]:min-h-[178px] min-[390px]:rounded-[24px]"
           >
             <span className="grid h-[74px] w-[74px] place-items-center rounded-full bg-[#eaf6ff] shadow-[inset_0_0_0_2px_rgba(205,226,251,0.68)] min-[390px]:h-[82px] min-[390px]:w-[82px]">
@@ -200,12 +188,13 @@ export function ElderHomePage() {
               />
             </span>
             <strong className="mt-4 whitespace-nowrap text-[26px] font-black leading-none text-[#061844] min-[390px]:text-[29px]">
-              내 돌봄팀
+              {t('elder.home.team.title')}
             </strong>
             <span className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none text-[#6a7280] min-[390px]:text-[20px]">
-              연결 정보
+              {t('elder.home.team.description')}
             </span>
           </Link>
+
           <Link
             to="/elder/sos"
             className="flex min-h-[162px] flex-col items-center justify-center rounded-[22px] border-2 border-[#fecdd3] bg-[#fff1f2] px-2 py-4 text-center shadow-[0_12px_24px_rgba(190,18,60,0.12)] transition active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#fda4af] min-[390px]:min-h-[178px] min-[390px]:rounded-[24px]"
@@ -218,10 +207,10 @@ export function ElderHomePage() {
               />
             </span>
             <strong className="mt-4 whitespace-nowrap text-[26px] font-black leading-none text-[#9f1239] min-[390px]:text-[29px]">
-              긴급 SOS
+              {t('elder.home.sos.title')}
             </strong>
             <span className="mt-2 whitespace-nowrap text-[18px] font-bold leading-none text-[#6a2432] min-[390px]:text-[20px]">
-              도움 요청
+              {t('elder.home.sos.description')}
             </span>
           </Link>
         </section>

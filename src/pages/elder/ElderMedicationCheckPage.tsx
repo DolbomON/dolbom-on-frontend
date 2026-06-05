@@ -8,9 +8,7 @@ import {
   type MedicationAnswer,
 } from '../../components/elder-check/MedicationQuestionCard'
 import { VoiceGuideButton } from '../../components/elder-check/VoiceGuideButton'
-
-const voiceGuideText =
-  '오늘 약을 드셨나요? 네, 먹었어요 또는 아직 못 먹었어요 중에서 선택해주세요.'
+import { useI18n } from '../../lib/i18n/useI18n'
 
 type DailyCheckRouteState = {
   medicationHabit?: MedicationHabitAnswers
@@ -28,6 +26,7 @@ function getDailyCheckRouteState(state: unknown): DailyCheckRouteState {
 export function ElderMedicationCheckPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useI18n()
   const routeState = getDailyCheckRouteState(location.state)
   const [medicationTaken, setMedicationTaken] = useState<MedicationAnswer>(
     routeState.medicationTaken ?? null,
@@ -48,14 +47,14 @@ export function ElderMedicationCheckPage() {
 
   function handleVoiceGuide() {
     // TODO: Connect this to the voice/TTS feature when it is ready.
-    console.info(voiceGuideText)
+    console.info(t('elder.check.medication.voiceGuide'))
   }
 
   return (
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#080808]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col overflow-hidden bg-[radial-gradient(circle_at_80%_22%,rgba(235,247,255,0.95)_0_15%,transparent_34%),linear-gradient(180deg,#ffffff_0%,#fbfdff_55%,#ffffff_100%)] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-[10px] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-5"
-        aria-label="복약 상태 입력 화면"
+        aria-label={t('elder.check.medication.pageAria')}
       >
         <ElderCheckHeader onNotificationClick={handleNotificationClick} />
 
@@ -64,10 +63,10 @@ export function ElderMedicationCheckPage() {
             id="greeting"
             className="text-[28px] font-black leading-[1.1] tracking-[-0.075em] text-[#080808] min-[390px]:text-[32px]"
           >
-            안녕하세요, 김영자님
+            {t('elder.check.greeting')}
           </h1>
           <p className="mt-1 text-[15px] font-semibold leading-[1.25] tracking-[-0.045em] text-[#6d7280] min-[390px]:text-[16px]">
-            2024년 5월 16일 (목)
+            {t('elder.check.date')}
           </p>
         </section>
 

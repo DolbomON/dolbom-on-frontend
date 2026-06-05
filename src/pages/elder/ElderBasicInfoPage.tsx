@@ -1,6 +1,8 @@
 import { Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 type LivesAloneOption = 'yes' | 'no'
@@ -19,6 +21,7 @@ const unselectedChoiceClass = 'border-[#d8e1ee] bg-white text-[#111827]'
 
 export function ElderBasicInfoPage() {
   const navigate = useNavigate()
+  const { t } = useI18n()
   const [livesAlone, setLivesAlone] = useState<LivesAloneOption>('yes')
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -34,22 +37,15 @@ export function ElderBasicInfoPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#f2f7ff] text-[#111827]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white shadow-[0_20px_80px_rgba(55,104,184,0.08)]"
-        aria-label="어르신 기본 정보 입력 화면"
+        aria-label={t('elder.basicInfo.aria')}
       >
         <header className="flex min-h-[90px] items-center justify-between border-b border-[#e5ebf4] px-6 pt-[max(10px,env(safe-area-inset-top))]">
-          <Link
-            to="/select-role"
-            className="inline-flex min-h-12 items-baseline rounded-md text-[#0b63df] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄온 이용 유형 선택"
-          >
-            <span className="text-[34px] font-black leading-none">돌봄</span>
-            <span className="ml-1 text-[46px] font-black leading-none">ON</span>
-          </Link>
+          <DolbomLogo ariaLabel={t('elder.basicInfo.logoAria')} to="/select-role" />
 
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-md text-[#374151] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={42} strokeWidth={2.8} />
@@ -62,20 +58,20 @@ export function ElderBasicInfoPage() {
         >
           <h1
             className="text-[42px] font-black leading-[1.12] text-[#111827]"
-            aria-label="기본 정보를 알려주세요"
+            aria-label={t('elder.basicInfo.headingAria')}
           >
-            기본 정보를
+            {t('elder.basicInfo.headingLine1')}
             <br />
-            알려주세요
+            {t('elder.basicInfo.headingLine2')}
           </h1>
 
           <div className="mt-8 flex flex-col gap-6">
             <label className="block">
-              <span className={labelClass}>이름</span>
+              <span className={labelClass}>{t('elder.basicInfo.name')}</span>
               <input
                 className={textInputClass}
                 name="name"
-                placeholder="홍길동"
+                placeholder={t('elder.basicInfo.namePlaceholder')}
                 type="text"
                 autoComplete="name"
               />
@@ -83,7 +79,7 @@ export function ElderBasicInfoPage() {
 
             <div className="grid grid-cols-2 gap-5">
               <label className="block min-w-0">
-                <span className={labelClass}>나이</span>
+                <span className={labelClass}>{t('elder.basicInfo.age')}</span>
                 <input
                   className={compactInputClass}
                   name="age"
@@ -96,7 +92,7 @@ export function ElderBasicInfoPage() {
               </label>
 
               <label className="block min-w-0">
-                <span className={labelClass}>연락처</span>
+                <span className={labelClass}>{t('elder.basicInfo.phone')}</span>
                 <input
                   className={compactInputClass}
                   name="phone"
@@ -108,11 +104,11 @@ export function ElderBasicInfoPage() {
             </div>
 
             <label className="block">
-              <span className={labelClass}>주소</span>
+              <span className={labelClass}>{t('elder.basicInfo.address')}</span>
               <input
                 className={textInputClass}
                 name="address"
-                placeholder="OO시 OO구"
+                placeholder={t('elder.basicInfo.addressPlaceholder')}
                 type="text"
                 autoComplete="street-address"
               />
@@ -120,7 +116,7 @@ export function ElderBasicInfoPage() {
 
             <fieldset>
               <legend className="mb-4 text-[30px] font-black leading-tight text-[#1f2937]">
-                혼자 사시나요?
+                {t('elder.basicInfo.livesAloneLegend')}
               </legend>
               <div className="grid grid-cols-2 gap-5">
                 <button
@@ -134,7 +130,7 @@ export function ElderBasicInfoPage() {
                   aria-pressed={livesAlone === 'yes'}
                   onClick={() => setLivesAlone('yes')}
                 >
-                  네, 혼자
+                  {t('elder.basicInfo.livesAlone.yes')}
                 </button>
                 <button
                   className={cn(
@@ -147,7 +143,7 @@ export function ElderBasicInfoPage() {
                   aria-pressed={livesAlone === 'no'}
                   onClick={() => setLivesAlone('no')}
                 >
-                  아니요
+                  {t('elder.basicInfo.livesAlone.no')}
                 </button>
               </div>
             </fieldset>
@@ -157,7 +153,7 @@ export function ElderBasicInfoPage() {
             className="mt-7 min-h-[78px] w-full rounded-[22px] bg-gradient-to-br from-[#0876ff] to-[#005ee6] px-6 text-[36px] font-black text-white shadow-[0_16px_28px_rgba(2,92,221,0.22)] transition active:scale-[0.99] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="submit"
           >
-            다음
+            {t('common.next')}
           </button>
         </form>
       </section>

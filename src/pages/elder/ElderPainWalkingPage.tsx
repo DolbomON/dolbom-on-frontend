@@ -1,8 +1,11 @@
 import { Menu } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
 import type { DiseaseHistoryAnswers } from './ElderDiseaseHistoryPage'
 import type { MedicationHabitAnswers } from '../../components/elder-check/MedicationHabitQuestionCard'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 export type PainArea = 'back' | 'knee' | 'shoulder' | 'head' | 'none'
@@ -24,30 +27,30 @@ type PainWalkingRouteState = {
 const caneImageSrc = '/assets/dolbomon/elder-check/지팡이.png'
 
 const painAreaOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: PainArea
 }> = [
-  { label: '허리', value: 'back' },
-  { label: '무릎', value: 'knee' },
-  { label: '어깨', value: 'shoulder' },
-  { label: '머리', value: 'head' },
-  { label: '없음', value: 'none' },
+  { labelKey: 'elder.survey.pain.area.back', value: 'back' },
+  { labelKey: 'elder.survey.pain.area.knee', value: 'knee' },
+  { labelKey: 'elder.survey.pain.area.shoulder', value: 'shoulder' },
+  { labelKey: 'elder.survey.pain.area.head', value: 'head' },
+  { labelKey: 'elder.survey.pain.area.none', value: 'none' },
 ]
 
 const walkingAidOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: WalkingAidUse
 }> = [
-  { label: '사용해요', value: 'use' },
-  { label: '안 써요', value: 'not_use' },
+  { labelKey: 'elder.survey.pain.walkingAid.use', value: 'use' },
+  { labelKey: 'elder.survey.pain.walkingAid.notUse', value: 'not_use' },
 ]
 
 const recentFallOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: RecentFall
 }> = [
-  { label: '있어요', value: 'yes' },
-  { label: '없어요', value: 'no' },
+  { labelKey: 'elder.survey.choice.yes', value: 'yes' },
+  { labelKey: 'elder.survey.choice.no', value: 'no' },
 ]
 
 function getPainWalkingRouteState(state: unknown): PainWalkingRouteState {
@@ -59,15 +62,16 @@ function getPainWalkingRouteState(state: unknown): PainWalkingRouteState {
 }
 
 function PainWalkingProgress() {
+  const { t } = useI18n()
   const currentStep = 3
   const totalSteps = 6
   const progressPercent = (currentStep / totalSteps) * 100
 
   return (
-    <section aria-label="통증 걷기 진행률">
+    <section aria-label={t('elder.survey.pain.progressAria')}>
       <div className="flex items-end justify-between gap-4">
         <h1 className="text-[40px] font-black leading-tight text-[#061844] min-[390px]:text-[46px]">
-          통증·걷기
+          {t('elder.survey.pain.title')}
         </h1>
         <p
           className="text-[30px] font-black leading-none text-[#4f5a67] min-[390px]:text-[34px]"
@@ -83,7 +87,10 @@ function PainWalkingProgress() {
         aria-valuemin={0}
         aria-valuemax={totalSteps}
         aria-valuenow={currentStep}
-        aria-label={`총 ${totalSteps}단계 중 ${currentStep}단계`}
+        aria-label={t('elder.progress.totalAria', {
+          current: currentStep,
+          total: totalSteps,
+        })}
       >
         <div
           className="h-full rounded-full bg-gradient-to-r from-[#2d86ff] to-[#0f74f5] shadow-[0_6px_14px_rgba(0,96,229,0.24)]"
@@ -97,6 +104,7 @@ function PainWalkingProgress() {
 export function ElderPainWalkingPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useI18n()
   const routeState = getPainWalkingRouteState(location.state)
   const [painAreas, setPainAreas] = useState<PainArea[]>(
     routeState.painWalking?.painAreas ?? ['back', 'knee'],
@@ -147,26 +155,15 @@ export function ElderPainWalkingPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#061844]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-[max(20px,env(safe-area-inset-top))] shadow-[0_20px_80px_rgba(55,104,184,0.08)] min-[390px]:px-6"
-        aria-label="통증 걷기 입력 화면"
+        aria-label={t('elder.survey.pain.aria')}
       >
         <header className="flex items-center justify-between">
-          <Link
-            to="/elder"
-            className="inline-flex min-h-12 items-baseline rounded-md text-[#0867f2] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-            aria-label="돌봄온 어르신 홈"
-          >
-            <span className="text-[29px] font-black leading-none min-[390px]:text-[34px]">
-              돌봄
-            </span>
-            <span className="ml-1 text-[39px] font-black leading-none min-[390px]:text-[46px]">
-              ON
-            </span>
-          </Link>
+          <DolbomLogo ariaLabel={t('elder.home.logoAria')} to="/elder" />
 
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-md text-[#061844] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={42} strokeWidth={2.8} />
@@ -181,7 +178,7 @@ export function ElderPainWalkingPage() {
 
           <fieldset className="mt-7 min-[390px]:mt-8">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#5b6572] min-[390px]:text-[28px]">
-              평소 아픈 곳이 있나요?
+              {t('elder.survey.pain.areaLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-3 min-[390px]:grid-cols-4 min-[390px]:gap-4">
@@ -202,7 +199,7 @@ export function ElderPainWalkingPage() {
                     onClick={() => handlePainAreaToggle(option.value)}
                   >
                     <span className="text-[28px] font-black leading-none min-[390px]:text-[32px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -212,7 +209,7 @@ export function ElderPainWalkingPage() {
 
           <fieldset className="mt-6 min-[390px]:mt-7">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#5b6572] min-[390px]:text-[28px]">
-              보행기·지팡이를 쓰세요?
+              {t('elder.survey.pain.walkingAidLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-4">
@@ -248,7 +245,7 @@ export function ElderPainWalkingPage() {
                       </span>
                     ) : null}
                     <span className="text-[34px] font-black leading-none min-[390px]:text-[40px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -258,7 +255,7 @@ export function ElderPainWalkingPage() {
 
           <fieldset className="mt-6 min-[390px]:mt-7">
             <legend className="mb-4 text-[25px] font-black leading-tight text-[#5b6572] min-[390px]:text-[28px]">
-              최근 넘어진 적 있나요?
+              {t('elder.survey.pain.recentFallLegend')}
             </legend>
 
             <div className="grid grid-cols-2 gap-4">
@@ -281,7 +278,7 @@ export function ElderPainWalkingPage() {
                     onClick={() => setRecentFall(option.value)}
                   >
                     <span className="text-[30px] font-black leading-none min-[390px]:text-[34px]">
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                   </button>
                 )
@@ -295,7 +292,7 @@ export function ElderPainWalkingPage() {
               type="submit"
             >
               <span className="text-[30px] font-black leading-none min-[390px]:text-[34px]">
-                다음
+                {t('common.next')}
               </span>
             </button>
           </div>

@@ -5,7 +5,7 @@ import { ElderCareTeamPage } from './ElderCareTeamPage'
 
 function renderElderCareTeamPage() {
   return render(
-    <MemoryRouter initialEntries={['/elder/connect']}>
+    <MemoryRouter initialEntries={['/elder/care-team']}>
       <ElderCareTeamPage />
     </MemoryRouter>,
   )

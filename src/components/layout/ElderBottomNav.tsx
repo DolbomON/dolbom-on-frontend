@@ -6,6 +6,8 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 type ElderNavItemId = 'home' | 'status' | 'chat' | 'help'
@@ -14,7 +16,7 @@ type ElderBottomNavItem = {
   href: string | null
   icon: LucideIcon
   id: ElderNavItemId
-  label: string
+  labelKey: TranslationKey
 }
 
 type ElderBottomNavProps = {
@@ -27,25 +29,25 @@ const navItems: ElderBottomNavItem[] = [
     href: '/elder',
     icon: House,
     id: 'home',
-    label: '홈',
+    labelKey: 'elder.nav.home',
   },
   {
     href: '/elder/check',
     icon: ClipboardPlus,
     id: 'status',
-    label: '상태입력',
+    labelKey: 'elder.nav.status',
   },
   {
     href: '/elder/chat',
     icon: MessageCircleMore,
     id: 'chat',
-    label: '안부대화',
+    labelKey: 'elder.nav.chat',
   },
   {
     href: null,
     icon: HandHeart,
     id: 'help',
-    label: '도움',
+    labelKey: 'elder.nav.help',
   },
 ]
 
@@ -53,14 +55,17 @@ export function ElderBottomNav({
   activeItem,
   onHelpClick,
 }: ElderBottomNavProps) {
+  const { t } = useI18n()
+
   return (
     <nav
       className="fixed bottom-0 left-1/2 z-30 grid h-[70px] w-full max-w-[480px] -translate-x-1/2 grid-cols-4 divide-x divide-[#e6ebf2] rounded-t-[18px] border-t border-[#e0e7f1] bg-white pb-[max(5px,env(safe-area-inset-bottom))] pt-[6px] shadow-[0_-8px_26px_rgba(67,85,116,0.08)]"
-      aria-label="하단 메뉴"
+      aria-label={t('elder.nav.aria')}
     >
       {navItems.map((item) => {
         const Icon = item.icon
         const isActive = activeItem === item.id
+        const label = t(item.labelKey)
         const className = cn(
           'flex min-h-[54px] flex-col items-center justify-center gap-0.5 text-[14px] font-extrabold tracking-[-0.045em] transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff] min-[390px]:text-[15px]',
           isActive ? 'text-[#0867f2]' : 'text-[#8b95a5]',
@@ -87,7 +92,7 @@ export function ElderBottomNav({
                 fill={isActive ? 'currentColor' : 'none'}
                 strokeWidth={isActive ? 2.8 : 2.5}
               />
-              <span>{item.label}</span>
+              <span>{label}</span>
             </button>
           )
         }
@@ -111,7 +116,7 @@ export function ElderBottomNav({
               fill={isActive ? 'currentColor' : 'none'}
               strokeWidth={isActive ? 2.8 : 2.5}
             />
-            <span>{item.label}</span>
+            <span>{label}</span>
           </Link>
         )
       })}

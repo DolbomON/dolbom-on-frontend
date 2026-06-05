@@ -6,6 +6,8 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useI18n } from '../../lib/i18n/useI18n'
+import type { TranslationKey } from '../../lib/i18n/translations'
 import { cn } from '../../lib/utils'
 
 type FamilyBottomNavItemId = 'alerts' | 'chat' | 'home' | 'status'
@@ -14,7 +16,7 @@ type FamilyBottomNavItem = {
   href: string
   icon: LucideIcon
   id: FamilyBottomNavItemId
-  label: string
+  labelKey: TranslationKey
   notice?: boolean
 }
 
@@ -27,34 +29,36 @@ const navItems: FamilyBottomNavItem[] = [
     href: '/family',
     icon: Home,
     id: 'home',
-    label: '홈',
+    labelKey: 'family.nav.home',
   },
   {
     href: '/family/status',
     icon: BarChart3,
     id: 'status',
-    label: '안부현황',
+    labelKey: 'family.nav.status',
   },
   {
     href: '/family/alerts',
     icon: Bell,
     id: 'alerts',
-    label: '알림',
+    labelKey: 'family.nav.alerts',
     notice: true,
   },
   {
     href: '/family/chat',
     icon: MessageCircle,
     id: 'chat',
-    label: '대화',
+    labelKey: 'family.nav.chat',
   },
 ]
 
 export function FamilyBottomNav({ activeItem }: FamilyBottomNavProps) {
+  const { t } = useI18n()
+
   return (
     <nav
       className="fixed bottom-0 left-1/2 z-40 w-full max-w-[480px] -translate-x-1/2 px-5 pb-[max(8px,env(safe-area-inset-bottom))]"
-      aria-label="가족 하단 메뉴"
+      aria-label={t('family.nav.aria')}
     >
       <div className="grid h-[58px] w-full grid-cols-4 rounded-[22px] border border-[#dfe7f2] bg-white shadow-[0_-4px_22px_rgba(42,78,132,0.12)]">
         {navItems.map((item) => {
@@ -84,7 +88,7 @@ export function FamilyBottomNav({ activeItem }: FamilyBottomNavProps) {
                   />
                 ) : null}
               </span>
-              <span>{item.label}</span>
+              <span>{t(item.labelKey)}</span>
             </Link>
           )
         })}

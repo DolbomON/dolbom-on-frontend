@@ -32,8 +32,15 @@ describe('ElderHomePage', () => {
     )
     expect(screen.getByRole('link', { name: /내 돌봄팀/ })).toHaveAttribute(
       'href',
-      '/elder/connect',
+      '/elder/care-team',
     )
+    expect(screen.getByRole('link', { name: /긴급 SOS/ })).toHaveAttribute(
+      'href',
+      '/elder/sos',
+    )
+    expect(
+      screen.getByRole('button', { name: '마이페이지 열기' }),
+    ).toBeInTheDocument()
   })
 
   it('starts the daily check from the primary action', async () => {

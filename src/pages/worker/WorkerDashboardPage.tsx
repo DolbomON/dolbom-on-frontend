@@ -14,6 +14,8 @@ import {
   type AssignmentPriority,
   type CaregiverAssignment,
 } from '../../features/caregiver/visitAssignments'
+import { useI18n } from '../../lib/i18n/useI18n'
+import type { TranslationKey } from '../../lib/i18n/translations'
 import { cn } from '../../lib/utils'
 
 const welfareAssetBase = '/assets/dolbomon/welfare'
@@ -23,11 +25,11 @@ const workerRiskPanelHref = '/worker#risk-elder-panel'
 type ElderStatus = 'danger' | 'caution' | 'stable'
 
 type MetricCard = {
-  description: string
+  descriptionKey: TranslationKey
   iconSrc: string
   id: string
-  label: string
-  unit: string
+  labelKey: TranslationKey
+  unitKey: TranslationKey
   value: string
 }
 
@@ -90,35 +92,35 @@ type AssignmentDraft = {
 
 const metricCards: MetricCard[] = [
   {
-    description: '전체 대상자 기준',
+    descriptionKey: 'worker.metric.managed.description',
     iconSrc: `${welfareAssetBase}/사람.png`,
     id: 'managed',
-    label: '관리 어르신',
-    unit: '명',
+    labelKey: 'worker.metric.managed.label',
+    unitKey: 'worker.unit.people',
     value: '48',
   },
   {
-    description: '위기·주의 대상자',
+    descriptionKey: 'worker.metric.focused.description',
     iconSrc: `${welfareAssetBase}/경고.png`,
     id: 'focused',
-    label: '집중 관리',
-    unit: '명',
+    labelKey: 'worker.metric.focused.label',
+    unitKey: 'worker.unit.people',
     value: '7',
   },
   {
-    description: '사례 관리 메모',
+    descriptionKey: 'worker.metric.memo.description',
     iconSrc: `${welfareAssetBase}/대화.png`,
     id: 'new-consult',
-    label: '사례 메모',
-    unit: '건',
+    labelKey: 'worker.metric.memo.label',
+    unitKey: 'worker.unit.count',
     value: '5',
   },
   {
-    description: '요양사 배정 대기',
+    descriptionKey: 'worker.metric.assignment.description',
     iconSrc: `${welfareAssetBase}/집.png`,
     id: 'today-visit',
-    label: '배정 필요',
-    unit: '건',
+    labelKey: 'worker.metric.assignment.label',
+    unitKey: 'worker.unit.count',
     value: '4',
   },
 ]
@@ -350,10 +352,12 @@ function elderMatchesSearch(elder: ElderRow, searchQuery: string) {
 }
 
 function MetricSummaryCard({ metric }: { metric: MetricCard }) {
+  const { t } = useI18n()
+
   return (
     <article
       className="grid min-h-[142px] grid-cols-[82px_minmax(0,1fr)] items-center gap-3 rounded-[14px] border border-[#dfe8f5] bg-white px-6 py-4 shadow-[0_12px_26px_rgba(37,72,125,0.08)]"
-      aria-label={`${metric.label} ${metric.value}${metric.unit}`}
+      aria-label={`${t(metric.labelKey)} ${metric.value}${t(metric.unitKey)}`}
     >
       <img
         src={metric.iconSrc}
@@ -363,16 +367,18 @@ function MetricSummaryCard({ metric }: { metric: MetricCard }) {
       />
       <div className="min-w-0 text-center">
         <h3 className="text-[17px] font-black leading-tight text-[#071747]">
-          {metric.label}
+          {t(metric.labelKey)}
         </h3>
         <p className="mt-2 whitespace-nowrap text-[#071747]">
           <strong className="text-[42px] font-black leading-none tracking-normal">
             {metric.value}
           </strong>
-          <span className="ml-1 text-[18px] font-black">{metric.unit}</span>
+          <span className="ml-1 text-[18px] font-black">
+            {t(metric.unitKey)}
+          </span>
         </p>
         <p className="mt-1 whitespace-nowrap text-[12px] font-bold leading-tight text-[#7a89a4]">
-          {metric.description}
+          {t(metric.descriptionKey)}
         </p>
       </div>
     </article>
@@ -1122,6 +1128,7 @@ function WeeklyReportPanel() {
 }
 
 export function WorkerDashboardPage() {
+  const { t } = useI18n()
   const [activeFilter, setActiveFilter] = useState<ElderStatus | 'all'>('all')
   const [assignmentDraft, setAssignmentDraft] = useState<AssignmentDraft>(
     defaultAssignmentDraft,
@@ -1203,17 +1210,16 @@ export function WorkerDashboardPage() {
               id="worker-dashboard-title"
               className="break-keep text-[28px] font-black leading-tight text-[#071747] sm:text-[32px]"
             >
-              이수진 복지사님, 위험 대응 현황입니다.
+              {t('worker.dashboard.title')}
             </h1>
             <p className="mt-3 text-[15px] font-bold leading-snug text-[#425371]">
-              고위험 어르신 우선순위, 요양사 배정, 사례 메모와 대응 완료를
-              한눈에 확인하세요.
+              {t('worker.dashboard.description')}
             </p>
           </section>
 
           <section
             className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
-            aria-label="복지사 홈 요약"
+            aria-label={t('worker.dashboard.summaryAria')}
           >
             {metricCards.map((metric) => (
               <MetricSummaryCard key={metric.id} metric={metric} />
@@ -1242,7 +1248,10 @@ export function WorkerDashboardPage() {
           <WeeklyReportPanel />
         </div>
 
-        <aside className="grid gap-5" aria-label="복지사 홈 보조 메뉴">
+        <aside
+          className="grid gap-5"
+          aria-label={t('worker.dashboard.assistAria')}
+        >
           <QuickMenuPanel />
           <TodaySchedulePanel />
           <RecentMemoPanel />

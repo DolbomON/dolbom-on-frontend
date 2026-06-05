@@ -1,4 +1,5 @@
 import { Volume2 } from 'lucide-react'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 type VoiceGuideButtonProps = {
@@ -10,6 +11,8 @@ export function VoiceGuideButton({
   onClick,
   variant = 'full',
 }: VoiceGuideButtonProps) {
+  const { t } = useI18n()
+
   return (
     <button
       className={cn(
@@ -22,7 +25,7 @@ export function VoiceGuideButton({
       onClick={onClick}
     >
       <Volume2 size={24} strokeWidth={3.2} aria-hidden="true" />
-      <span>음성 안내</span>
+      <span>{t('common.voiceGuide')}</span>
     </button>
   )
 }

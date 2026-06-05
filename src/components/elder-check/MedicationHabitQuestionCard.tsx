@@ -1,3 +1,5 @@
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 export type MedicationFrequency = 'once' | 'twice' | 'three_or_more'
@@ -20,30 +22,39 @@ type MedicationHabitQuestionCardProps = {
 }
 
 const frequencyOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: MedicationFrequency
 }> = [
-  { label: '1번', value: 'once' },
-  { label: '2번', value: 'twice' },
-  { label: '3번+', value: 'three_or_more' },
+  { labelKey: 'elder.check.medicationHabit.frequency.once', value: 'once' },
+  { labelKey: 'elder.check.medicationHabit.frequency.twice', value: 'twice' },
+  {
+    labelKey: 'elder.check.medicationHabit.frequency.threeOrMore',
+    value: 'three_or_more',
+  },
 ]
 
 const timeOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: MedicationTime
 }> = [
-  { label: '아침', value: 'morning' },
-  { label: '점심', value: 'lunch' },
-  { label: '저녁', value: 'evening' },
-  { label: '자기전', value: 'before_sleep' },
+  { labelKey: 'elder.check.medicationHabit.time.morning', value: 'morning' },
+  { labelKey: 'elder.check.medicationHabit.time.lunch', value: 'lunch' },
+  { labelKey: 'elder.check.medicationHabit.time.evening', value: 'evening' },
+  {
+    labelKey: 'elder.check.medicationHabit.time.beforeSleep',
+    value: 'before_sleep',
+  },
 ]
 
 const assistanceOptions: Array<{
-  label: string
+  labelKey: TranslationKey
   value: MedicationHelp
 }> = [
-  { label: '필요해요', value: 'needs_help' },
-  { label: '혼자 가능', value: 'self' },
+  {
+    labelKey: 'elder.check.medicationHabit.assistance.needsHelp',
+    value: 'needs_help',
+  },
+  { labelKey: 'elder.check.medicationHabit.assistance.self', value: 'self' },
 ]
 
 const legendClass =
@@ -66,10 +77,14 @@ export function MedicationHabitQuestionCard({
   onTimeToggle,
   selectedTimes,
 }: MedicationHabitQuestionCardProps) {
+  const { t } = useI18n()
+
   return (
     <section className="mt-7 flex flex-col gap-6 min-[390px]:mt-8 min-[390px]:gap-7">
       <fieldset>
-        <legend className={legendClass}>하루에 약을 몇 번 드세요?</legend>
+        <legend className={legendClass}>
+          {t('elder.check.medicationHabit.frequencyLegend')}
+        </legend>
         <div className="grid grid-cols-3 gap-3 min-[390px]:gap-4">
           {frequencyOptions.map((option) => {
             const selected = frequency === option.value
@@ -85,7 +100,7 @@ export function MedicationHabitQuestionCard({
                 aria-pressed={selected}
                 onClick={() => onFrequencyChange(option.value)}
               >
-                {option.label}
+                {t(option.labelKey)}
               </button>
             )
           })}
@@ -93,7 +108,9 @@ export function MedicationHabitQuestionCard({
       </fieldset>
 
       <fieldset>
-        <legend className={legendClass}>언제 드세요? (복수)</legend>
+        <legend className={legendClass}>
+          {t('elder.check.medicationHabit.timeLegend')}
+        </legend>
         <div className="grid grid-cols-4 gap-3 min-[390px]:gap-4">
           {timeOptions.map((option) => {
             const selected = selectedTimes.includes(option.value)
@@ -109,7 +126,7 @@ export function MedicationHabitQuestionCard({
                 aria-pressed={selected}
                 onClick={() => onTimeToggle(option.value)}
               >
-                {option.label}
+                {t(option.labelKey)}
               </button>
             )
           })}
@@ -117,7 +134,9 @@ export function MedicationHabitQuestionCard({
       </fieldset>
 
       <fieldset>
-        <legend className={legendClass}>약 챙기기 도움이 필요하세요?</legend>
+        <legend className={legendClass}>
+          {t('elder.check.medicationHabit.assistanceLegend')}
+        </legend>
         <div className="grid grid-cols-2 gap-4">
           {assistanceOptions.map((option) => {
             const selected = assistance === option.value
@@ -133,7 +152,7 @@ export function MedicationHabitQuestionCard({
                 aria-pressed={selected}
                 onClick={() => onAssistanceChange(option.value)}
               >
-                {option.label}
+                {t(option.labelKey)}
               </button>
             )
           })}

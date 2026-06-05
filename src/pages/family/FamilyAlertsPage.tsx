@@ -1,7 +1,10 @@
 import { useMemo, useState, type ComponentProps } from 'react'
-import { ChevronRight, Menu, Power } from 'lucide-react'
+import { ChevronRight, Menu } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
+import { DolbomLogo } from '../../components/layout/DolbomLogo'
 import { FamilyBottomNav } from '../../components/layout/FamilyBottomNav'
+import type { TranslationKey } from '../../lib/i18n/translations'
+import { useI18n } from '../../lib/i18n/useI18n'
 import { cn } from '../../lib/utils'
 
 const familyBellAssetBase = '/assets/dolbomon/familly-bell'
@@ -12,85 +15,85 @@ type SummaryTone = 'blue' | 'orange' | 'red'
 
 type AlertSummary = {
   iconSrc: string
-  label: string
+  labelKey: TranslationKey
   tone: SummaryTone
-  value: string
+  valueKey: TranslationKey
 }
 
 type FamilyAlert = {
-  description: string
+  descriptionKey: TranslationKey
   iconSrc: string
   id: string
   status: AlertStatus
-  statusLabel: string
-  time: string
-  title: string
+  statusLabelKey: TranslationKey
+  timeKey: TranslationKey
+  titleKey: TranslationKey
 }
 
 const alertSummaries: AlertSummary[] = [
   {
     iconSrc: `${familyBellAssetBase}/bell.png`,
-    label: '전체',
+    labelKey: 'family.alerts.summary.all',
     tone: 'blue',
-    value: '12건',
+    valueKey: 'family.alerts.value.all',
   },
   {
     iconSrc: `${familyBellAssetBase}/주의.png`,
-    label: '주의',
+    labelKey: 'family.alerts.summary.caution',
     tone: 'orange',
-    value: '2건',
+    valueKey: 'family.alerts.value.caution',
   },
   {
     iconSrc: `${familyBellAssetBase}/경고.png`,
-    label: '긴급',
+    labelKey: 'family.alerts.summary.urgent',
     tone: 'red',
-    value: '1건',
+    valueKey: 'family.alerts.value.urgent',
   },
 ]
 
-const alertFilters: { label: string; value: AlertFilter }[] = [
-  { label: '전체', value: 'all' },
-  { label: '긴급', value: 'urgent' },
-  { label: '주의', value: 'caution' },
-  { label: '읽음', value: 'read' },
+const alertFilters: { labelKey: TranslationKey; value: AlertFilter }[] = [
+  { labelKey: 'family.alerts.filter.all', value: 'all' },
+  { labelKey: 'family.alerts.filter.urgent', value: 'urgent' },
+  { labelKey: 'family.alerts.filter.caution', value: 'caution' },
+  { labelKey: 'family.alerts.filter.read', value: 'read' },
 ]
 
 const familyAlerts: FamilyAlert[] = [
   {
-    description: '무릎 통증이 있다고 입력되었어요',
+    descriptionKey: 'family.alerts.pain.description',
     iconSrc: `${familyBellAssetBase}/알림경고.png`,
     id: 'pain-record',
     status: 'urgent',
-    statusLabel: '긴급',
-    time: '오전 09:40',
-    title: '김영자 어르신 통증 기록',
+    statusLabelKey: 'family.alerts.status.urgent',
+    timeKey: 'family.alerts.time.morning0940',
+    titleKey: 'family.alerts.pain.title',
   },
   {
-    description: '식사량이 적게 입력되었어요',
+    descriptionKey: 'family.alerts.breakfast.description',
     iconSrc: `${familyBellAssetBase}/밥.png`,
     id: 'breakfast-record',
     status: 'caution',
-    statusLabel: '주의',
-    time: '오전 08:20',
-    title: '아침 식사 기록 확인',
+    statusLabelKey: 'family.alerts.status.caution',
+    timeKey: 'family.alerts.time.morning0820',
+    titleKey: 'family.alerts.breakfast.title',
   },
   {
-    description: '오늘 대화 내용이 정리되었어요',
+    descriptionKey: 'family.alerts.aiSummary.description',
     iconSrc: `${familyBellAssetBase}/채팅.png`,
     id: 'ai-summary',
     status: 'news',
-    statusLabel: '새 소식',
-    time: '오전 07:55',
-    title: 'AI 안부 대화 요약 도착',
+    statusLabelKey: 'family.alerts.status.news',
+    timeKey: 'family.alerts.time.morning0755',
+    titleKey: 'family.alerts.aiSummary.title',
   },
   {
-    description: '5개 항목 기록이 모두 등록되었어요',
+    descriptionKey: 'family.alerts.dailyComplete.description',
     iconSrc: `${familyBellAssetBase}/체크.png`,
     id: 'daily-check-complete',
     status: 'read',
-    statusLabel: '읽음',
-    time: '어제',
-    title: '오늘 상태 입력 완료',
+    statusLabelKey: 'family.alerts.status.read',
+    timeKey: 'family.alerts.time.yesterday',
+    titleKey: 'family.alerts.dailyComplete.title',
   },
 ]
 
@@ -107,29 +110,15 @@ const alertStatusClasses: Record<AlertStatus, string> = {
   urgent: 'bg-[linear-gradient(180deg,#ff5862_0%,#ef3545_100%)] text-white',
 }
 
-function Logo() {
-  return (
-    <Link
-      to="/family"
-      className="inline-flex items-center rounded-md text-[#125fe8] drop-shadow-[0_4px_7px_rgba(18,95,232,0.12)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
-      aria-label="돌봄ON 알림 홈"
-    >
-      <span className="text-[30px] font-black leading-none">돌봄</span>
-      <Power
-        aria-hidden="true"
-        className="-mx-[1px] h-[31px] w-[31px]"
-        strokeWidth={4.4}
-      />
-      <span className="text-[35px] font-black leading-none">N</span>
-    </Link>
-  )
-}
-
 function SummaryCard({ summary }: { summary: AlertSummary }) {
+  const { t } = useI18n()
+  const label = t(summary.labelKey)
+  const value = t(summary.valueKey)
+
   return (
     <article
       className="flex min-h-[102px] min-w-0 flex-col items-center justify-center gap-1 rounded-[18px] border border-[#dfe5ee] bg-white px-1.5 py-2 text-center shadow-[0_10px_22px_rgba(32,66,112,0.12)]"
-      aria-label={`${summary.label} ${summary.value}`}
+      aria-label={`${label} ${value}`}
     >
       <img
         src={summary.iconSrc}
@@ -142,7 +131,7 @@ function SummaryCard({ summary }: { summary: AlertSummary }) {
       />
       <span className="block w-full min-w-0">
         <span className="block truncate text-[15px] font-black leading-none text-[#071747] min-[390px]:text-[16px]">
-          {summary.label}
+          {label}
         </span>
         <strong
           className={cn(
@@ -150,7 +139,7 @@ function SummaryCard({ summary }: { summary: AlertSummary }) {
             summaryToneClasses[summary.tone],
           )}
         >
-          {summary.value}
+          {value}
         </strong>
       </span>
     </article>
@@ -164,8 +153,13 @@ function FilterChips({
   activeFilter: AlertFilter
   onFilterChange: (filter: AlertFilter) => void
 }) {
+  const { t } = useI18n()
+
   return (
-    <div className="flex flex-wrap gap-2.5" aria-label="알림 상태 필터">
+    <div
+      className="flex flex-wrap gap-2.5"
+      aria-label={t('family.alerts.filtersAria')}
+    >
       {alertFilters.map((filter) => {
         const isActive = activeFilter === filter.value
 
@@ -182,7 +176,7 @@ function FilterChips({
             aria-pressed={isActive}
             onClick={() => onFilterChange(filter.value)}
           >
-            {filter.label}
+            {t(filter.labelKey)}
           </button>
         )
       })}
@@ -208,11 +202,21 @@ function StatusBadge({
 }
 
 function AlertCard({ alert }: { alert: FamilyAlert }) {
+  const { t } = useI18n()
+  const description = t(alert.descriptionKey)
+  const statusLabel = t(alert.statusLabelKey)
+  const time = t(alert.timeKey)
+  const title = t(alert.titleKey)
+
   return (
     <Link
       to={`#${alert.id}`}
       className="grid min-h-[74px] grid-cols-[58px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-[22px] border border-[#e1e7f0] bg-white px-3 py-1.5 text-[#071747] shadow-[0_11px_24px_rgba(29,65,116,0.09)] transition active:scale-[0.995] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-      aria-label={`${alert.title} 상세 보기, ${alert.time}, ${alert.statusLabel}`}
+      aria-label={t('family.alerts.detailAria', {
+        status: statusLabel,
+        time,
+        title,
+      })}
     >
       <img
         src={alert.iconSrc}
@@ -226,19 +230,19 @@ function AlertCard({ alert }: { alert: FamilyAlert }) {
 
       <span className="min-w-0">
         <strong className="block truncate text-[18px] font-black leading-tight text-[#071747]">
-          {alert.title}
+          {title}
         </strong>
         <span className="mt-1 block truncate text-[15px] font-semibold leading-tight text-[#5d6878]">
-          {alert.description}
+          {description}
         </span>
       </span>
 
       <span className="flex h-full min-w-[72px] items-center gap-1.5 text-right">
         <span className="flex min-w-0 flex-col items-end justify-center gap-2">
           <time className="whitespace-nowrap text-[14px] font-semibold leading-none text-[#4e596c]">
-            {alert.time}
+            {time}
           </time>
-          <StatusBadge status={alert.status}>{alert.statusLabel}</StatusBadge>
+          <StatusBadge status={alert.status}>{statusLabel}</StatusBadge>
         </span>
         <ChevronRight
           aria-hidden="true"
@@ -251,11 +255,13 @@ function AlertCard({ alert }: { alert: FamilyAlert }) {
 }
 
 function NotificationSettingsCard() {
+  const { t } = useI18n()
+
   return (
     <Link
       to="#notification-settings"
       className="grid min-h-[74px] grid-cols-[60px_minmax(0,1fr)_40px] items-center gap-3 rounded-[22px] border border-[#cfe0f8] bg-[linear-gradient(100deg,#f9fcff_0%,#eef7ff_100%)] px-4 py-1.5 text-[#071747] shadow-[0_12px_24px_rgba(38,86,154,0.1)] transition active:scale-[0.995] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#8bbcff]"
-      aria-label="보호자 알림 설정 열기"
+      aria-label={t('family.alerts.settings.aria')}
     >
       <img
         src={`${familyBellAssetBase}/알림설정.png`}
@@ -268,10 +274,10 @@ function NotificationSettingsCard() {
       />
       <span className="min-w-0">
         <strong className="block truncate text-[20px] font-black leading-tight">
-          보호자 알림 설정
+          {t('family.alerts.settings.title')}
         </strong>
         <span className="mt-1 block truncate text-[15px] font-semibold leading-tight text-[#4c596b]">
-          알림 방식과 시간을 관리해요.
+          {t('family.alerts.settings.description')}
         </span>
       </span>
       <span
@@ -287,6 +293,7 @@ function NotificationSettingsCard() {
 export function FamilyAlertsPage() {
   const [activeFilter, setActiveFilter] = useState<AlertFilter>('all')
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   const filteredAlerts = useMemo(() => {
     if (activeFilter === 'all') {
@@ -304,15 +311,15 @@ export function FamilyAlertsPage() {
     <main className="min-h-svh overflow-x-hidden bg-[#edf5ff] text-[#071747]">
       <section
         className="mx-auto flex min-h-svh w-full max-w-[480px] flex-col bg-white px-[19px] pb-[calc(88px+env(safe-area-inset-bottom))] pt-[max(16px,env(safe-area-inset-top))] shadow-[0_24px_80px_rgba(55,104,184,0.1)]"
-        aria-label="가족 알림 화면"
+        aria-label={t('family.alerts.aria')}
       >
         <header className="flex min-h-10 items-start justify-between gap-4">
-          <Logo />
+          <DolbomLogo ariaLabel={t('family.alerts.logoAria')} to="/family" />
 
           <button
             className="inline-grid h-10 w-10 place-items-center rounded-md text-[#071747] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
             type="button"
-            aria-label="마이페이지 열기"
+            aria-label={t('common.myPage.open')}
             onClick={handleMenuClick}
           >
             <Menu aria-hidden="true" size={38} strokeWidth={2.6} />
@@ -321,25 +328,25 @@ export function FamilyAlertsPage() {
 
         <section className="pt-2.5" aria-labelledby="family-alerts-title">
           <p className="text-[22px] font-bold leading-none text-[#58667a]">
-            5월 31일 토요일
+            {t('common.date.may31Sat')}
           </p>
           <h1
             id="family-alerts-title"
             className="mt-2 text-[38px] font-black leading-none text-[#071747]"
           >
-            알림
+            {t('family.alerts.title')}
           </h1>
           <p className="mt-2 break-keep text-[17px] font-semibold leading-snug text-[#4f5e73]">
-            부모님의 상태 변화와 중요한 소식을 빠르게 확인하세요.
+            {t('family.alerts.description')}
           </p>
         </section>
 
         <section
           className="mt-3.5 grid grid-cols-3 gap-2.5"
-          aria-label="가족 알림 요약"
+          aria-label={t('family.alerts.summariesAria')}
         >
           {alertSummaries.map((summary) => (
-            <SummaryCard key={summary.label} summary={summary} />
+            <SummaryCard key={summary.labelKey} summary={summary} />
           ))}
         </section>
 
@@ -350,7 +357,10 @@ export function FamilyAlertsPage() {
           />
         </div>
 
-        <section className="mt-3 grid gap-2" aria-label="가족 알림 목록">
+        <section
+          className="mt-3 grid gap-2"
+          aria-label={t('family.alerts.listAria')}
+        >
           {filteredAlerts.map((alert) => (
             <AlertCard key={alert.id} alert={alert} />
           ))}
@@ -358,10 +368,10 @@ export function FamilyAlertsPage() {
           {filteredAlerts.length === 0 ? (
             <div className="rounded-[24px] border border-[#e1e7f0] bg-white px-5 py-8 text-center shadow-[0_11px_24px_rgba(29,65,116,0.09)]">
               <p className="text-[19px] font-black text-[#071747]">
-                표시할 알림이 없어요.
+                {t('family.alerts.emptyTitle')}
               </p>
               <p className="mt-2 text-[16px] font-semibold text-[#607086]">
-                다른 필터를 선택해보세요.
+                {t('family.alerts.emptyDescription')}
               </p>
             </div>
           ) : null}
