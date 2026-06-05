@@ -47,6 +47,9 @@ describe('WorkerReportsPage', () => {
         name: '지역별 서비스 연계 건수 (주간)',
       }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByLabelText('지역별 서비스 연계 Leaflet 지도'),
+    ).toBeInTheDocument()
   })
 
   it('marks the report navigation item and exposes the selected date range', () => {

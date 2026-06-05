@@ -7,9 +7,10 @@ import {
   Printer,
   Share2,
 } from 'lucide-react'
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import type { Map as LeafletMap } from 'leaflet'
 import { WorkerTopBar } from '../../components/worker/WorkerTopBar'
-import { cn } from '../../lib/utils'
 
 const welfareAssetBase = '/assets/dolbomon/welfare'
 
@@ -45,8 +46,9 @@ type InstitutionStat = {
 
 type RegionStat = {
   count: number
+  coordinates: [number, number]
+  fillColor: string
   label: string
-  position: string
 }
 
 const metricCards: MetricCard[] = [
@@ -192,12 +194,39 @@ const institutionStats: InstitutionStat[] = [
 ]
 
 const regionStats: RegionStat[] = [
-  { count: 6, label: '중앙동', position: 'left-[43%] top-[34%]' },
-  { count: 4, label: '북부동', position: 'left-[60%] top-[16%]' },
-  { count: 3, label: '동부동', position: 'left-[78%] top-[48%]' },
-  { count: 2, label: '서부동', position: 'left-[20%] top-[58%]' },
-  { count: 1, label: '남부동', position: 'left-[52%] top-[66%]' },
+  {
+    coordinates: [37.5665, 126.978],
+    count: 6,
+    fillColor: '#0867f2',
+    label: '중앙동',
+  },
+  {
+    coordinates: [37.5907, 126.982],
+    count: 4,
+    fillColor: '#31b329',
+    label: '북부동',
+  },
+  {
+    coordinates: [37.5652, 127.016],
+    count: 3,
+    fillColor: '#8f42f3',
+    label: '동부동',
+  },
+  {
+    coordinates: [37.5588, 126.944],
+    count: 2,
+    fillColor: '#ff9f20',
+    label: '서부동',
+  },
+  {
+    coordinates: [37.5368, 126.981],
+    count: 1,
+    fillColor: '#ff293d',
+    label: '남부동',
+  },
 ]
+
+const regionMapCenter: [number, number] = [37.565, 126.986]
 
 const reportActionButtons = [
   { icon: Download, label: 'PDF 저장' },
@@ -688,10 +717,110 @@ function InstitutionPanel() {
   )
 }
 
+function RegionLeafletMap() {
+  const mapNodeRef = useRef<HTMLDivElement | null>(null)
+  const mapRef = useRef<LeafletMap | null>(null)
+
+  useEffect(() => {
+    let isDisposed = false
+    let resizeTimer: number | undefined
+
+    void import('leaflet')
+      .then((leaflet) => {
+        if (isDisposed || !mapNodeRef.current || mapRef.current) {
+          return
+        }
+
+        const map = leaflet.map(mapNodeRef.current, {
+          attributionControl: true,
+          center: regionMapCenter,
+          keyboard: true,
+          maxZoom: 16,
+          minZoom: 11,
+          preferCanvas: true,
+          scrollWheelZoom: false,
+          zoom: 12,
+          zoomControl: false,
+        })
+
+        mapRef.current = map
+
+        leaflet
+          .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            maxZoom: 19,
+          })
+          .addTo(map)
+
+        leaflet.control.zoom({ position: 'bottomright' }).addTo(map)
+
+        const maxCount = Math.max(...regionStats.map((region) => region.count))
+        const bounds = leaflet.latLngBounds(
+          regionStats.map((region) => region.coordinates),
+        )
+
+        regionStats.forEach((region) => {
+          const markerRadius = 12 + (region.count / maxCount) * 8
+
+          leaflet
+            .circleMarker(region.coordinates, {
+              color: '#ffffff',
+              fillColor: region.fillColor,
+              fillOpacity: 0.92,
+              radius: markerRadius,
+              weight: 3,
+            })
+            .bindTooltip(`${region.label}<br />${region.count}건`, {
+              className: 'region-service-map-tooltip',
+              direction: 'top',
+              offset: [0, -8],
+              opacity: 1,
+              permanent: true,
+            })
+            .bindPopup(`${region.label} 서비스 연계 ${region.count}건`)
+            .addTo(map)
+        })
+
+        map.fitBounds(bounds, {
+          maxZoom: 13,
+          padding: [36, 36],
+        })
+
+        resizeTimer = window.setTimeout(() => {
+          map.invalidateSize()
+        }, 0)
+      })
+      .catch(() => {
+        if (mapNodeRef.current) {
+          mapNodeRef.current.dataset.mapStatus = 'unavailable'
+        }
+      })
+
+    return () => {
+      isDisposed = true
+
+      if (resizeTimer !== undefined) {
+        window.clearTimeout(resizeTimer)
+      }
+
+      mapRef.current?.remove()
+      mapRef.current = null
+    }
+  }, [])
+
+  return (
+    <div
+      ref={mapNodeRef}
+      className="worker-report-region-map h-[236px] overflow-hidden rounded-[14px] border border-[#d6e2f0] bg-[#edf5ff]"
+      aria-label="지역별 서비스 연계 Leaflet 지도"
+    />
+  )
+}
+
 function RegionMapPanel() {
   return (
     <section
-      className="min-h-[178px] rounded-[16px] border border-[#dfe8f5] bg-white px-5 py-2.5 shadow-[0_12px_26px_rgba(37,72,125,0.07)]"
+      className="min-h-[178px] rounded-[16px] border border-[#dfe8f5] bg-white px-5 py-3 shadow-[0_12px_26px_rgba(37,72,125,0.07)]"
       aria-labelledby="region-status-title"
     >
       <PanelHeader
@@ -700,28 +829,27 @@ function RegionMapPanel() {
         title="지역별 서비스 연계 건수 (주간)"
       />
 
-      <div className="relative mt-1.5 h-[132px] overflow-hidden">
-        <div
-          className="absolute inset-x-5 bottom-0 top-2 rounded-[24px] bg-[#e9f1fb] shadow-[inset_0_0_0_1px_rgba(177,194,217,0.55)]"
-          style={{
-            clipPath:
-              'polygon(14% 34%, 24% 18%, 37% 28%, 48% 10%, 57% 24%, 71% 12%, 82% 29%, 96% 40%, 87% 66%, 70% 74%, 60% 92%, 47% 77%, 34% 94%, 24% 78%, 10% 84%, 4% 57%)',
-          }}
-          aria-hidden="true"
-        />
-        <dl>
+      <div className="mt-3">
+        <RegionLeafletMap />
+
+        <dl
+          className="mt-3 grid gap-2 sm:grid-cols-2"
+          aria-label="지역별 서비스 연계 건수 상세"
+        >
           {regionStats.map((region) => (
             <div
               key={region.label}
-              className={cn(
-                'absolute -translate-x-1/2 rounded-[10px] border border-[#d6e2f0] bg-white px-4 py-2 text-center shadow-[0_8px_18px_rgba(37,72,125,0.1)]',
-                region.position,
-              )}
+              className="grid grid-cols-[12px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg bg-[#f5f9ff] px-3 py-2"
             >
-              <dt className="whitespace-nowrap text-[12px] font-black text-[#425371]">
+              <span
+                className="h-3 w-3 rounded-full shadow-[0_2px_6px_rgba(37,72,125,0.18)]"
+                style={{ backgroundColor: region.fillColor }}
+                aria-hidden="true"
+              />
+              <dt className="truncate text-[12px] font-black text-[#425371]">
                 {region.label}
               </dt>
-              <dd className="mt-1 whitespace-nowrap text-[16px] font-black leading-none text-[#071747]">
+              <dd className="whitespace-nowrap text-[13px] font-black text-[#071747]">
                 {region.count}건
               </dd>
             </div>
