@@ -23,13 +23,14 @@ describe('SignupPage', () => {
     expect(screen.getByLabelText('이메일')).toBeInTheDocument()
     expect(screen.getByLabelText('전화번호')).toBeInTheDocument()
     expect(screen.getByLabelText('비밀번호')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /가족/ })).toBeInTheDocument()
+    expect(
+      screen.getByText('이미 가입된 이메일 또는 전화번호는 계정 생성 시 바로 안내합니다.'),
+    ).toBeInTheDocument()
 
     await user.type(screen.getByLabelText('이메일'), 'family@example.com')
     await user.type(screen.getByLabelText('전화번호'), '010-2222-3333')
     await user.type(screen.getByLabelText('비밀번호'), 'Dolbom123!')
     await user.type(screen.getByLabelText('비밀번호 확인'), 'Dolbom123!')
-    await user.click(screen.getByRole('button', { name: /가족/ }))
     await user.click(screen.getByRole('button', { name: '계정 생성' }))
 
     expect(screen.getByText('계정이 생성되었습니다.')).toBeInTheDocument()

@@ -23,7 +23,13 @@ describe('LandingPage', () => {
     expect(
       screen.getByRole('link', { name: /오늘 상태 입력하기/ }),
     ).toHaveAttribute('href', '/login')
-    expect(screen.getByRole('button', { name: '메뉴 열기' })).toBeTruthy()
+    expect(
+      screen.getByRole('button', { name: '한국어로 보기' }),
+    ).toHaveAttribute('aria-pressed', 'true')
+    expect(
+      screen.getByRole('button', { name: '일본어로 보기' }),
+    ).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByRole('button', { name: '음성으로 시작' })).toBeTruthy()
   })
 
   it('switches the landing screen to Japanese', async () => {

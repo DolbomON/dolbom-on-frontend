@@ -394,6 +394,7 @@ function translateTextNode(node: Text, language: AppLanguage) {
     return
   }
 
+  const current = node.textContent ?? ''
   const original = textOriginals.get(node) ?? node.textContent ?? ''
 
   if (!textOriginals.has(node)) {
@@ -401,8 +402,10 @@ function translateTextNode(node: Text, language: AppLanguage) {
   }
 
   const next =
-    language === 'ja' && hasHangul(original)
-      ? translateLegacyDomText(original)
+    language === 'ja'
+      ? hasHangul(current)
+        ? translateLegacyDomText(current)
+        : current
       : original
 
   if (node.textContent !== next) {
@@ -434,8 +437,10 @@ function translateAttributes(element: Element, language: AppLanguage) {
     }
 
     const next =
-      language === 'ja' && hasHangul(original)
-        ? translateLegacyDomText(original)
+      language === 'ja'
+        ? hasHangul(current)
+          ? translateLegacyDomText(current)
+          : current
         : original
 
     if (current !== next) {
@@ -454,11 +459,13 @@ function translateAttributes(element: Element, language: AppLanguage) {
     }
 
     const next =
-      language === 'ja' && hasHangul(original)
-        ? translateLegacyDomText(original)
+      language === 'ja'
+        ? hasHangul(element.value)
+          ? translateLegacyDomText(element.value)
+          : element.value
         : original
 
-    if (element.value !== next && hasHangul(original)) {
+    if (element.value !== next && hasHangul(element.value)) {
       element.value = next
     }
   }
@@ -485,6 +492,10 @@ function translateTree(root: ParentNode, language: AppLanguage) {
 
 export function applyLegacyDomFallback(language: AppLanguage) {
   translateTree(document.body, language)
+
+  if (language !== 'ja') {
+    return () => {}
+  }
 
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
