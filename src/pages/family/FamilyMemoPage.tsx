@@ -1,4 +1,10 @@
-import { ChevronRight, Menu, PlusCircle, Power } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  PlusCircle,
+  Power,
+} from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FamilyBottomNav } from '../../components/layout/FamilyBottomNav'
 
@@ -54,14 +60,6 @@ function Logo() {
       />
       <span className="text-[36px] font-black leading-none">N</span>
     </Link>
-  )
-}
-
-function CodeBadge({ code }: { code: string }) {
-  return (
-    <span className="inline-flex min-h-[30px] items-center justify-center rounded-[6px] border-2 border-[#2f70f6] bg-[#edf5ff] px-2 text-[17px] font-black leading-none text-[#2f70f6]">
-      {code}
-    </span>
   )
 }
 
@@ -161,7 +159,6 @@ function UpcomingScheduleList() {
         >
           다가오는 일정
         </h2>
-        <CodeBadge code="FAM-009" />
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
@@ -210,7 +207,16 @@ export function FamilyMemoPage() {
         aria-label="가족 메모 화면"
       >
         <header className="flex min-h-12 items-start justify-between gap-4">
-          <Logo />
+          <div className="flex min-w-0 items-center gap-2">
+            <Link
+              to="/family"
+              className="inline-grid h-12 w-12 shrink-0 place-items-center rounded-[16px] bg-[#eef2f8] text-[#2f70f6] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
+              aria-label="가족 홈으로 뒤로가기"
+            >
+              <ChevronLeft aria-hidden="true" size={34} strokeWidth={2.8} />
+            </Link>
+            <Logo />
+          </div>
 
           <button
             className="inline-grid h-12 w-12 place-items-center rounded-[16px] bg-[#eef2f8] text-[#596273] transition active:scale-[0.98] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#8bbcff]"
@@ -233,7 +239,6 @@ export function FamilyMemoPage() {
             >
               가족 메모
             </h1>
-            <CodeBadge code="FAM-008" />
           </div>
           <p className="mt-3 break-keep text-[21px] font-semibold leading-snug text-[#5b6476]">
             가족끼리 공유할 메모와 돌봄 일정을 관리해보세요.
