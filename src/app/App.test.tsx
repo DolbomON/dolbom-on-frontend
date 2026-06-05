@@ -49,6 +49,25 @@ describe('LandingPage', () => {
       screen.getByRole('link', { name: /今日の状態を入力/ }),
     ).toHaveAttribute('href', '/login')
   })
+
+  it('switches the landing screen from Japanese back to Korean', async () => {
+    const user = userEvent.setup()
+
+    renderLandingPage()
+
+    await user.click(screen.getByRole('button', { name: '일본어로 보기' }))
+    await user.click(screen.getByRole('button', { name: '韓国語で表示' }))
+
+    expect(document.documentElement).toHaveAttribute('lang', 'ko')
+    expect(
+      screen.getByRole('heading', {
+        name: '오늘의 안부를 쉽고 안전하게 기록하세요',
+      }),
+    ).toBeTruthy()
+    expect(
+      screen.getByRole('link', { name: /오늘 상태 입력하기/ }),
+    ).toHaveAttribute('href', '/login')
+  })
 })
 
 function renderLandingPage() {

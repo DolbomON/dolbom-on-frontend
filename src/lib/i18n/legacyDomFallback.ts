@@ -395,18 +395,30 @@ function translateTextNode(node: Text, language: AppLanguage) {
   }
 
   const current = node.textContent ?? ''
-  const original = textOriginals.get(node) ?? node.textContent ?? ''
 
-  if (!textOriginals.has(node)) {
-    textOriginals.set(node, original)
+  if (language === 'ja') {
+    if (!hasHangul(current)) {
+      return
+    }
+
+    if (!textOriginals.has(node)) {
+      textOriginals.set(node, current)
+    }
+
+    const next = translateLegacyDomText(current)
+
+    if (node.textContent !== next) {
+      node.textContent = next
+    }
+
+    return
   }
 
-  const next =
-    language === 'ja'
-      ? hasHangul(current)
-        ? translateLegacyDomText(current)
-        : current
-      : original
+  if (!textOriginals.has(node)) {
+    return
+  }
+
+  const next = textOriginals.get(node) ?? ''
 
   if (node.textContent !== next) {
     node.textContent = next
@@ -425,26 +437,34 @@ function translateAttributes(element: Element, language: AppLanguage) {
       continue
     }
 
-    const originals = attrOriginals.get(element) ?? new Map<string, string>()
-    const original = originals.get(attribute) ?? current
+    if (language === 'ja') {
+      if (!hasHangul(current)) {
+        continue
+      }
 
-    if (!attrOriginals.has(element)) {
-      attrOriginals.set(element, originals)
+      const originals = attrOriginals.get(element) ?? new Map<string, string>()
+
+      if (!attrOriginals.has(element)) {
+        attrOriginals.set(element, originals)
+      }
+
+      if (!originals.has(attribute)) {
+        originals.set(attribute, current)
+      }
+
+      const next = translateLegacyDomText(current)
+
+      if (current !== next) {
+        element.setAttribute(attribute, next)
+      }
+
+      continue
     }
 
-    if (!originals.has(attribute)) {
-      originals.set(attribute, original)
-    }
+    const original = attrOriginals.get(element)?.get(attribute)
 
-    const next =
-      language === 'ja'
-        ? hasHangul(current)
-          ? translateLegacyDomText(current)
-          : current
-        : original
-
-    if (current !== next) {
-      element.setAttribute(attribute, next)
+    if (original && current !== original) {
+      element.setAttribute(attribute, original)
     }
   }
 
@@ -452,20 +472,33 @@ function translateAttributes(element: Element, language: AppLanguage) {
     element instanceof HTMLInputElement ||
     element instanceof HTMLTextAreaElement
   ) {
-    const original = inputOriginals.get(element) ?? element.value
+    const current = element.value
 
-    if (!inputOriginals.has(element)) {
-      inputOriginals.set(element, original)
+    if (language === 'ja') {
+      if (!hasHangul(current)) {
+        return
+      }
+
+      if (!inputOriginals.has(element)) {
+        inputOriginals.set(element, current)
+      }
+
+      const next = translateLegacyDomText(current)
+
+      if (current !== next) {
+        element.value = next
+      }
+
+      return
     }
 
-    const next =
-      language === 'ja'
-        ? hasHangul(element.value)
-          ? translateLegacyDomText(element.value)
-          : element.value
-        : original
+    if (!inputOriginals.has(element)) {
+      return
+    }
 
-    if (element.value !== next && hasHangul(element.value)) {
+    const next = inputOriginals.get(element) ?? ''
+
+    if (current !== next) {
       element.value = next
     }
   }
